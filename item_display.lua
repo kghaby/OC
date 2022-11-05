@@ -21,9 +21,10 @@ while true do
         local item_iter=ME.allItems()
         for i = 1, total_types, 1 do
             i=item_iter()
-            item_table[i.label]={i.size, i.size, i.size - i.size}
-            if i.label == 'Plastic Circuit Board' then
-                stats_fh:write(i.label, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
+            name=i.label
+            item_table[name]={i.size, i.size, i.size - i.size}
+            if name == 'Plastic Circuit Board' then
+                stats_fh:write(name, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
             end
         end
         initial=false
@@ -37,10 +38,11 @@ while true do
         --iterate through items
         for i = 1, total_types, 1 do
             i=item_iter()
-            old_size=item_table[i.label][2]
-            item_table[i.label]={old_size, i.size, i.size - old_size}
-            if i.label == 'Plastic Circuit Board' then
-                stats_fh:write(i.label, '       ', old_size, '       ', i.size, '       ', i.size - old_size,'\n')
+            name=i.label
+            old_size=item_table[name][2]
+            item_table[name]={old_size, i.size, i.size - old_size}
+            if name == 'Plastic Circuit Board' then
+                stats_fh:write(name, '       ', old_size, '       ', i.size, '       ', i.size - old_size,'\n')
             end
         end
      end
