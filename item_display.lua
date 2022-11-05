@@ -18,6 +18,7 @@ while true do
         local item_iter=ME.allItems()
         for i = 1, total_types, 1 do
             local i=item_iter()
+            print(type(i.size))
             item_table[i.label]={i.size, i.size, i.size - i.size}
             if i.label == 'Plastic Circuit Board' then
                 stats_fh:write(i.label, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
@@ -34,8 +35,6 @@ while true do
         --iterate through items
         for i = 1, total_types, 1 do
             local i=item_iter()
-            print(i.label)
-            print(item_table[i.label])
             local old_size=item_table[i.label][2]
             item_table[i.label]={old_size, i.size, i.size - old_size}
             if i.label == 'Plastic Circuit Board' then
