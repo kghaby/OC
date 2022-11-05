@@ -9,10 +9,11 @@ local stats_fh = io.open("stats.dat","w")
 --stats_fh:write('Name        Old Amount      New Amount\n')
 
 lastUpdate = computer.uptime() 
-local initial=True
+local initial=true
 
 while true do
-    if initial then
+    if initial == true then
+        
         local total_types=#ME.getItemsInNetwork()
         local item_iter=ME.allItems()
         for i = 1, total_types, 1 do
@@ -22,7 +23,8 @@ while true do
                 stats_fh:write(i.label, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
             end
         end
-        initial=False
+        initial=false
+        print("Initialized")
     end
     if computer.uptime() - lastUpdate > refreshtime then
         print("Refreshed")
