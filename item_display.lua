@@ -24,7 +24,7 @@ local initial=true
 
 while true do
     if computer.uptime() - last_update > refreshtime or initial then
-        print("Refreshed")
+        print("Refreshing")
         local last_update = computer.uptime()
         local total_types=#ME.getItemsInNetwork()
         local item_iter=ME.allItems()
@@ -58,14 +58,14 @@ while true do
                 d2size=0
             end
             item_table[id]={size=new_size, dsize=new_dsize, d2size=d2size}
-            if id == 'Plastic Circuit Board(32106)' then
-                stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
-            end
+            --if id == 'Plastic Circuit Board(32106)' then
+            --    stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
+            --end
             
         end
         initial=false
      end
-    print(computer.uptime() - last_update)
+--    print(computer.uptime() - last_update)
     os.sleep(refreshtime)
  end
     
