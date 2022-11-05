@@ -58,8 +58,7 @@ while true do
                 d2size=0
             end
             item_table[id]={size=new_size, dsize=new_dsize, d2size=d2size}
-            if name == 'Plastic Circuit Board' then
-                print(id)
+            if id == 'Plastic Circuit Board(32106)' then
                 stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
             end
             
