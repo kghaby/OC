@@ -1,8 +1,11 @@
-
+local component = require("component")
+local computer = require("computer")
 local GPU = component.gpu
 local ME = component.me_interface
 local refreshtime=5 --s
 local item_table={}
+local i=nil
+local old_size=nil
 
 
 local stats_fh = io.open("stats.dat","w")
@@ -18,7 +21,6 @@ while true do
         local item_iter=ME.allItems()
         for i = 1, total_types, 1 do
             local i=item_iter()
-            print(type(i.size))
             item_table[i.label]={i.size, i.size, i.size - i.size}
             if i.label == 'Plastic Circuit Board' then
                 stats_fh:write(i.label, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
