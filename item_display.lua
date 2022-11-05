@@ -1,9 +1,10 @@
 local component = require("component")
+local transforms = require("transforms")
 local computer = require("computer")
 local GPU = component.gpu
 local ME = component.me_interface
 local refreshtime=5 --s
-local item_table={}
+item_table={}
 local i=nil
 local old_size=nil
 
@@ -11,44 +12,46 @@ local old_size=nil
 local stats_fh = io.open("stats.dat","w")
 --stats_fh:write('Name        Old Amount      New Amount\n')
 
-lastUpdate = computer.uptime() 
+local last_update = computer.uptime() 
 local initial=true
 
 while true do
     if initial == true then
         
-        local total_types=#ME.getItemsInNetwork()
-        local item_iter=ME.allItems()
+        total_types=#ME.getItemsInNetwork()
+        item_iter=ME.allItems()
         for i = 1, total_types, 1 do
             i=item_iter()
             name=i.label
             new_size=i.size
-            item_table[name]={new_size, new_size, new_size - new_size}
+            item_table[name]={old=new_size, new=new_size, dif=0}
             if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', new_size - new_size,'\n')
+                stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', 0,'\n')
+                print(item_table[name].old)
             end
         end
         initial=false
         print("Initialized")
     end
-    if computer.uptime() - lastUpdate > refreshtime then
+    if computer.uptime() - last_update > refreshtime then
         print("Refreshed")
-        lastUpdate = computer.uptime()
-        local total_types=#ME.getItemsInNetwork()
-        local item_iter=ME.allItems()
+        last_update = computer.uptime()
+        total_types=#ME.getItemsInNetwork()
+        item_iter=ME.allItems()
         --iterate through items
         for i = 1, total_types, 1 do
             i=item_iter()
             name=i.label
             new_size=i.size
             old_size=item_table[name][2]
-            item_table[name]={old_size, new_size, new_size - old_size}
+            dif=new_size - old_size
+            item_table[name]={old=old_size, new=new_size, dif=dif}
             if name == 'Plastic Circuit Board' then
                 stats_fh:write(name, '       ', old_size, '       ', new_size, '       ', new_size - old_size,'\n')
             end
         end
      end
-    print(computer.uptime() - lastUpdate)
+    print(computer.uptime() - last_update)
     os.sleep(1)
  end
     
