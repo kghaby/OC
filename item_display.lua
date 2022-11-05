@@ -10,7 +10,7 @@ local stats_fh = io.open("stats.dat","w")
 
 lastUpdate = computer.uptime() 
 local initial=True
---iterate through items 
+
 while true do
     if initial then
         local total_types=#ME.getItemsInNetwork()
@@ -29,9 +29,10 @@ while true do
         lastUpdate = computer.uptime()
         local total_types=#ME.getItemsInNetwork()
         local item_iter=ME.allItems()
+        --iterate through items
         for i = 1, total_types, 1 do
             local i=item_iter()
-            old_size=item_table.unpack(i.label)[0]
+            old_size=item_table[i.label][2]
             item_table[i.label]={old_size, i.size, i.size - old_size}
             if i.label == 'Plastic Circuit Board' then
                 stats_fh:write(i.label, '       ', old_size, '       ', i.size, '       ', i.size - old_size,'\n')
