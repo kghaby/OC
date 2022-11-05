@@ -22,9 +22,10 @@ while true do
         for i = 1, total_types, 1 do
             i=item_iter()
             name=i.label
-            item_table[name]={i.size, i.size, i.size - i.size}
+            new_size=i.size
+            item_table[name]={new_size, new_size, new_size - new_size}
             if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, '       ', i.size, '       ', i.size, '       ', i.size - i.size,'\n')
+                stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', new_size - new_size,'\n')
             end
         end
         initial=false
@@ -39,10 +40,11 @@ while true do
         for i = 1, total_types, 1 do
             i=item_iter()
             name=i.label
+            new_size=i.size
             old_size=item_table[name][2]
-            item_table[name]={old_size, i.size, i.size - old_size}
+            item_table[name]={old_size, new_size, new_size - old_size}
             if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, '       ', old_size, '       ', i.size, '       ', i.size - old_size,'\n')
+                stats_fh:write(name, '       ', old_size, '       ', new_size, '       ', new_size - old_size,'\n')
             end
         end
      end
