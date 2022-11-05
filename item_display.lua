@@ -3,7 +3,7 @@ local transforms = require("transforms")
 local computer = require("computer")
 local GPU = component.gpu
 local ME = component.me_interface
-local refreshtime=5 --s
+local refreshtime=1 --s
 local item_table={}
 local i=""
 
@@ -16,23 +16,7 @@ local last_update = computer.uptime()
 local initial=true
 
 while true do
-    if initial == true then
-        
-        local total_types=#ME.getItemsInNetwork()
-        local item_iter=ME.allItems()
-        for n = 1, total_types, 1 do
-            i=item_iter()
-            local name=i.label
-            local new_size=i.size
-            item_table[name]={old=new_size, new=new_size, dif=0}
-            if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', 0,'\n')
-            end
-        end
-        initial=false
-        print("Initialized")
-    end
-    if computer.uptime() - last_update > refreshtime then
+    if computer.uptime() - last_update > refreshtime or initial then
         print("Refreshed")
         local last_update = computer.uptime()
         local total_types=#ME.getItemsInNetwork()
@@ -42,16 +26,32 @@ while true do
             i=item_iter()
             local name=i.label
             local new_size=i.size
-            old_size=item_table[name].old
-            local dif=new_size - old_size
-            item_table[name]={old=old_size, new=new_size, dif=dif}
-            if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, '       ', old_size, '       ', new_size, '       ', new_size - old_size,'\n')
+            --get old x from last cycle
+            if item_table[name].size then
+                old_size=item_table[name].size
+            else
+                old_size=new_size
             end
+            local new_dsize=new_size - old_size
+            --get old dx from last cycle
+            if item_table[name].dsize then
+                old_dsize=item_table[name].dsize
+            else
+                old_dsize=new_dsize
+            end
+            local d2size=new_dsize - old_dsize
+            
+            item_table[name]={size=new_size, dsize=new_dsize, d2size=d2size}
+            if name == 'Plastic Circuit Board' then
+                stats_fh:write(name, size, dsize, new_dsize, d2size'\n')
+            end
+            item_table[name].old=new_size
+            
         end
+        initial=false
      end
     print(computer.uptime() - last_update)
-    os.sleep(1)
+    os.sleep(refreshtime)
  end
     
 
