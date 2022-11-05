@@ -20,7 +20,9 @@ while true do
         for i = 1, total_types, 1 do
             local i=item_iter()
             item_table[i.label]={old_size, i.size, i.size - old_size}
-            stats_fh:write(item_table)
+            if i.label == 'Aluminium Ingot' do
+                stats_fh:write(i.label, '       ', old_size, '       ', i.size, '       ', i.size - old_size)
+            end
         end
      end
     print(computer.uptime() - lastUpdate)
