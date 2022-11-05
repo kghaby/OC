@@ -18,16 +18,15 @@ local initial=true
 while true do
     if initial == true then
         
-        total_types=#ME.getItemsInNetwork()
-        item_iter=ME.allItems()
-        for i = 1, total_types, 1 do
+        local total_types=#ME.getItemsInNetwork()
+        local item_iter=ME.allItems()
+        for n = 1, total_types, 1 do
             i=item_iter()
             name=i.label
             new_size=i.size
             item_table[name]={old=new_size, new=new_size, dif=0}
             if name == 'Plastic Circuit Board' then
                 stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', 0,'\n')
-                print(item_table[name].old)
             end
         end
         initial=false
@@ -36,14 +35,14 @@ while true do
     if computer.uptime() - last_update > refreshtime then
         print("Refreshed")
         last_update = computer.uptime()
-        total_types=#ME.getItemsInNetwork()
-        item_iter=ME.allItems()
+        local total_types=#ME.getItemsInNetwork()
+        local item_iter=ME.allItems()
         --iterate through items
-        for i = 1, total_types, 1 do
+        for n = 1, total_types, 1 do
             i=item_iter()
             name=i.label
             new_size=i.size
-            old_size=item_table[name][2]
+            old_size=item_table[name].old
             dif=new_size - old_size
             item_table[name]={old=old_size, new=new_size, dif=dif}
             if name == 'Plastic Circuit Board' then
