@@ -5,21 +5,21 @@ local GPU = component.gpu
 local ME = component.me_interface
 local refreshtime=5 --s
 item_table={}
-local i=nil
-local old_size=nil
+i=""
+old_size=0
 
 
 local stats_fh = io.open("stats.dat","w")
 --stats_fh:write('Name        Old Amount      New Amount\n')
 
-local last_update = computer.uptime() 
-local initial=true
+last_update = computer.uptime() 
+initial=true
 
 while true do
     if initial == true then
         
-        local total_types=#ME.getItemsInNetwork()
-        local item_iter=ME.allItems()
+        total_types=#ME.getItemsInNetwork()
+        item_iter=ME.allItems()
         for n = 1, total_types, 1 do
             i=item_iter()
             name=i.label
@@ -35,8 +35,8 @@ while true do
     if computer.uptime() - last_update > refreshtime then
         print("Refreshed")
         last_update = computer.uptime()
-        local total_types=#ME.getItemsInNetwork()
-        local item_iter=ME.allItems()
+        total_types=#ME.getItemsInNetwork()
+        item_iter=ME.allItems()
         --iterate through items
         for n = 1, total_types, 1 do
             i=item_iter()
