@@ -32,7 +32,9 @@ while true do
         --iterate through items
         for i = 1, total_types, 1 do
             local i=item_iter()
-            old_size=item_table[i.label][2]
+            print(i.label)
+            print(item_table[i.label])
+            local old_size=item_table[i.label][2]
             item_table[i.label]={old_size, i.size, i.size - old_size}
             if i.label == 'Plastic Circuit Board' then
                 stats_fh:write(i.label, '       ', old_size, '       ', i.size, '       ', i.size - old_size,'\n')
