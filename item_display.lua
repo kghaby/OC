@@ -6,6 +6,13 @@ local ME = component.me_interface
 local refreshtime=1 --s
 local item_table={}
 local i=""
+local name=""
+local id = ""
+local damage=""
+local new_size=0
+local new_dsize=0
+local d2size=0
+
 
 
 
@@ -24,32 +31,37 @@ while true do
         --iterate through items
         for n = 1, total_types, 1 do
             i=item_iter()
-            local name=i.label
-            local new_size=i.size
-            if item_table[name] then
+            if not i then
+                break
+            end
+            name=i.label
+            damage=i.damage
+            id=name..'('..damage..')'
+            new_size=i.size
+            if item_table[id] then
                 --get old x from last cycle
-                if item_table[name].size then
-                    old_size=item_table[name].size
+                if item_table[id].size then
+                    old_size=item_table[id].size
                 else
                     old_size=new_size
                 end
-                local new_dsize=new_size - old_size
+                new_dsize=new_size - old_size
                 --get old dx from last cycle
-                if item_table[name].dsize then
-                    old_dsize=item_table[name].dsize
+                if item_table[id].dsize then
+                    old_dsize=item_table[id].dsize
                 else
                     old_dsize=new_dsize
                 end
-                local d2size=new_dsize - old_dsize
+                d2size=new_dsize - old_dsize
             else
-                local new_dsize=0
-                local d2size=0
+                new_dsize=0
+                d2size=0
             end
-            item_table[name]={size=new_size, dsize=new_dsize, d2size=d2size}
+            item_table[id]={size=new_size, dsize=new_dsize, d2size=d2size}
             if name == 'Plastic Circuit Board' then
-                stats_fh:write(name, size, dsize, new_dsize, d2size'\n')
+                print(id)
+                stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
             end
-            item_table[name].old=new_size
             
         end
         initial=false
