@@ -6,7 +6,7 @@ local ME = component.me_interface
 local refreshtime=5 --s
 local item_table={}
 local i=""
-local old_size=0
+
 
 
 local stats_fh = io.open("stats.dat","w")
@@ -21,10 +21,10 @@ while true do
         local total_types=#ME.getItemsInNetwork()
         local item_iter=ME.allItems()
         for n = 1, total_types, 1 do
-            local i=item_iter()
+            i=item_iter()
             local name=i.label
             local new_size=i.size
-            local item_table[name]={old=new_size, new=new_size, dif=0}
+            item_table[name]={old=new_size, new=new_size, dif=0}
             if name == 'Plastic Circuit Board' then
                 stats_fh:write(name, '       ', new_size, '       ', new_size, '       ', 0,'\n')
             end
@@ -39,12 +39,12 @@ while true do
         local item_iter=ME.allItems()
         --iterate through items
         for n = 1, total_types, 1 do
-            local i=item_iter()
+            i=item_iter()
             local name=i.label
             local new_size=i.size
-            local old_size=item_table[name].old
+            old_size=item_table[name].old
             local dif=new_size - old_size
-            local item_table[name]={old=old_size, new=new_size, dif=dif}
+            item_table[name]={old=old_size, new=new_size, dif=dif}
             if name == 'Plastic Circuit Board' then
                 stats_fh:write(name, '       ', old_size, '       ', new_size, '       ', new_size - old_size,'\n')
             end
