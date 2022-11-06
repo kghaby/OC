@@ -115,8 +115,6 @@ initializeTable(stats_timestep_table)
 --initial graphics. assumes 160x50 (5x3 screens) base resolution
 gpu.fill(1, 1, w, h, " ") --clear screen 
 --draw partitions
-
-
 gpu.setBackground(xcolors.golden)
 gpu.fill(w/2, 1, 1, 8, " ")
 gpu.fill(1, 9, w/2, 1, " ") 
@@ -131,12 +129,13 @@ gpu.setForeground(xcolors.rosyBrown)
 gpu.set((3*w/4)-3,1,"Current")
 
 gpu.setForeground(xcolors.white)
-gpu.set((w/2)-4,3,"Max   Q")
+gpu.set((w/2)-3,3,"Max   Q")
 gpu.set((w/2)-3,4,"Max  ΔQ")
 gpu.set((w/2)-3,5,"Min  ΔQ")
 gpu.set((w/2)-3,6,"Max ΔΔQ")
 gpu.set((w/2)-3,7,"Min ΔΔQ")
 gpu.setForeground(xcolors.lightGray)
+
 
 local function niceNum(n)
     local s=tostring(math.abs(n))
@@ -314,6 +313,7 @@ while true do
                 if stats_timestep_table[k].statquant > stats_alltime_table[k].statquant then
                     stats_alltime_table[k] = stats_timestep_table[k]
                     alltimechanged=True
+                    print(changed)
                 end
             elseif string.find(k,"Min") ~= nil then
                 if stats_timestep_table[k].statquant < stats_alltime_table[k].statquant then
