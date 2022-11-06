@@ -28,7 +28,7 @@ local stats_timestep_table={}
 local si=""
 local sq=0
 local alltimechanged=False
-local xcolors = {           
+local xcolors = {           --NIDAS colors
     red = 0xFF0000,
     lime = 0x00FF00,
     blue = 0x0000FF,
@@ -116,7 +116,7 @@ initializeTable(stats_timestep_table)
 gpu.fill(1, 1, w, h, " ") --clear screen 
 --draw partitions
 gpu.setBackground(xcolors.electricBlue)
-gpu.fill(1, h/2-2, w, 1, " ") 
+gpu.fill(1, h/2, w, 1, " ") 
 gpu.setBackground(xcolors.golden)
 gpu.fill(w/2, 1, 1, h/2-1, " ")
 gpu.setBackground(xcolors.rosyBrown)
@@ -128,8 +128,118 @@ gpu.set((w/4)-4,1,"All Time")
 gpu.setForeground(xcolors.rosyBrown)
 local timestepTitle=refreshtime.." s"
 gpu.set((3*w/4)-(math.floor(#timestepTitle/2)),1,timestepTitle)
+gpu.setForeground(xcolors.electricBlue)
+gpu.set((w/2)-6),3,"Max Quantity (q)")
+gpu.set((w/2)-3),4,"Max ΔDq")
+gpu.set((w/2)-3),5,"Min Dq")
+gpu.set((w/2)-3),6,"Max DDq")
+gpu.set((w/2)-3),7,"Min DDq")
+
 gpu.setForeground(xcolors.lightGray)
 
+local function niceNum(n)
+    local s=tostring(math.abs(n))
+    if #s > 12 then
+        s=string.format("%." .. (2) .. "f", n/1000000000000)..'T' 
+    elseif #s > 9 then
+        s=string.format("%." .. (2) .. "f", n/1000000000)..'G' 
+    elseif #s > 6 then
+        s=string.format("%." .. (2) .. "f", n/1000000)..'M' 
+    elseif #s > 3 then
+        s=string.format("%." .. (2) .. "f", n/1000)..'K'          
+    end
+    --prefix
+    if n > 0 then
+        s='+'..s
+    elseif n < 0
+        s='-'..s
+    end
+    return s
+
+local function setNumColor(n)
+    if n > 0 then
+        gpu.setForeground(xcolors.green)
+    elseif n < 0 then
+        gpu.setForeground(xcolors.red)
+    elseif n==0 then
+        gpu.setForeground(xcolors.yellow)
+    end
+
+local function display_alltime(t)
+    for k,v in pairs(t) do 
+        if k=='Max x' then
+            gpu.set((w/4)-(#si-1)),3,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            nice_sq=nice_sq:gsub('%+','')
+            gpu.set((w/4)+2),3,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Max Dx' then
+            gpu.set((w/4)-(#si-1)),4,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((w/4)+2),4,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Min DDx' then
+            gpu.set((w/4)-(#si-1)),5,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((w/4)+2),5,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Max DDx' then
+            gpu.set((w/4)-(#si-1)),6,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((w/4)+2),6,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Min DDx' then
+            gpu.set((w/4)-(#si-1)),7,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((w/4)+2),7,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        end
+    end
+end
+
+local function display_timestep(t)
+    for k,v in pairs(t) do 
+        if k=='Max x' then
+            gpu.set((3*w/4)-(#si-1)),3,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            nice_sq=nice_sq:gsub('%+','')
+            gpu.set((3*w/4)+2),3,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Max Dx' then
+            gpu.set((3*w/4)-(#si-1)),4,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((3*w/4)+2),4,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Min DDx' then
+            gpu.set((3*w/4)-(#si-1)),5,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((3*w/4)+2),5,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Max DDx' then
+            gpu.set((3*w/4)-(#si-1)),6,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((3*w/4)+2),6,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        elseif k=='Min DDx' then
+            gpu.set((3*w/4)-(#si-1)),7,t[k].statitem)
+            setNumColor(t[k].statquant)
+            local nice_sq=niceNum(t[k].statquant)
+            gpu.set((3*w/4)+2),7,t[k].statquant)
+            gpu.setForeground(xcolors.lightGray)
+        end
+    end
+end
+
+display_alltime(stats_alltime_table)
 
 --run main cycle
 while true do
@@ -177,25 +287,27 @@ while true do
         
         --assign highest values to timestep stats
         
-        si,sq=max(item_table, size)
+        si,sq=max(item_table, "size")
         stats_timestep_table['Max x']={statitem=si,statquant=sq}
-        si,sq=max(item_table, dsize)
+        si,sq=max(item_table, "dsize")
         stats_timestep_table['Max Dx']={statitem=si,statquant=sq}
-        si,sq=min(item_table, dsize)
+        si,sq=min(item_table, "dsize")
         stats_timestep_table['Min Dx']={statitem=si,statquant=sq}
-        si,sq=max(item_table, d2size)
+        si,sq=max(item_table, "d2size")
         stats_timestep_table['Max DDx']={statitem=si,statquant=sq}
-        si,sq=min(item_table, d2size)
+        si,sq=min(item_table, "d2size")
         stats_timestep_table['Min DDx']={statitem=si,statquant=sq}
+        
+        display_timestep(stats_timestep_table)
         
         --assign highest values to alltime stats if necessary
         for k,v in pairs(stats_timestep_table) do 
-            if string.find(k,"Max") then
+            if string.find(k,"Max") ~= nil then
                 if stats_timestep_table[k].statquant > stats_alltime_table[k].statquant then
                     stats_alltime_table[k] = stats_timestep_table[k]
                     alltimechanged=True
                 end
-            elseif string.find(k,"Min") then
+            elseif string.find(k,"Min") ~= nil then
                 if stats_timestep_table[k].statquant < stats_alltime_table[k].statquant then
                     stats_alltime_table[k] = stats_timestep_table[k]
                     alltimechanged=True
@@ -207,11 +319,13 @@ while true do
             stats_alltime_fh = io.open("stats_alltime.dat","w")
             stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
             stats_alltime_fh:close()
+            display_alltime(stats_alltime_table)
+            alltimechanged=False
         end
 
         
     --display timestep and alltime tables
-        
+       
         
      end
 --    print(computer.uptime() - last_update)
