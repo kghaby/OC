@@ -65,7 +65,7 @@ local function max(t, colname) --gets max of a column
     local id, value = initial, -9999999999
     for k, v in pairs(t) do 
         if v[colname] > value then
-            id, value = v[id], v[colname]
+            id, value = v["id"], v[colname]
         end
     end
     return id, value
@@ -76,7 +76,7 @@ local function min(t, colname) --gets max of a column
     local id, value = initial, 9999999999
     for k, v in pairs(t) do 
         if v[colname] < value then
-            id, value = v[id], v[colname]
+            id, value = v["id"], v[colname]
         end
     end
     return id, value
@@ -93,7 +93,7 @@ local function initializeTable(nascent)
 end
 
 --read/make stats_alltime file
-if filesystem.exists("stats_alltime.dat") then
+if filesystem.exists("/home/stats_alltime.dat") then
     
     --read in table
     stats_alltime_fh = io.open("stats_alltime.dat","r")
