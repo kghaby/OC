@@ -275,7 +275,7 @@ while true do
             end
             label=i.label
             damage=i.damage
-            if damage > 0 then
+            if damage > 999999 then
                 id=label..'('..tostring(damage)..')'
             else
                 id=label
@@ -283,9 +283,9 @@ while true do
             name=i.name
             tag=i.tag
             if tag ~=nil then
-                bigid=id..name..tag
+                bigid=label..damage..name..tag
             else
-                bigid=id..name
+                bigid=label..damage..name
             end
 
             if string.find(id,"drop of") ~= nil then
@@ -359,13 +359,13 @@ while true do
             stats_alltime_fh = io.open("stats_alltime.dat","w")
             stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
             stats_alltime_fh:close()
-            gpu.fill(1, 3, w/2-4, 5, " ") --clear area
-            display_alltime(stats_alltime_table)
-            writeRowLabels()
+
             alltimechanged=false
         end
+        gpu.fill(1, 3, w/2-4, 5, " ") --clear area
+        display_alltime(stats_alltime_table)
+        writeRowLabels()
 
-        
        
         
      end
