@@ -8,7 +8,7 @@ local math = require("math")
 local gpu = component.gpu
 
 local basew,baseh=160,50
-gpu.setResolution(basew/1,baseh/1)
+gpu.setResolution(basew/1.5,baseh/1.5)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
 local refreshtime=30 --s
@@ -248,6 +248,11 @@ end
 
 display_alltime(stats_alltime_table)
 
+local function itemIter(item_iter())
+    i=item_iter()
+    return i
+end
+
 --run main cycle
 while true do
     if computer.uptime() - last_update > refreshtime or initial then
@@ -260,7 +265,13 @@ while true do
             if n % 200 == 0 then
                 os.sleep()
             end
-            i=item_iter()
+            if pcall(i=itemIter()) then
+            else
+                print("warning")
+                break     
+            end
+
+            --i=item_iter()
             if not i then
                 break
             end
@@ -274,7 +285,14 @@ while true do
             else
                 bigid=id..name
             end
-            new_size=i.size
+            
+            if string.find(label,"drop of") ~= nil then
+                new_size=i.size/1000
+                label=label:gsub('%drop','Bucket')
+            else
+                new_size=i.size
+            end
+            
             if item_table[bigid] then
                 --get old x from last cycle
                 if item_table[bigid].size then
