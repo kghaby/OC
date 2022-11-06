@@ -272,7 +272,11 @@ while true do
             end
             label=i.label
             damage=i.damage
-            id=label..'('..damage..')'
+            if damage > 0 then
+                id=label..'('..damage..')'
+            else
+                id=label
+            end
             name=i.name
             tag=i.tag
             if tag ~=nil then
@@ -280,7 +284,7 @@ while true do
             else
                 bigid=id..name
             end
-            if string.find(bigid,"FluidContain") ~= nil then
+            if string.find(bigid,"Fluid Contain") ~= nil then
                 print(name,id)
             end
             if string.find(label,"drop of") ~= nil then
