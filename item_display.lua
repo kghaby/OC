@@ -263,12 +263,12 @@ while true do
             end
             if not pcall(function() i=item_iter() end)  then
                 print("warning")
-                break     
+                goto continue   
             end
-
+            
             --i=item_iter()
             if not i then
-                break
+                goto continue 
             end
             label=i.label
             damage=i.damage
@@ -280,7 +280,9 @@ while true do
             else
                 bigid=id..name
             end
-            
+            if string.find(bigid,"FluidContain") ~= nil then
+                print(name,id)
+            end
             if string.find(label,"drop of") ~= nil then
                 new_size=i.size/1000
                 label=label:gsub('%drop','Bucket')
@@ -311,7 +313,7 @@ while true do
             --if string.find(id,"Ender") ~= nil then
             --    stats_fh:write(n,id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n',Serial.serialize(i),'\n')
             --end
-            
+            ::continue::
         end
         initial=false
         
