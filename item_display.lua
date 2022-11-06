@@ -284,9 +284,7 @@ while true do
             else
                 bigid=id..name
             end
-            if string.find(bigid,"Fluid Contain") ~= nil then
-                print(name,id)
-            end
+
             if string.find(label,"drop of") ~= nil then
                 new_size=i.size/1000
                 label=label:gsub('%drop','Bucket')
