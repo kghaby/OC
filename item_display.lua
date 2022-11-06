@@ -248,10 +248,6 @@ end
 
 display_alltime(stats_alltime_table)
 
-local function itemIter(iter)
-    i=iter
-    return i
-end
 
 --run main cycle
 while true do
@@ -265,9 +261,7 @@ while true do
             if n % 200 == 0 then
                 os.sleep()
             end
-            iterOK,i=pcall(itemIter(item_iter())) 
-            if not iterOK then
-                print(iterOK,i)
+            if not pcall(function() i=item_iter() end)  then
                 print("warning")
                 break     
             end
