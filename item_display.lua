@@ -23,11 +23,12 @@ local d2size=0
 local last_update = computer.uptime() 
 local initial=true
 local stats_fh=""
+stats_fh = io.open("stats.dat","w")
 local stats_alltime_table={}
 local stats_timestep_table={}
 local si=""
 local sq=0
-local alltimechanged=False
+local alltimechanged=false
 local xcolors = {           --NIDAS colors
     red = 0xFF0000,
     lime = 0x00FF00,
@@ -283,9 +284,9 @@ while true do
                 d2size=0
             end
             item_table[id]={size=new_size, dsize=new_dsize, d2size=d2size}
-            --if id == 'Plastic Circuit Board(32106)' then
-            --    stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
-            --end
+            if string.find(id,"Ender") ~= nil then
+                stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
+            end
             
         end
         initial=false
@@ -312,13 +313,12 @@ while true do
             if string.find(k,"Max") ~= nil then
                 if stats_timestep_table[k].statquant > stats_alltime_table[k].statquant then
                     stats_alltime_table[k] = stats_timestep_table[k]
-                    alltimechanged=True
-                    print(changed)
+                    alltimechanged=true
                 end
             elseif string.find(k,"Min") ~= nil then
                 if stats_timestep_table[k].statquant < stats_alltime_table[k].statquant then
                     stats_alltime_table[k] = stats_timestep_table[k]
-                    alltimechanged=True
+                    alltimechanged=true
                 end
             end
         end
@@ -329,7 +329,7 @@ while true do
             stats_alltime_fh:close()
             gpu.fill(1, 3, w/2-5, 5, " ") --clear area
             display_alltime(stats_alltime_table)
-            alltimechanged=False
+            alltimechanged=false
         end
 
         
