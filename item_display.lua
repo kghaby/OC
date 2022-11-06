@@ -285,9 +285,9 @@ while true do
                 bigid=id..name
             end
 
-            if string.find(label,"drop of") ~= nil then
-                new_size=i.size/1000
-                label=label:gsub('%drop','Bucket')
+            if string.find(id,"drop of") ~= nil then
+                new_size=tonumber(string.format("%." .. (0) .. "f", i.size/1000))
+                id=id:gsub('%drop','Bucket')
             else
                 new_size=i.size
             end
