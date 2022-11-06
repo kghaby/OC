@@ -68,7 +68,7 @@ local function max(t, colname) --gets max of a column
             id, value = v[id], v[colname]
         end
     end
-    return key, value
+    return id, value
 end
 
 local function min(t, colname) --gets max of a column
@@ -79,7 +79,7 @@ local function min(t, colname) --gets max of a column
             id, value = v[id], v[colname]
         end
     end
-    return key, value
+    return id, value
 end
 
 local function initializeTable(nascent)
