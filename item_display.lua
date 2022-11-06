@@ -151,7 +151,7 @@ local function niceNum(n)
     --prefix
     if n > 0 then
         s='+'..s
-    elseif n < 0
+    elseif n < 0 then
         s='-'..s
     end
     return s
