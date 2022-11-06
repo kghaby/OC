@@ -273,7 +273,7 @@ while true do
             label=i.label
             damage=i.damage
             if damage > 0 then
-                id=label..'('..damage..')'
+                id=label..'('..tostring(damage)..')'
             else
                 id=label
             end
