@@ -256,6 +256,9 @@ while true do
         local item_iter=ME.allItems()
         --iterate through items
         for n = 1, total_types, 1 do
+            if n % 50 == 0 then
+                os.sleep()
+            end
             i=item_iter()
             if not i then
                 break
