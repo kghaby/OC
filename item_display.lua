@@ -268,7 +268,8 @@ while true do
             damage=i.damage
             id=label..'('..damage..')'
             name=i.name
-            bigid=id..name
+            tag=i.tag
+            bigid=id..name..tag
             new_size=i.size
             if item_table[bigid] then
                 --get old x from last cycle
