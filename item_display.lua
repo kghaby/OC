@@ -11,7 +11,7 @@ local basew,baseh=160,50
 gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
-local refreshtime=5 --s
+local refreshtime=30 --s
 local item_table={}
 local i=""
 local name=""
