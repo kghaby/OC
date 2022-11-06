@@ -23,7 +23,8 @@ local d2size=0
 local last_update = computer.uptime() 
 local initial=true
 local stats_fh=""
-stats_fh = io.open("stats.dat","w")
+--stats_fh = io.open("stats.dat","w")
+local stats_alltime_fh=""
 local stats_alltime_table={}
 local stats_timestep_table={}
 local si=""
@@ -61,10 +62,10 @@ local xcolors = {           --NIDAS colors
 
 local function max(t, colname) --gets max of a column
     local function fn(a,b) return a < b end
-    local key, value = initial, -9999999999
+    local id, value = initial, -9999999999
     for k, v in pairs(t) do 
         if v[colname] > value then
-            key, value = k, v[colname]
+            id, value = v[id], v[colname]
         end
     end
     return key, value
@@ -72,10 +73,10 @@ end
 
 local function min(t, colname) --gets max of a column
     local function fn(a,b) return a < b end
-    local key, value = initial, 9999999999
+    local id, value = initial, 9999999999
     for k, v in pairs(t) do 
         if v[colname] < value then
-            key, value = k, v[colname]
+            id, value = v[id], v[colname]
         end
     end
     return key, value
@@ -92,20 +93,20 @@ local function initializeTable(nascent)
 end
 
 --read/make stats_alltime file
-if not filesystem.exists("stats_alltime.dat") then
+if filesystem.exists("stats_alltime.dat") then
     
+    --read in table
+    stats_alltime_fh = io.open("stats_alltime.dat","r")
+    stats_alltime_table = Serial.unserialize(stats_alltime_fh:read())
+    stats_alltime_fh:close()
+    
+else
     --make initial table
     initializeTable(stats_alltime_table)
     
     --save it to file
     stats_alltime_fh = io.open("stats_alltime.dat","w")
     stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
-    stats_alltime_fh:close()
-    
-else
-    --read in table
-    stats_alltime_fh = io.open("stats_alltime.dat","r")
-    stats_alltime_table = Serial.unserialize(stats_alltime_fh:read())
     stats_alltime_fh:close()
 end
 
@@ -256,28 +257,30 @@ while true do
         local item_iter=ME.allItems()
         --iterate through items
         for n = 1, total_types, 1 do
-            if n % 50 == 0 then
+            if n % 200 == 0 then
                 os.sleep()
             end
             i=item_iter()
             if not i then
                 break
             end
-            name=i.label
+            label=i.label
             damage=i.damage
-            id=name..'('..damage..')'
+            id=label..'('..damage..')'
+            name=i.name
+            bigid=id..name
             new_size=i.size
-            if item_table[id] then
+            if item_table[bigid] then
                 --get old x from last cycle
-                if item_table[id].size then
-                    old_size=item_table[id].size
+                if item_table[bigid].size then
+                    old_size=item_table[bigid].size
                 else
                     old_size=new_size
                 end
                 new_dsize=new_size - old_size
                 --get old dx from last cycle
-                if item_table[id].dsize then
-                    old_dsize=item_table[id].dsize
+                if item_table[bigid].dsize then
+                    old_dsize=item_table[bigid].dsize
                 else
                     old_dsize=new_dsize
                 end
@@ -286,10 +289,10 @@ while true do
                 new_dsize=0
                 d2size=0
             end
-            item_table[id]={size=new_size, dsize=new_dsize, d2size=d2size}
-            if string.find(id,"Ender") ~= nil then
-                stats_fh:write(id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n')
-            end
+            item_table[bigid]={id=id,size=new_size, dsize=new_dsize, d2size=d2size}
+            --if string.find(id,"Ender") ~= nil then
+            --    stats_fh:write(n,id,'       ', new_size,'       ', new_dsize,'       ', d2size,'\n',Serial.serialize(i),'\n')
+            --end
             
         end
         initial=false
