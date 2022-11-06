@@ -128,16 +128,19 @@ gpu.setBackground(xcolors.black)
 gpu.setForeground(xcolors.golden)
 gpu.set((w/4)-4,1,"All Time")
 gpu.setForeground(xcolors.rosyBrown)
-gpu.set((3*w/4)-3,1,"Current")
+gpu.set((3*w/4)-5,1,"Current ("..refreshtime.." s)")
 
-gpu.setForeground(xcolors.white)
-gpu.set((w/2)-3,3,"Max   Q")
-gpu.set((w/2)-3,4,"Max  ΔQ")
-gpu.set((w/2)-3,5,"Min  ΔQ")
-gpu.set((w/2)-3,6,"Max ΔΔQ")
-gpu.set((w/2)-3,7,"Min ΔΔQ")
-gpu.setForeground(xcolors.lightGray)
+local function writeRowLabels()
+    gpu.setForeground(xcolors.white)
+    gpu.set((w/2)-3,3,"Max   Q")
+    gpu.set((w/2)-3,4,"Max  ΔQ")
+    gpu.set((w/2)-3,5,"Min  ΔQ")
+    gpu.set((w/2)-3,6,"Max ΔΔQ")
+    gpu.set((w/2)-3,7,"Min ΔΔQ")
+    gpu.setForeground(xcolors.lightGray)
+end
 
+writeRowLabels()
 
 local function niceNum(n)
     local s=tostring(math.abs(n))
@@ -287,7 +290,7 @@ while true do
 
             if string.find(id,"drop of") ~= nil then
                 new_size=tonumber(string.format("%." .. (0) .. "f", i.size/1000))
-                id=id:gsub('%drop','Bucket')
+                id=id:gsub('drop','Bucket')
             else
                 new_size=i.size
             end
@@ -333,8 +336,9 @@ while true do
         stats_timestep_table['Min DDx']={statitem=si,statquant=sq}
         
         --display timestep table
-        gpu.fill(w/2+4, 3, w/2-4, 5, " ") --clear area
+        gpu.fill(w/2+3, 3, w/2-3, 5, " ") --clear area
         display_timestep(stats_timestep_table)
+        writeRowLabels()
         
         --assign highest values to alltime stats if necessary
         for k,v in pairs(stats_timestep_table) do 
@@ -355,8 +359,9 @@ while true do
             stats_alltime_fh = io.open("stats_alltime.dat","w")
             stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
             stats_alltime_fh:close()
-            gpu.fill(1, 3, w/2-5, 5, " ") --clear area
+            gpu.fill(1, 3, w/2-4, 5, " ") --clear area
             display_alltime(stats_alltime_table)
+            writeRowLabels()
             alltimechanged=false
         end
 
