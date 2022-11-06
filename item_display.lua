@@ -98,7 +98,7 @@ if not filesystem.exists("stats_alltime.dat") then
     
     --save it to file
     stats_alltime_fh = io.open("stats_alltime.dat","w")
-    stats_alltime_fh:write(Serial.serialization(stats_alltime_table))
+    stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
     stats_alltime_fh:close()
     
 else
@@ -116,19 +116,19 @@ initializeTable(stats_timestep_table)
 gpu.fill(1, 1, w, h, " ") --clear screen 
 --draw partitions
 gpu.setBackground(xcolors.electricBlue)
-gpu.fill(1, h/2-1, w, 1, " ") 
-
+gpu.fill(1, h/2-2, w, 1, " ") 
 gpu.setBackground(xcolors.golden)
 gpu.fill(w/2, 1, 1, h/2-1, " ")
 gpu.setBackground(xcolors.rosyBrown)
 gpu.fill(w/2+1, 1, 1, h/2-1, " ")
+gpu.setBackground(xcolors.black)
 
 gpu.setForeground(xcolors.golden)
 gpu.set((w/4)-4,1,"All Time")
 gpu.setForeground(xcolors.rosyBrown)
 local timestepTitle=refreshtime.." s"
 gpu.set((3*w/4)-(math.floor(#timestepTitle/2)),1,timestepTitle)
-
+gpu.setForeground(xcolors.lightGray)
 
 
 --run main cycle
@@ -181,11 +181,11 @@ while true do
         stats_timestep_table['Max x']={statitem=si,statquant=sq}
         si,sq=max(item_table, dsize)
         stats_timestep_table['Max Dx']={statitem=si,statquant=sq}
-        si,sq=max(item_table, dsize)
+        si,sq=min(item_table, dsize)
         stats_timestep_table['Min Dx']={statitem=si,statquant=sq}
-        si,sq=min(item_table, d2size)
-        stats_timestep_table['Max DDx']={statitem=si,statquant=sq}
         si,sq=max(item_table, d2size)
+        stats_timestep_table['Max DDx']={statitem=si,statquant=sq}
+        si,sq=min(item_table, d2size)
         stats_timestep_table['Min DDx']={statitem=si,statquant=sq}
         
         --assign highest values to alltime stats if necessary
@@ -205,7 +205,7 @@ while true do
         
         if alltimechanged then
             stats_alltime_fh = io.open("stats_alltime.dat","w")
-            stats_alltime_fh:write(Serial.serialization(stats_alltime_table))
+            stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
             stats_alltime_fh:close()
         end
 
