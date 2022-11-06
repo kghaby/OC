@@ -128,15 +128,14 @@ gpu.setBackground(xcolors.black)
 gpu.setForeground(xcolors.golden)
 gpu.set((w/4)-4,1,"All Time")
 gpu.setForeground(xcolors.rosyBrown)
-local timestepTitle=refreshtime.." s"
-gpu.set((3*w/4)-(math.floor(#timestepTitle/2)),1,timestepTitle)
-gpu.setForeground(xcolors.electricBlue)
+gpu.set((3*w/4)-3,1,"Current")
+
+gpu.setForeground(xcolors.white)
 gpu.set((w/2)-4,3,"Max Quant")
 gpu.set((w/2)-3,4,"Max ΔQ")
 gpu.set((w/2)-3,5,"Min ΔQ")
 gpu.set((w/2)-3,6,"Max ΔΔQ")
 gpu.set((w/2)-3,7,"Min ΔΔQ")
-
 gpu.setForeground(xcolors.lightGray)
 
 local function niceNum(n)
@@ -172,35 +171,35 @@ local function display_alltime(t)
         local item=t[k].statitem
         local quant=t[k].statquant
         if k=='Max x' then
-            gpu.set((w/4)-(#item-2),3,item)
+            gpu.set((w/4)-(#item-4),3,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
             nice_sq=nice_sq:gsub('%+','')
-            gpu.set((w/4)+(8-#nice_sq),3,nice_sq)
+            gpu.set((w/4)+(10-#nice_sq),3,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Max Dx' then
-            gpu.set((w/4)-(#item-2),4,item)
+            gpu.set((w/4)-(#item-4),4,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((w/4)+(8-#nice_sq),4,nice_sq)
+            gpu.set((w/4)+(10-#nice_sq),4,nice_sq)
             gpu.setForeground(xcolors.lightGray)
-        elseif k=='Min DDx' then
-            gpu.set((w/4)-(#item-2),5,item)
+        elseif k=='Min Dx' then
+            gpu.set((w/4)-(#item-4),5,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((w/4)+(8-#nice_sq),5,nice_sq)
+            gpu.set((w/4)+(10-#nice_sq),5,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Max DDx' then
-            gpu.set((w/4)-(#item-2),6,item)
+            gpu.set((w/4)-(#item-4),6,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((w/4)+(8-#nice_sq),6,nice_sq)
+            gpu.set((w/4)+(10-#nice_sq),6,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Min DDx' then
-            gpu.set((w/4)-(#item-2),7,item)
+            gpu.set((w/4)-(#item-4),7,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((w/4)+(8-#nice_sq),7,nice_sq)
+            gpu.set((w/4)+(10-#nice_sq),7,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         end
     end
@@ -211,35 +210,35 @@ local function display_timestep(t)
         local item=t[k].statitem
         local quant=t[k].statquant
         if k=='Max x' then
-            gpu.set((3*w/4)-(#item-2),3,item)
+            gpu.set((3*w/4)-(#item-4),3,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
             nice_sq=nice_sq:gsub('%+','')
-            gpu.set((3*w/4)+(8-#nice_sq),3,nice_sq)
+            gpu.set((3*w/4)+(10-#nice_sq),3,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Max Dx' then
-            gpu.set((3*w/4)-(#item-2),4,item)
+            gpu.set((3*w/4)-(#item-4),4,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((3*w/4)+(8-#nice_sq),4,nice_sq)
+            gpu.set((3*w/4)+(10-#nice_sq),4,nice_sq)
             gpu.setForeground(xcolors.lightGray)
-        elseif k=='Min DDx' then
-            gpu.set((3*w/4)-(#item-2),5,item)
+        elseif k=='Min Dx' then
+            gpu.set((3*w/4)-(#item-4),5,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((3*w/4)+(8-#nice_sq),5,nice_sq)
+            gpu.set((3*w/4)+(10-#nice_sq),5,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Max DDx' then
-            gpu.set((3*w/4)-(#item-2),6,item)
+            gpu.set((3*w/4)-(#item-4),6,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((3*w/4)+(8-#nice_sq),6,nice_sq)
+            gpu.set((3*w/4)+(10-#nice_sq),6,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         elseif k=='Min DDx' then
-            gpu.set((3*w/4)-(#item-2),7,item)
+            gpu.set((3*w/4)-(#item-4),7,item)
             setNumColor(quant)
             local nice_sq=niceNum(quant)
-            gpu.set((3*w/4)+(8-#nice_sq),7,nice_sq)
+            gpu.set((3*w/4)+(10-#nice_sq),7,nice_sq)
             gpu.setForeground(xcolors.lightGray)
         end
     end
@@ -304,6 +303,8 @@ while true do
         si,sq=min(item_table, "d2size")
         stats_timestep_table['Min DDx']={statitem=si,statquant=sq}
         
+        --display timestep table
+        gpu.fill(w/2+4, 3, w/2-4, 5, " ") --clear area
         display_timestep(stats_timestep_table)
         
         --assign highest values to alltime stats if necessary
@@ -325,12 +326,12 @@ while true do
             stats_alltime_fh = io.open("stats_alltime.dat","w")
             stats_alltime_fh:write(Serial.serialize(stats_alltime_table))
             stats_alltime_fh:close()
+            gpu.fill(1, 3, w/2-4, 5, " ") --clear area
             display_alltime(stats_alltime_table)
             alltimechanged=False
         end
 
         
-    --display timestep and alltime tables
        
         
      end
