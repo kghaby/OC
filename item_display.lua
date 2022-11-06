@@ -130,10 +130,10 @@ local timestepTitle=refreshtime.." s"
 gpu.set((3*w/4)-(math.floor(#timestepTitle/2)),1,timestepTitle)
 gpu.setForeground(xcolors.electricBlue)
 gpu.set((w/2)-6,3,"Max Quantity (q)")
-gpu.set((w/2)-3,4,"Max ΔDq")
-gpu.set((w/2)-3,5,"Min Dq")
-gpu.set((w/2)-3,6,"Max DDq")
-gpu.set((w/2)-3,7,"Min DDq")
+gpu.set((w/2)-3,4,"Max Δq")
+gpu.set((w/2)-3,5,"Min Δq")
+gpu.set((w/2)-3,6,"Max ΔΔq")
+gpu.set((w/2)-3,7,"Min ΔΔq")
 
 gpu.setForeground(xcolors.lightGray)
 
