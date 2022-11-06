@@ -155,6 +155,7 @@ local function niceNum(n)
         s='-'..s
     end
     return s
+end
 
 local function setNumColor(n)
     if n > 0 then
@@ -164,6 +165,7 @@ local function setNumColor(n)
     elseif n==0 then
         gpu.setForeground(xcolors.yellow)
     end
+end
 
 local function display_alltime(t)
     for k,v in pairs(t) do 
