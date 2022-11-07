@@ -49,15 +49,15 @@ local function hex2RGB(hex)
     return r, g, b
 end
 
---local terminal = {x = -470, y = 116, z = 290}
-local terminal = {x = 0, y = 0, z = 0}
+local terminal = {x = -470, y = 116, z = 290}
+--local terminal = {x = 0, y = 0, z = 0}
 
 function AR.cube(glasses, x, y, z, color, alpha, scale)
     scale = scale or 1
     alpha = alpha or 1
     local cube = glasses.addCube3D()
     cube.set3DPos(x - terminal.x, y - terminal.y, z - terminal.z)
-    cube.setColor(color)
+    cube.setColor(hex2RGB(color))
     cube.setAlpha(alpha)
     cube.setScale(scale)
     return cube
@@ -69,7 +69,7 @@ function AR.line(glasses, source, dest, color, alpha, scale)
     local line = glasses.addLine3D()
     line.setVertex(1, source.x - terminal.x + 0.5, source.y - terminal.y + 0.5, source.z - terminal.z + 0.5)
     line.setVertex(2, dest.x - terminal.x + 0.5, dest.y - terminal.y + 0.5, dest.z - terminal.z + 0.5)
-    line.setColor(color)
+    line.setColor(hex2RGB(color))
     line.setAlpha(alpha)
     line.setScale(scale)
     return line
@@ -80,7 +80,7 @@ function AR.worldText(glasses, name, x, y, z, color, alpha, scale)
     alpha = alpha or 1
     local text = glasses.addFloatingText()
     text.set3DPos(x - terminal.x, y - terminal.y, z - terminal.z)
-    text.setColor(color)
+    text.setColor(hex2RGB(color))
     text.setAlpha(alpha)
     text.setScale(scale)
     text.setText(name)
@@ -90,7 +90,7 @@ end
 function AR.hudTriangle(glasses, a, b, c, color, alpha)
     alpha = alpha or 1.0
     local triangle = glasses.addTriangle()
-    triangle.setColor(color)
+    triangle.setColor(hex2RGB(color))
     triangle.setAlpha(alpha)
     triangle.setVertex(1, a[1], a[2])
     triangle.setVertex(2, b[1], b[2])
@@ -101,7 +101,7 @@ end
 function AR.hudQuad(glasses, a, b, c, d, color, alpha)
     alpha = alpha or 1.0
     local quad = glasses.addQuad()
-    quad.setColor(color)
+    quad.setColor(hex2RGB(color))
     quad.setAlpha(alpha)
     quad.setVertex(1, a[1], a[2])
     quad.setVertex(2, b[1], b[2])
@@ -115,7 +115,7 @@ function AR.hudRectangle(glasses, x, y, w, h, color, alpha)
     local rect = glasses.addRect()
     rect.setPosition(x, y)
     rect.setSize(h, w)
-    rect.setColor(color)
+    rect.setColor(hex2RGB(color))
     rect.setAlpha(alpha)
     return rect
 end
@@ -133,7 +133,7 @@ function AR.hudText(glasses, displayText, x, y, color, scale)
     local text = glasses.addTextLabel()
     text.setText(displayText)
     text.setPosition(x, y)
-    text.setColor(color)
+    text.setColor(hex2RGB(color))
     AR.textSize(text, scale)
     return text
 end
@@ -141,10 +141,10 @@ end
 
 
 glasses.removeAll()
-text="Kyle is not a noob"
+local text="Kyle is not a noob"
 while true do
   --AR.hudText(glasses,"Kyle is not a noob",1,1,colors.black,1)
-  AR.worldText(glasses,"Kyle is not a noob",-472,117,291,hex2RGB(xcolors.black),1,1)
+  AR.worldText(glasses,text,-472,117,291,xcolors.black,1,1)
   --AR.hudRectangle(glasses,)
   
   os.sleep()
