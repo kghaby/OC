@@ -9,7 +9,7 @@ local glasses=component.glasses
 
 local AR = {}
 
---local terminal = {x = 8257, y = 199, z = -2731}
+local terminal = {x = -470, y = 116, z = 290}
 
 function AR.cube(glasses, x, y, z, color, alpha, scale)
     scale = scale or 1
