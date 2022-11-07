@@ -144,7 +144,7 @@ glasses.removeAll()
 local text="Kyle is not a noob"
 while true do
   --AR.hudText(glasses,"Kyle is not a noob",1,1,colors.black,1)
-  AR.worldText(glasses,text,-472,116,290,xcolors.black,1,0.04)
+  AR.worldText(glasses,text,-472,118,290,xcolors.black,1,0.04)
   --AR.hudRectangle(glasses,)
   
   os.sleep()
