@@ -10,7 +10,7 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
-local sleepTime=0.2 --s
+local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
 
 local xcolors = {           --NIDAS colors
@@ -215,8 +215,7 @@ local function updateEnergyData(powerStatus)
     energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
     energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
     
-    energyData.input = round(getAverage(energyData.energyIn))
-    energyData.output = round(getAverage(energyData.energyOut))
+
     
     if energyData.intervalCounter < energyData.updateInterval then
         if energyData.intervalCounter == 1 then
@@ -228,7 +227,8 @@ local function updateEnergyData(powerStatus)
     elseif energyData.intervalCounter == energyData.updateInterval then
         energyData.endTime = computer.uptime()
         energyData.readings[2] = currentEU
-
+        energyData.input = round(getAverage(energyData.energyIn))
+        energyData.output = round(getAverage(energyData.energyOut))
         ticks = round((energyData.endTime - energyData.startTime) * 20)
         energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
         
