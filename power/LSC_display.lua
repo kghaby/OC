@@ -6,6 +6,15 @@ local computer = require("computer")
 local os = require("os")
 local Serial = require("serialization")
 local math = require("math")
+
+local gpu = component.gpu
+local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
+
+--local w,h=160,50
+local w, h = gpu.getResolution()
+local sleepTime=0.05 --s
+local updateInterval = 80/(sleepTime/0.05) --4s
+
 local xcolors = {           --NIDAS colors
     red = 0xFF0000,
     lime = 0x00FF00,
@@ -103,13 +112,7 @@ local states = {
     MISSING = {name = "NOT FOUND"}
 }
 
-local gpu = component.gpu
-local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
---local w,h=160,50
-local w, h = gpu.getResolution()
-local sleepTime=0.05 --s
-local updateInterval = 81/(sleepTime/0.05) --4s
 
 local function getNewTable(size, value)
     local array = {}
