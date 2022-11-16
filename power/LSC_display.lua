@@ -226,9 +226,7 @@ local function updateScreen(powerStatus)
         energyData.output = getAverage(energyData.energyOut)
 
         local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
-        gpu.set(1,10,tostring(ticks))
-        gpu.set(1,8,tostring(energyData.startTime))
-        gpu.set(1,9,tostring(energyData.endTime))
+        gpu.set(1,3,tostring(energyData.energyPerTick))
         energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
@@ -249,7 +247,6 @@ local function updateScreen(powerStatus)
     end
     gpu.set(1, 1, tostring(currentEU)..'/'..tostring(maxEU))
     gpu.set(1, 2, tostring(energyData.energyPerTick))
-    gpu.set(1, 3, tostring(energyData.input).."    "..tostring(energyData.output))
     gpu.set(1, 4, tostring(powerStatus.problems))
     gpu.set(1, 5, tostring(powerStatus.passiveLoss))
     gpu.set(1, 6, tostring(percentage))
