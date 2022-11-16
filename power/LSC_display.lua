@@ -102,7 +102,7 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
-local sleepTime=0.2 --s
+local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
 
 local function getNewTable(size, value)
@@ -185,10 +185,10 @@ local function get_LSC_info(lsc)
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
             EUIn = parser.getInteger(sensorInformation[5] or 0),
-            print(sensorInformation[5])
             EUOut = parser.getInteger(sensorInformation[6] or 0),
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
+        gpu.set(50,3,tostring(sensorInformation[5]))
         return status
     else
         return {state = states.MISSING}
