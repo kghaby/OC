@@ -244,7 +244,6 @@ local function updateScreen(powerStatus)
         end
         energyData.intervalCounter = 1
     end
-    gpu.set(1,2,tostring(energyData.intervalCounter))
     energyData.offset = energyData.offset + 2
     if energyData.energyPerTick >= 0 then
         energyData.offset = energyData.offset + 10*(energyData.energyPerTick / energyData.highestInput)
@@ -257,7 +256,10 @@ end
 
 initialize(lsc)
  while true do
-    gpu.fill(1, 1, w, h, " ")
+    
     updateScreen(powerStatus)
-    os.sleep()
+    gpu.fill(1, 1, w, h, " ")
+    gpu.set(1,1,tostring(ticks))
+    gpu.set(1,2,tostring(energyData.intervalCounter))
+    os.sleep(sleepTime)
  end
