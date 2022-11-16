@@ -36,6 +36,12 @@ local xcolors = {           --NIDAS colors
     darkSlateGrey = 0x2F4F4F
 }
 
+local function round(num) return math.floor(num+.5) end
+
+local function sciNot(n) 
+    return string.format("%." .. (2) .. "E", n)
+end
+
 local parser = {}
 
 -- Returns given number formatted as XXX,XXX,XXX
@@ -141,11 +147,7 @@ local energyData = {
 
 
 
-local function round(num) return math.floor(num+.5) end
 
-local function sciNot(n) 
-    return string.format("%." .. (2) .. "E", n)
-end
 
 local function getProbs(problemsString)
     local problems = string.match(problemsString or "", "Has Problems") and "1" or "0"
@@ -188,7 +190,7 @@ local function get_LSC_info(lsc)
             EUOut = parser.getInteger(sensorInformation[6] or 0),
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
-        gpu.set(50,3,tostring(sensorInformation[5]))
+        gpu.set(60,5,tostring(EUIn))
         return status
     else
         return {state = states.MISSING}
@@ -271,8 +273,7 @@ local didalready=true
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
         if not didalready then
-            gpu.set(60,1,tostring(oldtime))
-            gpu.set(60,2,tostring(computer.uptime()))
+            gpu.set(60,1,tostring((computer.uptime()-oldtime)*20))
             oldtime=computer.uptime()
             didalready=true
         else
