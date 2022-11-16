@@ -164,6 +164,8 @@ end
 local function get_LSC_info(lsc)
     --get status and sensor info
     local sensorInformation = lsc.getSensorInformation()
+    inputHatchEU=inputHatch.getStoredEU()
+    inputHatchEUCapacity=inputHatch.getEUMaxStored()
     if sensorInformation ~= nil then
         local problems = getProbs(sensorInformation[9])
         local state = nil
@@ -184,8 +186,8 @@ local function get_LSC_info(lsc)
             address=lsc.address,
             name = "LSC",
             state = state,
-            storedEU = parser.getInteger(sensorInformation[2])+inputHatch.getStoredEU,
-            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatch.getEUMaxStored(),
+            storedEU = parser.getInteger(sensorInformation[2])+inputHatchEU,
+            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatchEUCapacity,
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
