@@ -228,8 +228,8 @@ local function updateEnergyData(powerStatus)
         energyData.endTime = computer.uptime()
         energyData.readings[2] = currentEU
 
-        energyData.input = getAverage(energyData.energyIn)
-        energyData.output = getAverage(energyData.energyOut)
+        energyData.input = round(getAverage(energyData.energyIn))
+        energyData.output = round(getAverage(energyData.energyOut))
 
         ticks = round((energyData.endTime - energyData.startTime) * 20)
         energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
