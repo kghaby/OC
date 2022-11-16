@@ -201,6 +201,7 @@ local function initialize(lsc)
     powerStatus=get_LSC_info(lsc)
 end
 
+local ticks=0
 local function updateScreen(powerStatus)
     prevPowerStatus=powerStatus
     powerStatus=get_LSC_info(lsc)
@@ -227,7 +228,7 @@ local function updateScreen(powerStatus)
         energyData.input = getAverage(energyData.energyIn)
         energyData.output = getAverage(energyData.energyOut)
 
-        local ticks = round((energyData.endTime - energyData.startTime) * 20)
+        ticks = round((energyData.endTime - energyData.startTime) * 20)
         
         energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
         
