@@ -69,7 +69,7 @@ function parser.getInteger(string)
     if type(string) == "string" then
         local numberString = string.gsub(string, "([^0-9]+)", "")
         if tonumber(numberString) then
-            return math.floor(tonumber(numberString) + 0)
+            return round(tonumber(numberString))
         end
         return 0
     else
@@ -185,6 +185,7 @@ local function get_LSC_info(lsc)
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
             EUIn = parser.getInteger(sensorInformation[5] or 0),
+            print(sensorInformation[5])
             EUOut = parser.getInteger(sensorInformation[6] or 0),
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
@@ -268,8 +269,8 @@ local didalready=true
     gpu.set(40,2,tostring(energyData.intervalCounter))
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
-    if energyData.energyIn > 0 then
-        if didalready=false then
+    if energyData.energyIn[energyData.intervalCounter] > 0 then
+        if not didalready then
             gpu.set(60,1,tostring(oldtime))
             gpu.set(60,2,tostring(computer.uptime()))
             oldtime=computer.uptime()
