@@ -102,7 +102,7 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
-local sleepTime=0.05 --s
+local sleepTime=0.2 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
 
 local function getNewTable(size, value)
@@ -258,7 +258,8 @@ end
 
 initialize(lsc)
 local oldtime=0
-stats_fh = io.open("stats.dat","w")
+local didalready=true
+--stats_fh = io.open("stats.dat","w")
  while true do
     
     updateEnergyData(powerStatus)
@@ -267,14 +268,18 @@ stats_fh = io.open("stats.dat","w")
     gpu.set(40,2,tostring(energyData.intervalCounter))
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
---    if energyData.energyPerTick > 3000 then
---        gpu.set(40,1,tostring(oldtime))
---        gpu.set(50,1,tostring(computer.uptime()))
---        oldtime=computer.uptime()
---        os.sleep(5)
---    end
+    if energyData.energyIn > 0 then
+        if didalready=false then
+            gpu.set(60,1,tostring(oldtime))
+            gpu.set(60,2,tostring(computer.uptime()))
+            oldtime=computer.uptime()
+            didalready=true
+        else
+            didalready=false
+        end
+    end
     
-    for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
+    --for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
     --stats_fh:close()
     os.sleep(sleepTime)
  end
