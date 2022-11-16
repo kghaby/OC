@@ -12,7 +12,7 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
-local sleepTime=0.05 --s
+local sleepTime=0.2 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
 
 local xcolors = {           --NIDAS colors
