@@ -258,6 +258,7 @@ end
 
 initialize(lsc)
 local oldtime=0
+stats_fh = io.open("stats.dat","w")
  while true do
     
     updateEnergyData(powerStatus)
@@ -272,6 +273,8 @@ local oldtime=0
 --        oldtime=computer.uptime()
 --        os.sleep(5)
 --    end
-    for k,v in pairs(energyData.energyIn) do print(k,v) end
+    
+    for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
+    --stats_fh:close()
     os.sleep(sleepTime)
  end
