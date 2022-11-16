@@ -202,7 +202,7 @@ local function initialize(lsc)
 end
 
 local ticks=0
-local function updateScreen(powerStatus)
+local function updateEnergyData(powerStatus)
     prevPowerStatus=powerStatus
     powerStatus=get_LSC_info(lsc)
     local currentEU = powerStatus.storedEU
@@ -258,9 +258,9 @@ end
 initialize(lsc)
  while true do
     
-    updateScreen(powerStatus)
+    updateEnergyData(powerStatus)
     gpu.fill(1, 1, w, h, " ")
-    gpu.set(1,1,tostring(ticks))
+    gpu.set(1,1,tostring(energyPerTick))
     gpu.set(1,2,tostring(energyData.intervalCounter))
     os.sleep(sleepTime)
  end
