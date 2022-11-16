@@ -259,8 +259,8 @@ end
 
 initialize(lsc)
 local oldtime=0
-local didalready=true
---stats_fh = io.open("stats.dat","w")
+
+stats_fh = io.open("stats.dat","w")
  while true do
     --gpu.fill(1, 1, w, h, " ")
     updateEnergyData(powerStatus)
@@ -270,10 +270,8 @@ local didalready=true
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
-        print(tostring(energyData.intervalCounter,round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
+        stats_fh:write(energyData.intervalCounter,round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
         oldtime=computer.uptime()
-        didalready=true
-
     end
     
     --for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
