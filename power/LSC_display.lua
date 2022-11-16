@@ -220,20 +220,21 @@ local function updateEnergyData(powerStatus)
 
     
     if energyData.intervalCounter < energyData.updateInterval then
-        if energyData.intervalCounter == 1 then
-            energyData.startTime = computer.uptime()
-            energyData.readings[1] = currentEU
-        end
+        --if energyData.intervalCounter == 1 then  
+            --energyData.startTime = computer.uptime()
+            --energyData.readings[1] = currentEU
+        --end
         energyData.intervalCounter = energyData.intervalCounter + 1
         
     elseif energyData.intervalCounter == energyData.updateInterval then
-        energyData.endTime = computer.uptime()
-        energyData.readings[2] = currentEU
+        --energyData.endTime = computer.uptime()
+        --energyData.readings[2] = currentEU
+        --ticks = round((energyData.endTime - energyData.startTime) * 20)
+        --energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
+        
         energyData.input = round(getAverage(energyData.energyIn))
         energyData.output = round(getAverage(energyData.energyOut))
-        ticks = round((energyData.endTime - energyData.startTime) * 20)
-        energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
-        
+        energyData.energyPerTick = energyData.input-energyData.output-powerStatus.passiveLoss
       
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
@@ -259,22 +260,22 @@ end
 initialize(lsc)
 local oldtime=0
 
-stats_fh = io.open("stats.dat","w")
+--stats_fh = io.open("stats.dat","w")
  while true do
     
     updateEnergyData(powerStatus)
-    --drawEnergyData()
     gpu.fill(1, 1, w, h, " ")
+    --drawEnergyData()
+    
     gpu.set(40,1,tostring(energyData.energyPerTick))
     gpu.set(40,2,tostring(energyData.intervalCounter))
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
     gpu.set(40,5,tostring(powerStatus.passiveLoss))
-    gpu.set(40,6,tostring(energyData.input-energyData.output-powerStatus.passiveLoss))
-    if energyData.energyIn[energyData.intervalCounter] > 0 then
-        stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
-        oldtime=computer.uptime()
-    end
+  --  if energyData.energyIn[energyData.intervalCounter] > 0 then
+  --      stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
+  --      oldtime=computer.uptime()
+  --  end
     
     --for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
     --stats_fh:close()
