@@ -7,8 +7,8 @@ local math = require("math")
 
 local gpu = component.gpu
 local lsc = component.proxy("83d81a1c-55e4-4a46-a63b-70a5997f142a")
-local inputHatch = component.proxy("18fb59df-81f2-494e-aa6d-5fe76ef63807")
-local outputHatch = component.proxy("65425106-784a-4653-9675-27b9627f7476")
+local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
+local outputHatch = component.proxy("")
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
@@ -164,8 +164,6 @@ end
 local function get_LSC_info(lsc)
     --get status and sensor info
     local sensorInformation = lsc.getSensorInformation()
-    inputHatchEU=inputHatch.getStoredEU()
-    inputHatchEUCapacity=inputHatch.getEUMaxStored()
     if sensorInformation ~= nil then
         local problems = getProbs(sensorInformation[9])
         local state = nil
@@ -186,8 +184,8 @@ local function get_LSC_info(lsc)
             address=lsc.address,
             name = "LSC",
             state = state,
-            storedEU = parser.getInteger(sensorInformation[2])+inputHatchEU,
-            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatchEUCapacity,
+            storedEU = parser.getInteger(sensorInformation[2])+inputHatch.getStoredEU(),
+            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatch.getEUMaxStored(),
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
