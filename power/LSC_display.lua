@@ -271,7 +271,7 @@ local didalready=true
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
         if not didalready then
-            gpu.set(60,1,tostring(round((computer.uptime()-oldtime)*20)))
+            print(tostring(round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
             oldtime=computer.uptime()
             didalready=true
         else
