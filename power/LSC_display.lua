@@ -190,7 +190,6 @@ local function get_LSC_info(lsc)
             EUOut = parser.getInteger(sensorInformation[6] or 0),
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
-        gpu.set(60,5,tostring(status.EUIn))
         return status
     else
         return {state = states.MISSING}
@@ -270,7 +269,7 @@ stats_fh = io.open("stats.dat","w")
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
-        stats_fh:write(energyData.intervalCounter,round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
+        stats_fh:write(energyData.intervalCounter,round((computer.uptime()-oldtime)*20),energyData.energyIn[energyData.intervalCounter],'\n')
         oldtime=computer.uptime()
     end
     
