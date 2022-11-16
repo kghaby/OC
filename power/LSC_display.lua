@@ -263,7 +263,7 @@ stats_fh = io.open("stats.dat","w")
  while true do
     --gpu.fill(1, 1, w, h, " ")
     updateEnergyData(powerStatus)
-    
+    --drawEnergyData()
     gpu.set(40,1,tostring(energyData.energyPerTick))
     gpu.set(40,2,tostring(energyData.intervalCounter))
     gpu.set(40,3,tostring(energyData.input))
