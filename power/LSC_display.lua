@@ -96,10 +96,9 @@ local states = {
     BROKEN = {name = "BROKEN"},
     MISSING = {name = "NOT FOUND"}
 }
-return states
 
 local gpu = component.gpu
-local lsc = component.gt_machine[83d81a1c-55e4-4a46-a63b-70a5997f142a]
+local lsc = component.gt_machine["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
@@ -159,7 +158,7 @@ local function getProbs(problemsString)
 end
 
 local function get_LSC_info(lsc)
-    local sensorInformation = lsc:getSensorInformation()
+    local sensorInformation = lsc.getSensorInformation()
     if sensorInformation ~= nil then
         local problems = getProbs(sensorInformation[9])
         local state = nil
@@ -177,7 +176,7 @@ local function get_LSC_info(lsc)
             state = states.BROKEN
         end
         local status = {
-            address=lsc.address
+            address=lsc.address,
             name = "LSC",
             state = state,
             storedEU = parser.getInteger(sensorInformation[2]),
@@ -196,7 +195,7 @@ local function get_LSC_info(lsc)
 end
 
 local powerStatus={}
-local function drawMainScreen()
+local function drawMainScreen(lsc)
     gpu.setBackground(xcolors.black)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
     gpu.setResolution(80,15)
@@ -243,8 +242,8 @@ end
 
 
 
-drawMainScreen()
+drawMainScreen(lsc)
  while true do
-    updateScreen()
+    updateScreen(powerStatus)
     os.sleep()
  end
