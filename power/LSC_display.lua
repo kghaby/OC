@@ -215,13 +215,11 @@ local function updateScreen(powerStatus)
         energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
         energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
         energyData.intervalCounter = energyData.intervalCounter + 1
-        print(energyData.intervalCounter)
     
     elseif energyData.intervalCounter < energyData.updateInterval then
         energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
         energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
         energyData.intervalCounter = energyData.intervalCounter + 1
-        print(energyData.intervalCounter)
         
     elseif energyData.intervalCounter == energyData.updateInterval then
         energyData.endTime = computer.uptime()
@@ -247,7 +245,7 @@ local function updateScreen(powerStatus)
         end
         energyData.intervalCounter = 1
     end
-    print(energyData.intervalCounter)
+    gpu.set(1,2,tostring(energyData.intervalCounter))
     energyData.offset = energyData.offset + 2
     if energyData.energyPerTick >= 0 then
         energyData.offset = energyData.offset + 10*(energyData.energyPerTick / energyData.highestInput)
