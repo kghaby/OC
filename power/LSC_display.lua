@@ -7,8 +7,8 @@ local math = require("math")
 
 local gpu = component.gpu
 local lsc = component.proxy("83d81a1c-55e4-4a46-a63b-70a5997f142a")
---local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
---local outputHatch = component.proxy("")
+local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
+local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
@@ -184,13 +184,13 @@ local function get_LSC_info(lsc)
             address=lsc.address,
             name = "LSC",
             state = state,
-            storedEU = parser.getInteger(sensorInformation[2]),--+inputHatch.getStoredEU(), 
-            EUCapacity = parser.getInteger(sensorInformation[3]),--+inputHatch.getEUMaxStored(),
+            storedEU = parser.getInteger(sensorInformation[2])+inputHatch.getStoredEU(), 
+            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatch.getEUMaxStored(),
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
-            EUIn = parser.getInteger(sensorInformation[5] or 0), --incorporate inputHatch.getEUInputAverage?
-            EUOut = parser.getInteger(sensorInformation[6] or 0), 
+            EUIn = inputHatch.getEUInputAverage --parser.getInteger(sensorInformation[5] or 0), 
+            EUOut = outputHatch.getEUOutputAverage --parser.getInteger(sensorInformation[6] or 0), 
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
