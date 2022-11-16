@@ -207,7 +207,12 @@ local function updateScreen(powerStatus)
     powerStatus=get_LSC_info(lsc)
     local currentEU = powerStatus.storedEU
     local maxEU = powerStatus.EUCapacity
+    local percentage = math.min(currentEU/maxEU, 1.0)
     
+    if energyData.intervalCounter == 1 then
+        energyData.startTime = computer.uptime()
+        energyData.readings[1] = currentEU
+    end
     if energyData.intervalCounter < energyData.updateInterval then
         energyData.intervalCounter = energyData.intervalCounter + 1
         energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
@@ -238,6 +243,7 @@ local function updateScreen(powerStatus)
     gpu.set(1, 3, tostring(energyData.input).."    "..tostring(energyData.output))
     gpu.set(1, 4, tostring(powerStatus.problems))
     gpu.set(1, 5, tostring(powerStatus.passiveLoss))
+    gpu.set(1, 6, tostring(percentage))
 end
 
 
