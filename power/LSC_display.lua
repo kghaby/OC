@@ -261,7 +261,7 @@ local oldtime=0
 
 stats_fh = io.open("stats.dat","w")
  while true do
-    --gpu.fill(1, 1, w, h, " ")
+    gpu.fill(1, 1, w, h, " ")
     updateEnergyData(powerStatus)
     --drawEnergyData()
     gpu.set(40,1,tostring(energyData.energyPerTick))
@@ -269,7 +269,7 @@ stats_fh = io.open("stats.dat","w")
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
     gpu.set(40,5,tostring(powerStatus.passiveLoss))
-    gpu.set(40,6,tostring(energyData.input-energyData.input-powerStatus.passiveLoss))
+    gpu.set(40,6,tostring(energyData.input-energyData.output-powerStatus.passiveLoss))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
         stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
         oldtime=computer.uptime()
