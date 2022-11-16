@@ -184,13 +184,13 @@ local function get_LSC_info(lsc)
             address=lsc.address,
             name = "LSC",
             state = state,
-            storedEU = parser.getInteger(sensorInformation[2])+inputHatch.getStoredEU(), 
-            EUCapacity = parser.getInteger(sensorInformation[3])+inputHatch.getEUMaxStored(),
+            storedEU = parser.getInteger(sensorInformation[2]),--+inputHatch.getStoredEU(), 
+            EUCapacity = parser.getInteger(sensorInformation[3]),--+inputHatch.getEUMaxStored(),
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
-            EUIn = inputHatch.getEUInputAverage, --parser.getInteger(sensorInformation[5] or 0), 
-            EUOut = outputHatch.getEUOutputAverage, --parser.getInteger(sensorInformation[6] or 0), 
+            EUIn = inputHatch.getEUInputAverage(), --parser.getInteger(sensorInformation[5] or 0), 
+            EUOut = outputHatch.getEUOutputAverage(), --parser.getInteger(sensorInformation[6] or 0), 
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
