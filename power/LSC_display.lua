@@ -214,25 +214,25 @@ local function updateScreen(powerStatus)
         energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
     end
     if energyData.intervalCounter == energyData.updateInterval then
-    energyData.endTime = computer.uptime()
-    energyData.readings[2] = currentEU
+        energyData.endTime = computer.uptime()
+        energyData.readings[2] = currentEU
 
-    energyData.input = getAverage(energyData.energyIn)
-    energyData.output = getAverage(energyData.energyOut)
+        energyData.input = getAverage(energyData.energyIn)
+        energyData.output = getAverage(energyData.energyOut)
 
-    local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
-    energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
-    if energyData.energyPerTick >= 0 then
-        if energyData.energyPerTick > energyData.highestInput then
-            energyData.highestInput = energyData.energyPerTick
+        local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
+        energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
+        if energyData.energyPerTick >= 0 then
+            if energyData.energyPerTick > energyData.highestInput then
+                energyData.highestInput = energyData.energyPerTick
+            end
+        else
+            if energyData.energyPerTick < energyData.highestOutput then
+                energyData.highestOutput = energyData.energyPerTick
+            end
         end
-    else
-        if energyData.energyPerTick < energyData.highestOutput then
-            energyData.highestOutput = energyData.energyPerTick
-        end
+        energyData.intervalCounter = 1
     end
-    energyData.intervalCounter = 1
-        
     gpu.set(1, 1, currentEU..'/'..maxEU)
     gpu.set(1, 2, energyData.energyPerTick)
     gpu.set(1, 3, energyData.input.."    "..energyData.output)
