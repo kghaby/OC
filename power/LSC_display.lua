@@ -190,7 +190,7 @@ local function get_LSC_info(lsc)
             EUOut = parser.getInteger(sensorInformation[6] or 0),
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
-        gpu.set(60,5,tostring(EUIn))
+        gpu.set(60,5,tostring(status.EUIn))
         return status
     else
         return {state = states.MISSING}
@@ -273,7 +273,7 @@ local didalready=true
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
         if not didalready then
-            gpu.set(60,1,tostring((computer.uptime()-oldtime)*20))
+            gpu.set(60,1,tostring(round((computer.uptime()-oldtime)*20)))
             oldtime=computer.uptime()
             didalready=true
         else
