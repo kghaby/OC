@@ -98,7 +98,7 @@ local states = {
 }
 
 local gpu = component.gpu
-local lsc = component.gt_machine["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
+local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
