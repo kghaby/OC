@@ -231,9 +231,9 @@ local function updateScreen(powerStatus)
         local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
         
         energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
-        gpu.fill(1, 1, w, h, " ")
+        
         gpu.set(1,1,tostring(energyData.energyPerTick))
-        print(energyData.energyPerTick)
+      
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
                 energyData.highestInput = energyData.energyPerTick
@@ -259,6 +259,7 @@ end
 
 initialize(lsc)
  while true do
+    gpu.fill(1, 1, w, h, " ")
     updateScreen(powerStatus)
     os.sleep()
  end
