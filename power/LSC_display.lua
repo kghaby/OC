@@ -157,6 +157,7 @@ local function getProbs(problemsString)
 end
 
 local function get_LSC_info(lsc)
+    --get status and sensor info
     local sensorInformation = lsc.getSensorInformation()
     if sensorInformation ~= nil then
         local problems = getProbs(sensorInformation[9])
@@ -256,11 +257,19 @@ end
 
 
 initialize(lsc)
+local oldtime=0
  while true do
     
     updateEnergyData(powerStatus)
     gpu.fill(1, 1, w, h, " ")
-    gpu.set(1,1,tostring(energyPerTick))
+    gpu.set(1,1,tostring(energyData.energyPerTick))
     gpu.set(1,2,tostring(energyData.intervalCounter))
+    gpu.set(1,3,tostring(energyData.input))
+    gpu.set(1,4,tostring(energyData.output))
+    if energyData.energyPerTick > 3000 then
+        gpu.set(40,1,tostring(oldtime))
+        gpu.set(50,1,tostring(computer.uptime()))
+        oldtime=computer.uptime()
+    end
     os.sleep(sleepTime)
  end
