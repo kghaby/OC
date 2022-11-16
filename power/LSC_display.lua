@@ -212,12 +212,15 @@ local function updateScreen(powerStatus)
     if energyData.intervalCounter == 1 then
         energyData.startTime = computer.uptime()
         energyData.readings[1] = currentEU
-    
-    elseif energyData.intervalCounter < energyData.updateInterval then
-        energyData.intervalCounter = energyData.intervalCounter + 1
         energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
         energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
+        energyData.intervalCounter = energyData.intervalCounter + 1
     
+    elseif energyData.intervalCounter < energyData.updateInterval then
+        energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
+        energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
+        energyData.intervalCounter = energyData.intervalCounter + 1
+        
     elseif energyData.intervalCounter == energyData.updateInterval then
         energyData.endTime = computer.uptime()
         energyData.readings[2] = currentEU
