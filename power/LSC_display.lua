@@ -265,5 +265,5 @@ end
 drawMainScreen(lsc)
  while true do
     updateScreen(powerStatus)
-    os.sleep()
+    os.sleep(1)
  end
