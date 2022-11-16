@@ -102,9 +102,8 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 
 --local w,h=160,50
 local w, h = gpu.getResolution()
-local refreshRate=0.05 --s
-local prevCharge = 0
-local updateInterval = 80
+local sleepTime=0.1 --s
+local updateInterval = 80/(sleepTime/0.05) --4s
 
 local function getNewTable(size, value)
     local array = {}
@@ -228,9 +227,9 @@ local function updateScreen(powerStatus)
         energyData.input = getAverage(energyData.energyIn)
         energyData.output = getAverage(energyData.energyOut)
 
-        local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
+        local ticks = round((energyData.endTime - energyData.startTime) * 20)
         
-        energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
+        energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
         
         gpu.set(1,1,tostring(energyData.energyPerTick))
       
@@ -252,7 +251,6 @@ local function updateScreen(powerStatus)
     else
         energyData.offset = energyData.offset + 10*(energyData.energyPerTick / energyData.highestOutput)
     end
-    --print(energyData.endTime,energyData.startTime,ticks,energyData.readings[1],energyData.readings[2])
 end
 
 
