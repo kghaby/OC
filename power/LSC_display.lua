@@ -235,7 +235,7 @@ local function updateScreen(powerStatus)
 end
     gpu.set(1, 1, currentEU.."/"..maxEU)
     gpu.set(1, 2, energyData.energyPerTick)
-    gpu.set(1, 3, energyData.input.."    "..energyData.output)
+    gpu.set(1, 3, tostring(energyData.input).."    "..tostring(energyData.output))
     gpu.set(1, 4, powerStatus.problems)
     gpu.set(1, 5, powerStatus.passiveLoss)
 end
