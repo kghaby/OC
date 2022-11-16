@@ -1,5 +1,3 @@
-
-
 local component = require("component")
 local transforms = require("transforms")
 local computer = require("computer")
@@ -209,30 +207,27 @@ end
 
 local ticks=0
 local function updateEnergyData(powerStatus)
-    prevPowerStatus=powerStatus
     powerStatus=get_LSC_info(lsc)
     local currentEU = powerStatus.storedEU
     local maxEU = powerStatus.EUCapacity
     local percentage = math.min(currentEU/maxEU, 1.0)
     
-    if energyData.intervalCounter == 1 then
-        energyData.startTime = computer.uptime()
-        energyData.readings[1] = currentEU
-        energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
-        energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
-        energyData.intervalCounter = energyData.intervalCounter + 1
+    energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
+    energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
     
-    elseif energyData.intervalCounter < energyData.updateInterval then
-        energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
-        energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
+    energyData.input = round(getAverage(energyData.energyIn))
+    energyData.output = round(getAverage(energyData.energyOut))
+    
+    if energyData.intervalCounter < energyData.updateInterval then
+        if energyData.intervalCounter == 1 then
+            energyData.startTime = computer.uptime()
+            energyData.readings[1] = currentEU
+        end
         energyData.intervalCounter = energyData.intervalCounter + 1
         
     elseif energyData.intervalCounter == energyData.updateInterval then
         energyData.endTime = computer.uptime()
         energyData.readings[2] = currentEU
-
-        energyData.input = round(getAverage(energyData.energyIn))
-        energyData.output = round(getAverage(energyData.energyOut))
 
         ticks = round((energyData.endTime - energyData.startTime) * 20)
         energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
@@ -269,8 +264,8 @@ stats_fh = io.open("stats.dat","w")
     --drawEnergyData()
     gpu.set(40,1,tostring(energyData.energyPerTick))
     gpu.set(40,2,tostring(energyData.intervalCounter))
-    gpu.set(40,3,tostring(powerStatus.EUIn))
-    gpu.set(40,4,tostring(powerStatus.EUOut))
+    gpu.set(40,3,tostring(energyData.input))
+    gpu.set(40,4,tostring(energyData.output))
     gpu.set(40,5,tostring(powerStatus.passiveLoss))
     gpu.set(40,6,tostring(energyData.input-energyData.output-powerStatus.passiveLoss))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
