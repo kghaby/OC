@@ -251,7 +251,12 @@ local function updateScreen(powerStatus)
     gpu.set(1, 5, tostring(powerStatus.passiveLoss))
     gpu.set(1, 6, tostring(percentage))
     gpu.set(1, 7, tostring(energyData.updateInterval)..'   '..tostring(energyData.intervalCounter))
-    gpu.set(1,8,tostring(energyData.endTime,energyData.startTime,ticks,energyData.readings[1],energyData.readings[2]))
+    gpu.set(1,8,tostring(energyData.startTime)
+    gpu.set(1,9,tostring(energyData.endTime)
+    gpu.set(1,10,tostring(ticks)
+    gpu.set(1,11,tostring(energyData.readings[1])
+    gpu.set(1,12,tostring(energyData.readings[2])
+ 
     --print(energyData.endTime,energyData.startTime,ticks,energyData.readings[1],energyData.readings[2])
 end
 
