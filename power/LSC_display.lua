@@ -210,8 +210,8 @@ local function updateScreen(powerStatus)
     
     if energyData.intervalCounter < energyData.updateInterval then
         energyData.intervalCounter = energyData.intervalCounter + 1
-        energyData.energyIn[intervalCounter] = powerStatus.EUIn
-        energyData.energyOut[intervalCounter] = powerStatus.EUOut
+        energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
+        energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
     end
     if energyData.intervalCounter == energyData.updateInterval then
     energyData.endTime = computer.uptime()
