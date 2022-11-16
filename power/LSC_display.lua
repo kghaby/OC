@@ -104,7 +104,7 @@ local lsc = component.gt_machine --["83d81a1c-55e4-4a46-a63b-70a5997f142a"]
 local w, h = gpu.getResolution()
 local refreshRate=0.05 --s
 local prevCharge = 0
-local updateInterval = 100
+local updateInterval = 80
 
 local function getNewTable(size, value)
     local array = {}
@@ -195,7 +195,7 @@ local function get_LSC_info(lsc)
 end
 
 local powerStatus={}
-local function drawMainScreen(lsc)
+local function initialize(lsc)
     gpu.setBackground(xcolors.black)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
     gpu.setResolution(80,15)
@@ -212,13 +212,13 @@ local function updateScreen(powerStatus)
     if energyData.intervalCounter == 1 then
         energyData.startTime = computer.uptime()
         energyData.readings[1] = currentEU
-    end
-    if energyData.intervalCounter < energyData.updateInterval then
+    
+    elseif energyData.intervalCounter < energyData.updateInterval then
         energyData.intervalCounter = energyData.intervalCounter + 1
         energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
         energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
-    end
-    if energyData.intervalCounter == energyData.updateInterval then
+    
+    elseif energyData.intervalCounter == energyData.updateInterval then
         energyData.endTime = computer.uptime()
         energyData.readings[2] = currentEU
 
@@ -228,7 +228,9 @@ local function updateScreen(powerStatus)
         local ticks = math.ceil((energyData.endTime - energyData.startTime) * 20)
         
         energyData.energyPerTick = math.floor((energyData.readings[2] - energyData.readings[1])/ticks)
+        gpu.fill(1, 1, w, h, " ")
         gpu.set(1,1,tostring(energyData.energyPerTick))
+        
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
                 energyData.highestInput = energyData.energyPerTick
@@ -251,8 +253,8 @@ end
 
 
 
-drawMainScreen(lsc)
+initialize(lsc)
  while true do
     updateScreen(powerStatus)
-    --os.sleep()
+    os.sleep()
  end
