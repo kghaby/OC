@@ -270,13 +270,10 @@ local didalready=true
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
     if energyData.energyIn[energyData.intervalCounter] > 0 then
-        if not didalready then
-            print(tostring(round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
-            oldtime=computer.uptime()
-            didalready=true
-        else
-            didalready=false
-        end
+        print(tostring(energyData.intervalCounter,round((computer.uptime()-oldtime)*20)),energyData.energyIn[energyData.intervalCounter])
+        oldtime=computer.uptime()
+        didalready=true
+
     end
     
     --for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
