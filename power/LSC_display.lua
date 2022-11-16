@@ -233,10 +233,8 @@ local function updateEnergyData(powerStatus)
         energyData.output = getAverage(energyData.energyOut)
 
         ticks = round((energyData.endTime - energyData.startTime) * 20)
-        
         energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
         
-        gpu.set(1,1,tostring(energyData.energyPerTick))
       
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
