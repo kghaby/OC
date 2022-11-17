@@ -1,5 +1,5 @@
 local component = require("component")
-local transforms = require("transforms")
+local colors = require("colors")
 local computer = require("computer")
 local os = require("os")
 local Serial = require("serialization")
@@ -297,7 +297,7 @@ local function drawEnergyScreen()
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage/w)
     gpu.fill(1, 3, fillLength, h-2, " ")
-    gpu.setBackground(xcolors.darkSlateBlue)
+    gpu.setBackground(xcolors.midnightBlue)
     gpu.fill(fillLength+1, 3, w, h-2, " ")
     gpu.setBackground(xcolors.white)
     
@@ -308,7 +308,7 @@ local function drawEnergyScreen()
     local EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
     spectrumRedGreen(percentage,0,1)
-    local percentEU=string.format("%." .. (2) .. "f", tostring(percentage*100)..'%')
+    local percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
     gpu.set((w/2)-(#percentEU/2),2,percentEU)
     
     --2nd bot row
@@ -317,7 +317,7 @@ local function drawEnergyScreen()
     gpu.setForeground(xcolors.darkOliveGreen)
     local EUinp=sciNot(energyData.input)
     gpu.set(w-#(EUinp),h-1,EUinp)
-    spectrumRedGreen(energyData.energyPerTick,energyData.lowestOutput,energyData.highestOutput)
+    spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestIntput)
     local EUrate=sciNot(energyData.energyPerTick)
     gpu.set((w/2)-(#EUrate/2),h-1,EUrate)
 
