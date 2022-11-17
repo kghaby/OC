@@ -588,7 +588,7 @@ outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue,
 outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
 outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
 backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
---checkRes()
+checkRes()
 
  while true do
     updateEnergyData(powerStatus)
