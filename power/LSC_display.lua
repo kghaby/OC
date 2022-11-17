@@ -19,7 +19,7 @@ local halfW=w/2
 local vertBarr=h-4
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
-local enableFraction = 0.2 -- [0,1]
+local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
 
