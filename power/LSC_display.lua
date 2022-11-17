@@ -458,7 +458,7 @@ function AR.hudNewRectangle(glasses, x, y, w, h, color, alpha)
     return rect
 end
 
-function AR.hudRectangle(rect, x, y, w, h, color, alpha)
+function AR.hudRectangle(rect(), x, y, w, h, color, alpha)
     alpha = alpha or 1.0
     rect.setPosition(x, y)
     rect.setSize(h, w)
@@ -486,7 +486,7 @@ function AR.hudNewText(glasses, displayText, x, y, color, scale)
     return text
 end
 
-function AR.hudText(text, displayText, x, y, color, scale)
+function AR.hudText(text(), displayText, x, y, color, scale)
     scale = scale or 1
     text.setText(displayText)
     text.setPosition(x, y)
@@ -548,25 +548,25 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    hudObjects.energyBar2=AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
+    hudObjects.energyBar=AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
-    hudObjects.maxEU2=AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
+    hudObjects.maxEU=AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
     --glasses.removeObject(hudObjects.currentEU.getID())
-    hudObjects.currentEU2=AR.hudText(hudObjects.currentEU, EUstor, 6, 320, xcolors.electricBlue, 1)
+    hudObjects.currentEU=AR.hudText(hudObjects.currentEU, EUstor, 6, 320, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.rate.getID())
-    hudObjects.rate2=AR.hudText(hudObjects.rate, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
+    hudObjects.rate=AR.hudText(hudObjects.rate, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
     --glasses.removeObject(hudObjects.ouput.getID())
-    hudObjects.ouput2=AR.hudText(hudObjects.ouput, EUout, 6, 350, xcolors.maroon, 1)
+    hudObjects.ouput=AR.hudText(hudObjects.ouput, EUout, 6, 350, xcolors.maroon, 1)
     --glasses.removeObject(hudObjects.input.getID())
-    hudObjects.input2=AR.hudText(hudObjects.input, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
+    hudObjects.input=AR.hudText(hudObjects.input, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
     --glasses.removeObject(hudObjects.percent.getID())
-    hudObjects.percent2=AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
+    hudObjects.percent=AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
-        hudObjects.time2=AR.hudText(hudObjects.time,glasses, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
+        hudObjects.time=AR.hudText(hudObjects.time,glasses, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        hudObjects.time2=AR.hudText(hudObjects.time,glasses, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
+        hudObjects.time=AR.hudText(hudObjects.time,glasses, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
     end
 end
 
