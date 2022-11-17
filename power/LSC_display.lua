@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x0A0A58,
+    midnightBlue = 0x1D1D58,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -542,11 +542,11 @@ end
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 1, 318, 217, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 1, 350, 217, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 1, 334, 3, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 214, 334, 3, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 4, 334, 214, 16, xcolors.midnightBlue, 0.5)
+AR.hudRectangle(glasses, 1, 316, 217, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 1, 348, 217, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 1, 332, 3, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 215, 332, 3, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 4, 332, 211, 16, xcolors.midnightBlue, 0.5)
 checkRes()
 
  while true do
