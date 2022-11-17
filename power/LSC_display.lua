@@ -571,11 +571,12 @@ end
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.85)
-AR.hudRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.85)
-AR.hudRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
-AR.hudRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
-AR.hudRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
+local outerRect={}
+outerRect.top=AR.hudNewRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.85)
+outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.85)
+outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
+outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
+backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
 --checkRes()
 
  while true do
