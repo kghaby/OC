@@ -334,8 +334,8 @@ local function drawEnergyScreen()
     gpu.fill(1, 3, fillLength, vertBarr, " ")
     gpu.setBackground(xcolors.midnightBlue)
     gpu.fill(fillLength+1, 3, w, vertBarr, " ")
-    gpu.setBackground(xcolors.white)
     drawRedstone(enableFraction,disableFraction)
+    gpu.setBackground(xcolors.white)
     
     --2nd top row
     gpu.setForeground(xcolors.electricBlue)
@@ -550,11 +550,11 @@ end
 
 AR.clear(glasses)
 local outerRect={}
-outerRect.top=AR.hudNewRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.85)
-outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.85)
-outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
-outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
-backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
+outerRect.top=AR.hudNewRectangle(glasses, 1, 327, 217, 11, xcolors.midnightBlue, 0.85)
+outerRect.bot=AR.hudNewRectangle(glasses, 1, 349, 217, 11, xcolors.midnightBlue, 0.85)
+outerRect.left=AR.hudNewRectangle(glasses, 1, 338, 3, 11, xcolors.midnightBlue, 0.85)
+outerRect.right=AR.hudNewRectangle(glasses, 215, 338, 3, 11, xcolors.midnightBlue, 0.85)
+backRect=AR.hudNewRectangle(glasses, 4, 338, 211, 11, xcolors.midnightBlue, 0.5)
 --checkRes()
 
 local hudObjects = {
@@ -582,25 +582,25 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 4, 338, (percentage*207)+4, 11, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
-    AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
+    AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 332, xcolors.darkSlateBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
-    AR.hudText(hudObjects.currentEU, EUstor, 6, 320, xcolors.electricBlue, 1)
+    AR.hudText(hudObjects.currentEU, EUstor, 6, 332, xcolors.electricBlue, 0.6)
     --glasses.removeObject(hudObjects.rate.getID())
-    AR.hudText(hudObjects.rate, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
+    AR.hudText(hudObjects.rate, EUrate, 108-6*(#EUrate/2), 354, rateColor, 0.6)
     --glasses.removeObject(hudObjects.ouput.getID())
-    AR.hudText(hudObjects.ouput, EUout, 6, 350, xcolors.maroon, 1)
+    AR.hudText(hudObjects.ouput, EUout, 6, 354, xcolors.maroon, 0.6)
     --glasses.removeObject(hudObjects.input.getID())
-    AR.hudText(hudObjects.input, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
+    AR.hudText(hudObjects.input, EUinp, 215-6*#EUinp, 354, xcolors.darkGreen, 0.6)
     --glasses.removeObject(hudObjects.percent.getID())
-    AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
+    AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 332, percentColor, 0.6)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
+        AR.hudText(hudObjects.time, problemMessage, 108-6*(#problemMessage/2), 343, xcolors.red, 0.6)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
+        AR.hudText(hudObjects.time, fillTimeString, 108-6*(#fillTimeString/2), 343, xcolors.lightGray, 0.6)
     end
 end
 
@@ -620,8 +620,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+4, 330, 1, 16, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+4, 330, 1, 16, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+4, 338, 1, 11, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+4, 338, 1, 11, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
