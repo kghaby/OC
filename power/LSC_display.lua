@@ -464,7 +464,7 @@ function AR.hudRectangle(rect, x, y, w, h, color, alpha)
     rect.setSize(h, w)
     rect.setColor(hex2RGB(color))
     rect.setAlpha(alpha)
-    return rect
+    --return rect
 end
 
 function AR.textSize(textObject, scale)
@@ -488,12 +488,13 @@ end
 
 function AR.hudText(text, displayText, x, y, color, scale)
     scale = scale or 1
+    text.setScale(scale)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
-    text.setScale(scale)
-    AR.textSize(text, scale)
-    return text
+    
+    --AR.textSize(text, scale)
+    --return text
 end
 
 function AR.remove(glasses, objects)
