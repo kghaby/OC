@@ -52,8 +52,8 @@ local function sciNot(n)
 end
 
 
-
-local function timeFormat(number)
+local time = {}
+function time.format(number)
     if number == 0 then
         return 0
     else
@@ -77,7 +77,7 @@ end
 local parser = {}
 
 -- Returns given number formatted as XXX,XXX,XXX
-local function parser.splitNumber(number, delim)
+function parser.splitNumber(number, delim)
     delim = delim or ","
     if delim == "" then return tostring(number) end
     local formattedNumber = {}
@@ -94,7 +94,7 @@ local function parser.splitNumber(number, delim)
     return table.concat(formattedNumber, "")
 end
 
-local function parser.metricNumber(number, format)
+function parser.metricNumber(number, format)
     format = format or "%.1f"
     if math.abs(number) < 1000 then return tostring(math.floor(number)) end
     local suffixes = {"k", "M", "G", "T", "P", "E", "Z", "Y"}
@@ -103,7 +103,7 @@ local function parser.metricNumber(number, format)
     return tostring(string.format(format, (number / 1000 ^ power)))..suffixes[power]
 end
 
-local function parser.getInteger(string)
+function parser.getInteger(string)
     if type(string) == "string" then
         local numberString = string.gsub(string, "([^0-9]+)", "")
         if tonumber(numberString) then
@@ -115,7 +115,7 @@ local function parser.getInteger(string)
     end
 end
 
-local function parser.split(string, sep)
+function parser.split(string, sep)
     if sep == nil then sep = "%s" end
     local words = {}
     for str in string.gmatch(string, "([^"..sep.."]+)") do
@@ -124,7 +124,7 @@ local function parser.split(string, sep)
     return words
 end
 
-local function parser.percentage(number) return
+function parser.percentage(number) return
     (math.floor(number * 1000) / 10) .. "%" end
 
 local states = {
@@ -325,10 +325,10 @@ local function drawEnergyScreen()
         gpu.setForeground(xcolors.gray)
         if energyData.energyPerTick > 0 then
             fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Full: " .. timeFormat(math.abs(fillTime))
+            fillTimeString = "Full: " .. time.format(math.abs(fillTime))
         elseif energyData.energyPerTick < 0 then
             fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Empty: " .. timeFormat(math.abs(fillTime))
+            fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
         else
             fillTimeString = ""
         gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
