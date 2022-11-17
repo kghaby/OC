@@ -601,7 +601,7 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, 342, math.floor((percentage*207))+4, 9, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 4, 342, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
     AR.hudText(hudObjects.maxEU, EUcap, 215-4*#EUcap, 336, xcolors.darkElectricBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
@@ -639,8 +639,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+5, 342, 1, 9, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+5, 342, 1, 9, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+5, 342, 1, 9, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+5, 342, 1, 9, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
