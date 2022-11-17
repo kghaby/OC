@@ -19,6 +19,9 @@ local halfW=w/2
 local vertBarr=h-4
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
+local enableFraction = 0.2 -- [0,1]
+local disableFraction = 0.9 -- [0,1]
+
 
 local xcolors = {           --NIDAS colors
     red = 0xFF0000,
@@ -303,6 +306,13 @@ local function spectrumRedGreen(num,lowBound,highBound)
     end
 end
 
+local function drawRedstone(enableFraction,disableFraction)
+    gpu.setBackground(xcolors.maroon)
+    gpu.fill(disableFraction*w, 3, 1, vertBarr, " ")
+    gpu.setBackground(xcolors.red)
+    gpu.fill(enableFraction*w, 3, 1, vertBarr, " ")
+end
+
 local percentColor=""
 local rateColor=""
 local EUout=""
@@ -311,6 +321,7 @@ local EUrate=""
 local EUcap=""
 local EUstor=""
 local percentEU=""
+
 
 local function drawEnergyScreen() 
     
@@ -324,6 +335,7 @@ local function drawEnergyScreen()
     gpu.setBackground(xcolors.midnightBlue)
     gpu.fill(fillLength+1, 3, w, vertBarr, " ")
     gpu.setBackground(xcolors.white)
+    drawRedstone(enableFraction,disableFraction)
     
     --2nd top row
     gpu.setForeground(xcolors.electricBlue)
@@ -596,8 +608,6 @@ end
 
 
 --redstone power control
-local enableFraction = 0.2 -- [0,1]
-local disableFraction = 0.9 -- [0,1]
 
 local function disengage()
     redstone.setOutput({0, 0, 0, 0, 0, 0})
@@ -609,21 +619,13 @@ end
 --local checkingInterval = 1500
 --local counter = checkingInterval
 
-local function drawRedstone(enableFraction,disableFraction)
-    gpu.setBackground(xcolors.maroon)
-    gpu.fill(disableFraction*w, 3, 1, vertBarr, " ")
-    gpu.setBackground(xcolors.red)
-    gpu.fill(enableFraction*w, 3, 1, vertBarr, " ")
-end
-
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, enableFraction*326+4, 330, 1, 16, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, disableFraction*326+4, 330, 1, 16, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+4, 330, 1, 16, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+4, 330, 1, 16, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
     --if counter == checkingInterval then
-    drawRedstone(enableFraction,disableFraction)
     if fillFraction < enableFraction then
         engage()
     elseif fillFraction > disableFraction then
