@@ -19,7 +19,7 @@ local halfW=w/2
 local vertBarr=h-4
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
-local enableFraction = 0.2 -- [0,1]
+local enableFraction = 0.42 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
 
@@ -601,7 +601,7 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, 342, (percentage*207)+4, 9, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 4, 342, math.floor((percentage*207))+4, 9, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
     AR.hudText(hudObjects.maxEU, EUcap, 215-4*#EUcap, 336, xcolors.darkElectricBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
