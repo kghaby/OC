@@ -233,8 +233,8 @@ local function updateEnergyData(powerStatus)
         --energyData.energyPerTick = round((energyData.readings[2] - energyData.readings[1])/ticks)
         
         energyData.input = round(getAverage(energyData.energyIn))
-        energyData.output = round(getAverage(energyData.energyOut))
-        energyData.energyPerTick = energyData.input-energyData.output-powerStatus.passiveLoss
+        energyData.output = round(getAverage(energyData.energyOut))-powerStatus.passiveLoss
+        energyData.energyPerTick = energyData.input-energyData.output
       
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
@@ -271,7 +271,6 @@ local oldtime=0
     gpu.set(40,2,tostring(energyData.intervalCounter))
     gpu.set(40,3,tostring(energyData.input))
     gpu.set(40,4,tostring(energyData.output))
-    gpu.set(40,5,tostring(powerStatus.passiveLoss))
   --  if energyData.energyIn[energyData.intervalCounter] > 0 then
   --      stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
   --      oldtime=computer.uptime()
