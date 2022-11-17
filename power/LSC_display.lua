@@ -324,9 +324,9 @@ end
 
 local function drawRedstone(enableFraction,disableFraction)
     gpu.setBackground(xcolors.maroon)
-    gpu.fill(disableFraction*w, 3, 1, vertBarr, " ")
+    gpu.fill(disableFraction*w+1, 3, 1, vertBarr, " ")
     gpu.setBackground(xcolors.red)
-    gpu.fill(enableFraction*w, 3, 1, vertBarr, " ")
+    gpu.fill(enableFraction*w+1, 3, 1, vertBarr, " ")
 end
 
 local percentColor=""
@@ -639,8 +639,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+4, 342, 1, 9, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+4, 342, 1, 9, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, (enableFraction*207)+5, 342, 1, 9, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, (disableFraction*207)+5, 342, 1, 9, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
