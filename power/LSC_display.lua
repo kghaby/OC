@@ -513,23 +513,32 @@ local hudObjects = {
     ouput=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
     input=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
     percent=AR.hudText(glasses, "0.00%", x, y, xcolors.black, 0.01),
-    prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.black, 0.01)
+    time=AR.hudText(glasses, "", x, y, xcolors.black, 0.01)
 }
 
 
 local function drawEnergyHUD()
-    AR.remove(glasses, hudObjects)
+    --AR.remove(glasses, hudObjects)
+    glasses.removeObject(hudObjects.energyBar.getID())
     hudObjects.energyBar=AR.hudRectangle(glasses, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
-    hudObjects.maxEU=AR.hudText(glasses, EUcap, 215-5*#EUcap, 320, xcolors.darkSlateBlue, 1)
-    hudObjects.currentEU=AR.hudText(glasses, EUstor, 3, 320, xcolors.electricBlue, 1)
-    hudObjects.rate=AR.hudText(glasses, EUrate, 108-5*(#percentEU/2), 344, rateColor, 1)
-    hudObjects.ouput=AR.hudText(glasses, EUout, 3, 344, xcolors.maroon, 1)
-    hudObjects.input=AR.hudText(glasses, EUinp, 215-5*#EUinp, 344, xcolors.darkGreen, 1)
-    hudObjects.percent=AR.hudText(glasses, percentEU, 108-5*(#percentEU/2), 320, percentColor, 1)
+    glasses.removeObject(hudObjects.maxEU.getID())
+    hudObjects.maxEU=AR.hudText(glasses, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
+    glasses.removeObject(hudObjects.currentEU.getID())
+    hudObjects.currentEU=AR.hudText(glasses, EUstor, 6, 320, xcolors.electricBlue, 1)
+    glasses.removeObject(hudObjects.rate.getID())
+    hudObjects.rate=AR.hudText(glasses, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
+    glasses.removeObject(hudObjects.ouput.getID())
+    hudObjects.ouput=AR.hudText(glasses, EUout, 6, 350, xcolors.maroon, 1)
+    glasses.removeObject(hudObjects.input.getID())
+    hudObjects.input=AR.hudText(glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
+    glasses.removeObject(hudObjects.percent.getID())
+    hudObjects.percent=AR.hudText(glasses, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
     if powerStatus.problems>0 then
-        hudObjects.prob=AR.hudText(glasses, problemMessage, 108-5*(#problemMessage/2), 338, xcolors.red, 1)
+        glasses.removeObject(hudObjects.time.getID())
+        hudObjects.time=AR.hudText(glasses, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
     else
-        hudObjects.time=AR.hudText(glasses, fillTimeString, 108-5*(#fillTimeString/2), 338, xcolors.gray, 1)
+        glasses.removeObject(hudObjects.time.getID())
+        hudObjects.time=AR.hudText(glasses, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
     end
 end
 
@@ -554,7 +563,7 @@ AR.hudRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
  while true do
     updateEnergyData(powerStatus)
     drawEnergyScreen()
-    --drawEnergyHUD()
+    drawEnergyHUD()
     
     os.sleep(sleepTime)
  end
