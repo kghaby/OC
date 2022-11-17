@@ -217,8 +217,6 @@ local function updateEnergyData(powerStatus)
     energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
     energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
     
-
-    
     if energyData.intervalCounter < energyData.updateInterval then
         --if energyData.intervalCounter == 1 then  
             --energyData.startTime = computer.uptime()
@@ -235,7 +233,6 @@ local function updateEnergyData(powerStatus)
         energyData.input = round(getAverage(energyData.energyIn))
         energyData.output = round(getAverage(energyData.energyOut))-powerStatus.passiveLoss
         energyData.energyPerTick = energyData.input-energyData.output
-      
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
                 energyData.highestInput = energyData.energyPerTick
@@ -244,28 +241,28 @@ local function updateEnergyData(powerStatus)
             if energyData.energyPerTick < energyData.highestOutput then
                 energyData.highestOutput = energyData.energyPerTick
             end
-        end
+        end      
         energyData.intervalCounter = 1
-    end
-    energyData.offset = energyData.offset + 2
-    if energyData.energyPerTick >= 0 then
-        energyData.offset = energyData.offset + 10*(energyData.energyPerTick / energyData.highestInput)
-    else
-        energyData.offset = energyData.offset + 10*(energyData.energyPerTick / energyData.highestOutput)
     end
 end
 
-
+local function drawEnergyScreen() 
+    gpu.setBackground(xcolors.white)
+    gpu.fill(5, 10, 10, 70, " ")
+    gpu.setBackground(xcolors.black)
+    
+end
 
 initialize(lsc)
-local oldtime=0
+--local oldtime=0
 
 --stats_fh = io.open("stats.dat","w")
  while true do
     
     updateEnergyData(powerStatus)
     gpu.fill(1, 1, w, h, " ")
-    --drawEnergyData()
+    --drawEnergyScreen()
+    --drawEnergyHUD()
     
     gpu.set(40,1,tostring(energyData.energyPerTick))
     gpu.set(40,2,tostring(energyData.intervalCounter))
