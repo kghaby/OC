@@ -515,15 +515,17 @@ local hudObjects = {
     percent=AR.hudText(glasses, "0.00%", x, y, xcolors.black, 0.01),
     prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.black, 0.01)
 }
+
+
 local function drawEnergyHUD()
     AR.remove(glasses, hudObjects)
     hudObjects.energyBar=AR.hudRectangle(glasses, 2, 356, (percentage*210)+4, 16, xcolors.electricBlue, 1)
-    hudObjects.maxEU=AR.hudText(glasses, EUcap, x, y, xcolors.darkSlateBlue, 1)
-    hudObjects.currentEU=AR.hudText(glasses, EUstor, x, y, xcolors.electricBlue, 1)
-    hudObjects.rate=AR.hudText(glasses, EUrate, x, y, rateColor, 1.4)
-    hudObjects.ouput=AR.hudText(glasses, EUout, x, y, xcolors.maroon, 1)
-    hudObjects.input=AR.hudText(glasses, EUinp, x, y, xcolors.darkGreen, 1)
-    hudObjects.percent=AR.hudText(glasses, percentEU, x, y, percentColor, 1.4)
+    hudObjects.maxEU=AR.hudText(glasses, EUcap, 215-#EUcap, 320, xcolors.darkSlateBlue, 1)
+    hudObjects.currentEU=AR.hudText(glasses, EUstor, 3, 320, xcolors.electricBlue, 1)
+    hudObjects.rate=AR.hudText(glasses, EUrate, 108-(#percentEU/2), 344, rateColor, 1.4)
+    hudObjects.ouput=AR.hudText(glasses, EUout, 3, 344, xcolors.maroon, 1)
+    hudObjects.input=AR.hudText(glasses, EUinp, 215-#EUinp, 344, xcolors.darkGreen, 1)
+    hudObjects.percent=AR.hudText(glasses, percentEU, 108-(#percentEU/2), 320, percentColor, 1.4)
     if powerStatus.problems>0 then
         hudObjects.prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.red, 0.8)
     else
@@ -547,7 +549,7 @@ AR.hudRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.9)
 AR.hudRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.9)
 AR.hudRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.9)
 AR.hudRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
-checkRes()
+--checkRes()
 
  while true do
     updateEnergyData(powerStatus)
