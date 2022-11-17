@@ -639,8 +639,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+5, 342, 1, 9, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+5, 342, 1, 9, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+6, 342, 1, 9, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+6, 342, 1, 9, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
