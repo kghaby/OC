@@ -296,9 +296,9 @@ local function drawEnergyScreen()
     
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage/w)
-    gpu.fill(1, 3, fillLength, h-2, " ")
+    gpu.fill(1, 3, fillLength, h-4, " ")
     gpu.setBackground(xcolors.midnightBlue)
-    gpu.fill(fillLength+1, 3, w, h-2, " ")
+    gpu.fill(fillLength+1, 3, w, h-4, " ")
     gpu.setBackground(xcolors.white)
     
     --2nd top row
@@ -317,7 +317,7 @@ local function drawEnergyScreen()
     gpu.setForeground(xcolors.darkOliveGreen)
     local EUinp=sciNot(energyData.input)
     gpu.set(w-#(EUinp),h-1,EUinp)
-    spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestIntput)
+    spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
     local EUrate=sciNot(energyData.energyPerTick)
     gpu.set((w/2)-(#EUrate/2),h-1,EUrate)
 
@@ -337,7 +337,7 @@ local function drawEnergyScreen()
     gpu.set((w/2)-(#fillTimeString/2),1,fillTimeString)
     
     --alert maint
-    if problems>0 then
+    if powerStatus.problems>0 then
         gpu.setForeground(xcolors.red)
         problemMessage="MAINT REQUIRED"
         gpu.set((w/2)-(#problemMessage/2),h,problemMessage)
