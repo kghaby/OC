@@ -478,21 +478,22 @@ end
 function AR.hudNewText(glasses, displayText, x, y, color, scale)
     scale = scale or 1
     local text = glasses.addTextLabel()
+    text.setScale(scale)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
-    --text.setScale(scale)
-    AR.textSize(text, scale)
+    
+    --AR.textSize(text, scale)
     return text
 end
 
 function AR.hudText(text, displayText, x, y, color, scale)
     scale = scale or 1
-    --text.setScale(scale)
+    text.setScale(scale)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
-    AR.textSize(text, scale)
+    --AR.textSize(text, scale)
     return text
 end
 
