@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x11114B,
+    midnightBlue = 0x0A0A60,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -493,14 +493,15 @@ function AR.clear(glasses)
 end
 
 
-
+local hudObjects = {}
 local function drawEnergyHUD()
     --AR.hudRectangle(glasses, 2, 300, 40, 4, xcolors.midnightBlue, 0.2)
 end
-    
+
+
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 2, 300, 40, 4, xcolors.midnightBlue, 0.2)
+AR.hudRectangle(glasses, 2, 356, 200, 16, xcolors.midnightBlue, 0.2)
 --local oldtime=0
 
 --stats_fh = io.open("stats.dat","w")
