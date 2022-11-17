@@ -1,5 +1,4 @@
 local component = require("component")
-local colors = require("colors")
 local computer = require("computer")
 local os = require("os")
 local Serial = require("serialization")
@@ -45,7 +44,9 @@ local xcolors = {           --NIDAS colors
     gray = 0x3C5B72,
     lightGray = 0xA9A9A9,
     darkGray = 0x181828,
-    darkSlateGrey = 0x2F4F4F
+    darkSlateGrey = 0x2F4F4F,
+    orange = 0xFF6600,
+    darkGreen= 0x008000
 }
 
 local function round(num) return math.floor(num+.5) end
@@ -227,7 +228,7 @@ end
 
 local powerStatus={}
 local function initialize(lsc)
-    gpu.setBackground(xcolors.black)
+    gpu.setBackground(xcolors.white)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
 
     powerStatus=get_LSC_info(lsc)
@@ -262,7 +263,7 @@ local function updateEnergyData(powerStatus)
         
         energyData.input = round(getAverage(energyData.energyIn))
         energyData.output = round(getAverage(energyData.energyOut))-powerStatus.passiveLoss
-        energyData.energyPerTick = energyData.input-energyData.output
+        energyData.energyPerTick = energyData.input+energyData.output
         if energyData.energyPerTick >= 0 then
             if energyData.energyPerTick > energyData.highestInput then
                 energyData.highestInput = energyData.energyPerTick
@@ -285,7 +286,7 @@ local function spectrumRedGreen(num,lowBound,highBound)
     elseif frac > 0.4 then
         gpu.setForeground(xcolors.yellow)
     elseif frac > 0.2 then
-        gpu.setForeground(colors.orange)
+        gpu.setForeground(xcolors.orange)
     else
         gpu.setForeground(xcolors.red)
     end
@@ -294,8 +295,8 @@ end
 local function drawEnergyScreen() 
     
     gpu.setBackground(xcolors.white)
-    gpu.fill(1, 1, w, 2, " ")
-    gpu.fill(1, h-1, w, 2, " ")
+    --gpu.fill(1, 1, w, 2, " ")
+    --gpu.fill(1, h-1, w, 2, " ")
     
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage*w)
@@ -317,7 +318,7 @@ local function drawEnergyScreen()
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
     gpu.set(1,h-1,sciNot(energyData.output))
-    gpu.setForeground(xcolors.darkOliveGreen)
+    gpu.setForeground(xcolors.darkGreen)
     local EUinp=sciNot(energyData.input)
     gpu.set(w-#(EUinp),h-1,EUinp)
     spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
@@ -337,6 +338,7 @@ local function drawEnergyScreen()
     else
         fillTimeString = ""
     end
+    gpu.fill(1, 1, w, 1, " ")
     gpu.set((halfW)-(#fillTimeString/2),1,fillTimeString)
     
     --alert maint
@@ -344,6 +346,8 @@ local function drawEnergyScreen()
         gpu.setForeground(xcolors.red)
         problemMessage="MAINT REQUIRED"
         gpu.set((halfW)-(#problemMessage/2),h,problemMessage)
+    else
+        gpu.fill(1, h, w, 1, " ")
     end
 end
 
