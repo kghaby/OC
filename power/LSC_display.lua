@@ -611,7 +611,7 @@ end
 
 local function drawRedstone(enableFraction,disableFraction)
     gpu.setBackground(xcolors.maroon)
-    gpu.fill(disbleFraction*w, 3, 1, vertBarr, " ")
+    gpu.fill(disableFraction*w, 3, 1, vertBarr, " ")
     gpu.setBackground(xcolors.red)
     gpu.fill(enableFraction*w, 3, 1, vertBarr, " ")
 end
