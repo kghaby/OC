@@ -517,7 +517,7 @@ local hudObjects = {
 }
 local function drawEnergyHUD()
     AR.remove(glasses, hudObjects)
-    hudObjects.energyBar=AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.electricBlue, 1)
+    hudObjects.energyBar=AR.hudRectangle(glasses, 2, 356, (percentage*210)+4, 16, xcolors.electricBlue, 1)
     hudObjects.maxEU=AR.hudText(glasses, EUcap, x, y, xcolors.darkSlateBlue, 1)
     hudObjects.currentEU=AR.hudText(glasses, EUstor, x, y, xcolors.electricBlue, 1)
     hudObjects.rate=AR.hudText(glasses, EUrate, x, y, rateColor, 1)
@@ -542,8 +542,11 @@ end
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 1, 351, 203, 24, xcolors.midnightBlue, 0.4)
-AR.hudRectangle(glasses, 2, 345, 202, 16, xcolors.midnightBlue, 0.2)
+AR.hudRectangle(glasses, 1, 318, 217, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 1, 350, 217, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 1, 334, 3, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 214, 334, 3, 16, xcolors.midnightBlue, 0.8)
+AR.hudRectangle(glasses, 4, 334, 214, 16, xcolors.midnightBlue, 0.5)
 checkRes()
 
  while true do
