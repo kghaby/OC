@@ -527,10 +527,10 @@ local hudObjects = {
     energyBar=AR.hudNewRectangle(glasses, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1),
     maxEU=AR.hudNewText(glasses, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1),
     currentEU=AR.hudNewText(glasses, EUstor, 6, 320, xcolors.electricBlue, 1),
-    rate=AR.hudNewText(glasses, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1),
+    rate=AR.hudNewText(glasses, EUrate, 108-6*(#EUrate/2), 350, xcolors.black, 1),
     ouput=AR.hudNewText(glasses, EUout, 6, 350, xcolors.maroon, 1),
     input=AR.hudNewText(glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1),
-    percent=AR.hudNewText(glasses, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1),
+    percent=AR.hudNewText(glasses, percentEU, 108-6*(#percentEU/2), 320, xcolors.black, 1),
     time=AR.hudNewText(glasses, "", 108, 334, xcolors.lightGray, 1)
 }
 
