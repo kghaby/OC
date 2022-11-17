@@ -226,7 +226,7 @@ local powerStatus={}
 local function initialize(lsc)
     gpu.setBackground(xcolors.black)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
-    gpu.setResolution(16,5)
+    gpu.setResolution(30,5)
     w, h = gpu.getResolution()
     powerStatus=get_LSC_info(lsc)
 end
