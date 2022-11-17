@@ -549,7 +549,7 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 4, 33, (percentage*207)+4, 16, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
     AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
     --glasses.removeObject(hudObjects.currentEU.getID())
