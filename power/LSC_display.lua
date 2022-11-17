@@ -477,8 +477,8 @@ function AR.hudText(glasses, displayText, x, y, color, scale)
 end
 
 function AR.remove(glasses, objects)
-    for i = 1, #objects do
-        glasses.removeObject(objects[i].getID())
+    for k,v in pairs(objects) do
+        glasses.removeObject(objects[k].getID())
     end
 end
 
