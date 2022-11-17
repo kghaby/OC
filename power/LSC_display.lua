@@ -532,18 +532,18 @@ local function drawEnergyHUD()
 end
 
 local function checkRes()
-    for i=1,x,1 do 
-        AR.hudText(glasses, i, i, 1, xcolors.black, 1)
+    for i=1,x,20 do 
+        AR.hudText(glasses, tostring(i), i, 1, xcolors.black, 1)
     end
-    for j=1,y,1 do
-        AR.hudText(glasses, j, 1, j, xcolors.black, 1)
+    for j=1,y,20 do
+        AR.hudText(glasses, tostring(j), 1, j, xcolors.black, 1)
     end
 end
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 1, 360, 203, 24, xcolors.midnightBlue, 0.4)
-AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.midnightBlue, 0.2)
+AR.hudRectangle(glasses, 1, 351, 203, 24, xcolors.midnightBlue, 0.4)
+AR.hudRectangle(glasses, 2, 345, 202, 16, xcolors.midnightBlue, 0.2)
 checkRes()
 
  while true do
