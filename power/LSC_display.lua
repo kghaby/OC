@@ -31,7 +31,7 @@ local xcolors = {           --NIDAS colors
     yellow = 0xFFFF00,
     cyan = 0x00FFFF,
     greenYellow = 0xADFF2F,
-    green = 0x008000,
+    green = 0x00B000,
     darkOliveGreen = 0x556B2F,
     indigo = 0x4B0082,
     purple = 0x800080,
@@ -52,7 +52,7 @@ local xcolors = {           --NIDAS colors
     darkGray = 0x181828,
     darkSlateGrey = 0x2F4F4F,
     orange = 0xFF6600,
-    darkGreen= 0x005000,
+    darkGreen= 0x007000,
     darkYellow=0x9F9F00,
     darkElectricBlue=0x477B98
 }
