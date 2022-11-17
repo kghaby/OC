@@ -51,6 +51,8 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
+
+local time = {}
 local function time.format(number)
     if number == 0 then
         return 0
