@@ -295,7 +295,7 @@ local function drawEnergyScreen()
     
     gpu.setBackground(xcolors.white)
     gpu.fill(1, 1, w, 2, " ")
-    gpu.fill(1, h-2, w, 2, " ")
+    gpu.fill(1, h-1, w, 2, " ")
     
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage*w)
