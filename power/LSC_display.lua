@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x191970,
+    midnightBlue = 0x11114B,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -48,7 +48,8 @@ local xcolors = {           --NIDAS colors
     darkGray = 0x181828,
     darkSlateGrey = 0x2F4F4F,
     orange = 0xFF6600,
-    darkGreen= 0x008000
+    darkGreen= 0x008000,
+    darkYellow=0x9F9F00
 }
 
 local function hex2RGB(hex)
@@ -293,7 +294,7 @@ local function spectrumRedGreen(num,lowBound,highBound)
     elseif frac > 0.6 then
         gpu.setForeground(xcolors.greenYellow)
     elseif frac > 0.4 then
-        gpu.setForeground(xcolors.yellow)
+        gpu.setForeground(xcolors.darkYellow)
     elseif frac > 0.2 then
         gpu.setForeground(xcolors.orange)
     else
@@ -494,11 +495,12 @@ end
 
 
 local function drawEnergyHUD()
-    AR.hudRectangle(glasses, 0.04*x, 0.92*y, 0.2*x, 0.04*y, xcolors.midnightBlue, 0.4)
+    --AR.hudRectangle(glasses, 2, 300, 40, 4, xcolors.midnightBlue, 0.2)
 end
     
 initialize(lsc)
 AR.clear(glasses)
+AR.hudRectangle(glasses, 2, 300, 40, 4, xcolors.midnightBlue, 0.2)
 --local oldtime=0
 
 --stats_fh = io.open("stats.dat","w")
