@@ -11,8 +11,8 @@ local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 
 --local w,h=160,50
---gpu.setResolution(32,6)
-gpu.setResolution(80,15)
+gpu.setResolution(32,6)
+--gpu.setResolution(80,15)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
