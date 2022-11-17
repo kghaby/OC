@@ -11,7 +11,7 @@ local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 
 --local w,h=160,50
-gpu.setResolution(80,15)
+gpu.setResolution(32,6)
 local w, h = gpu.getResolution()
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
@@ -292,10 +292,11 @@ end
 local function drawEnergyScreen() 
     
     gpu.setBackground(xcolors.white)
-    gpu.fill(1, 1, w, h, " ")
+    gpu.fill(1, 1, w, 2, " ")
+    gpu.fill(1, h-2, w, 2, " ")
     
     gpu.setBackground(xcolors.electricBlue)
-    local fillLength=math.ceil(percentage/w)
+    local fillLength=math.ceil(percentage*w)
     gpu.fill(1, 3, fillLength, h-4, " ")
     gpu.setBackground(xcolors.midnightBlue)
     gpu.fill(fillLength+1, 3, w, h-4, " ")
