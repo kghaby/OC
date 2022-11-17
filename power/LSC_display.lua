@@ -51,10 +51,31 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
+local function time.format(number)
+    if number == 0 then
+        return 0
+    else
+        local hours = math.floor(number / 3600)
+        local minutes = math.floor((number - math.floor(number / 3600) * 3600) / 60)
+        local seconds = (number % 60)
+        if hours > 17000 then
+            local years = math.floor(hours / (24 * 365))
+            local days = math.floor((hours - (years * 24 * 365)) / 24)
+            return (years .. " Years " .. days .. " Days")
+        elseif hours > 48 then
+            local days = math.floor(hours / 24)
+            hours = math.floor(hours - days * 24)
+            return (days .. "d " .. hours .. "h " .. minutes .. "m")
+        else
+            return (hours .. "h " .. minutes .. "m " .. seconds .. "s")
+        end
+    end
+end
+
 local parser = {}
 
 -- Returns given number formatted as XXX,XXX,XXX
-function parser.splitNumber(number, delim)
+local function parser.splitNumber(number, delim)
     delim = delim or ","
     if delim == "" then return tostring(number) end
     local formattedNumber = {}
@@ -71,7 +92,7 @@ function parser.splitNumber(number, delim)
     return table.concat(formattedNumber, "")
 end
 
-function parser.metricNumber(number, format)
+local function parser.metricNumber(number, format)
     format = format or "%.1f"
     if math.abs(number) < 1000 then return tostring(math.floor(number)) end
     local suffixes = {"k", "M", "G", "T", "P", "E", "Z", "Y"}
@@ -80,7 +101,7 @@ function parser.metricNumber(number, format)
     return tostring(string.format(format, (number / 1000 ^ power)))..suffixes[power]
 end
 
-function parser.getInteger(string)
+local function parser.getInteger(string)
     if type(string) == "string" then
         local numberString = string.gsub(string, "([^0-9]+)", "")
         if tonumber(numberString) then
@@ -92,7 +113,7 @@ function parser.getInteger(string)
     end
 end
 
-function parser.split(string, sep)
+local function parser.split(string, sep)
     if sep == nil then sep = "%s" end
     local words = {}
     for str in string.gmatch(string, "([^"..sep.."]+)") do
@@ -101,7 +122,7 @@ function parser.split(string, sep)
     return words
 end
 
-function parser.percentage(number) return
+local function parser.percentage(number) return
     (math.floor(number * 1000) / 10) .. "%" end
 
 local states = {
@@ -203,7 +224,8 @@ local powerStatus={}
 local function initialize(lsc)
     gpu.setBackground(xcolors.black)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
-    gpu.setResolution(80,15)
+    gpu.setResolution(16,5)
+    w, h = gpu.getResolution()
     powerStatus=get_LSC_info(lsc)
 end
 
@@ -215,7 +237,7 @@ local function updateEnergyData(powerStatus)
     local percentage = math.min(currentEU/maxEU, 1.0)
     
     energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
-    energyData.energyOut[energyData.intervalCounter] = powerStatus.EUOut
+    energyData.energyOut[energyData.intervalCounter] = -1*powerStatus.EUOut
     
     if energyData.intervalCounter < energyData.updateInterval then
         --if energyData.intervalCounter == 1 then  
@@ -246,11 +268,69 @@ local function updateEnergyData(powerStatus)
     end
 end
 
+local function spectrumRedGreen(num,lowBound,highBound)
+    local frac=math.abs(num/(highBound-lowBound))
+    if frac > 0.8 then
+        gpu.setForeground(xcolors.green)
+    elseif frac > 0.6 then
+        gpu.setForeground(xcolors.greenYellow)
+    elseif frac > 0.4 then
+        gpu.setForeground(xcolors.yellow)
+    elseif frac > 0.2 then
+        gpu.setForeground(colors.orange)
+    else
+        gpu.setForeground(xcolors.red)
+    end
+end
+
 local function drawEnergyScreen() 
-    gpu.setBackground(xcolors.white)
-    gpu.fill(5, 10, 10, 70, " ")
-    gpu.setBackground(xcolors.black)
     
+    --gpu.setBackground(xcolors.white)
+    --gpu.fill(1, 1, w, h, " ")
+    
+    gpu.setBackground(xcolors.electricBlue)
+    local fillLength=math.ceil(percentage/w)
+    gpu.fill(1, 2, fillLength, 4, " ")
+    gpu.setBackground(xcolors.darkSlateBlue)
+    gpu.fill(fillLength+1, 2, w, 4, " ")
+    gpu.setBackground(xcolors.white)
+    
+    --top row
+    gpu.setForeground(xcolors.electricBlue)
+    gpu.set(1,1,sciNot(currentEU))
+    gpu.setForeground(xcolors.darkSlateBlue)
+    local EUcap=sciNot(maxEU)
+    gpu.set(w-#(EUcap),1,EUcap)
+    spectrumRedGreen(percentage,0,1)
+    local percentEU=string.format("%." .. (2) .. "f", tostring(percentage*100)..'%')
+    gpu.set((w/2)-(#percentEU/2),1,percentEU)
+    
+    --bot row
+    gpu.setForeground(xcolors.maroon)
+    gpu.set(1,h,sciNot(energyData.output))
+    gpu.setForeground(xcolors.darkOliveGreen)
+    local EUinp=sciNot(energyData.input)
+    gpu.set(w-#(EUinp),h,EUinp)
+    spectrumRedGreen(energyData.energyPerTick,energyData.lowestOutput,energyData.highestOutput)
+    local EUrate=sciNot(energyData.energyPerTick)
+    gpu.set((w/2)-(#EUrate/2),h,EUrate)
+
+    if problems>0 then
+        gpu.setForeground(xcolors.red)
+        problemMessage="MAINT REQUIRED"
+        gpu.set((w/2)-(#problemMessage/2),3,problemMessage)
+    else
+        gpu.setForeground(xcolors.white)
+        if energyData.energyPerTick > 0 then
+            fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
+            fillTimeString = "Full: " .. time.format(math.abs(fillTime))
+        elseif energyData.energyPerTick < 0 then
+            fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
+            fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
+        else
+            fillTimeString = ""
+        gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
+    end
 end
 
 initialize(lsc)
@@ -260,14 +340,15 @@ initialize(lsc)
  while true do
     
     updateEnergyData(powerStatus)
-    gpu.fill(1, 1, w, h, " ")
-    --drawEnergyScreen()
+    
+    drawEnergyScreen()
     --drawEnergyHUD()
     
-    gpu.set(40,1,tostring(energyData.energyPerTick))
-    gpu.set(40,2,tostring(energyData.intervalCounter))
-    gpu.set(40,3,tostring(energyData.input))
-    gpu.set(40,4,tostring(energyData.output))
+    --gpu.fill(1, 1, w, h, " ")
+    --gpu.set(40,1,tostring(energyData.energyPerTick))
+    --gpu.set(40,2,tostring(energyData.intervalCounter))
+    --gpu.set(40,3,tostring(energyData.input))
+    --gpu.set(40,4,tostring(energyData.output))
   --  if energyData.energyIn[energyData.intervalCounter] > 0 then
   --      stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
   --      oldtime=computer.uptime()
