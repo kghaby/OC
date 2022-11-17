@@ -9,6 +9,7 @@ local glasses=component.glasses
 local lsc = component.proxy("83d81a1c-55e4-4a46-a63b-70a5997f142a")
 local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
+local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
 
 --local w,h=160,50
 gpu.setResolution(32,6)
@@ -525,7 +526,25 @@ end
 function AR.clear(glasses)
     glasses.removeAll()
 end
+
+local function checkRes()
+    for i=1,x,20 do 
+        AR.hudNewText(glasses, tostring(i), i, 1, xcolors.black, 1)
+    end
+    for j=1,y,20 do
+        AR.hudNewText(glasses, tostring(j), 1, j, xcolors.black, 1)
+    end
+end
+
 AR.clear(glasses)
+local outerRect={}
+outerRect.top=AR.hudNewRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.85)
+outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.85)
+outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
+outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
+backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
+--checkRes()
+
 local hudObjects = {
     energyBar = glasses.addRect(),
     --energyBar=AR.hudNewRectangle(glasses, 4, 330, 6, 16, xcolors.electricBlue, 1),
@@ -571,29 +590,45 @@ local function drawEnergyHUD()
     end
 end
 
-local function checkRes()
-    for i=1,x,20 do 
-        AR.hudNewText(glasses, tostring(i), i, 1, xcolors.black, 1)
+
+
+
+--redstone power control
+local powerControl = {}
+local powerControlData = {}
+
+local enableFraction = 0.15 -- [0,1]
+local disableFraction = 0.85 -- [0,1]
+
+local function disengage()
+    redstone.setOutput({0, 0, 0, 0, 0, 0})
+end
+local function engage()
+    redstone.setOutput({15, 15, 15, 15, 15, 15})
+end
+
+--local checkingInterval = 1500
+--local counter = checkingInterval
+local function checkPower(fillFraction,enableFraction,disableFraction)
+    --if counter == checkingInterval then
+    if fillFraction < enableFraction then
+        engage()
+    elseif fillFraction > disableFraction then
+        disengage()
     end
-    for j=1,y,20 do
-        AR.hudNewText(glasses, tostring(j), 1, j, xcolors.black, 1)
-    end
+        --counter = 1
+    --else
+        --counter = counter + 1
+    --end  
 end
 
 initialize(lsc)
-
-local outerRect={}
-outerRect.top=AR.hudNewRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.85)
-outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.85)
-outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
-outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
-backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
---checkRes()
 
  while true do
     updateEnergyData(powerStatus)
     drawEnergyScreen()
     drawEnergyHUD()
+    checkPower(percentage)
     
     os.sleep(sleepTime)
  end
