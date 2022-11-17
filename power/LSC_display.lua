@@ -11,7 +11,8 @@ local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 
 --local w,h=160,50
-gpu.setResolution(32,6)
+--gpu.setResolution(32,6)
+gpu.setResolution(80,15)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
@@ -368,7 +369,7 @@ local y=1080/3
 local scale=3
 local screen = {}
 -- Small = 1, Normal = 2, Large = 3, Auto = 4x to 10x (Even)
-local function screen.size(resolution, scale)
+function screen.size(resolution, scale)
     scale = scale or 3
     return {resolution[1] / scale, resolution[2] / scale}
 end
@@ -467,11 +468,23 @@ function AR.remove(glasses, objects)
     end
 end
 
+function AR.rectangle(glasses, v1, width, heigth, color, alpha)
+    alpha = alpha or 1.0
+    local rect = glasses.addQuad()
+    rect.setColor(RGB(color))
+    rect.setAlpha(alpha)
+    rect.setVertex(1, v1[1], v1[2])
+    rect.setVertex(2, v1[1], v1[2] + heigth)
+    rect.setVertex(3, v1[1] + width, v1[2] + heigth)
+    rect.setVertex(4, v1[1] + width, v1[2])
+    return rect
+end
+
 function AR.testGrid(glasses, resolution, scale)
     scale = scale or 3
     local glassResolution = screen.size(resolution, scale)
-    AR.hudRectangle(glasses, {glassResolution[1]/2, 0}, 1, glassResolution[2], colors.electricBlue)
-    AR.hudRectangle(glasses, {0, glassResolution[2]/2}, glassResolution[1], 1, colors.electricBlue)
+    AR.rectangle(glasses, {glassResolution[1]/2, 0}, 1, glassResolution[2], xcolors.electricBlue)
+    AR.rectangle(glasses, {0, glassResolution[2]/2}, glassResolution[1], 1, xcolors.electricBlue)
 end
 
 function AR.clear(glasses)
