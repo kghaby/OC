@@ -360,11 +360,20 @@ local function drawEnergyScreen()
 end
 
 --AR stuff
-local AR = {}
-
-
 local terminal = {x = -474, y = 57, z = 300}
 --local terminal = {x = 0, y = 0, z = 0}
+local resolution={1920,1080}
+local x=1920/3
+local y=1080/3
+local scale=3
+local screen = {}
+-- Small = 1, Normal = 2, Large = 3, Auto = 4x to 10x (Even)
+local function screen.size(resolution, scale)
+    scale = scale or 3
+    return {resolution[1] / scale, resolution[2] / scale}
+end
+
+local AR = {}
 
 function AR.cube(glasses, x, y, z, color, alpha, scale)
     scale = scale or 1
@@ -458,23 +467,22 @@ function AR.remove(glasses, objects)
     end
 end
 
+function AR.testGrid(glasses, resolution, scale)
+    scale = scale or 3
+    local glassResolution = screen.size(resolution, scale)
+    AR.hudRectangle(glasses, {glassResolution[1]/2, 0}, 1, glassResolution[2], colors.electricBlue)
+    AR.hudRectangle(glasses, {0, glassResolution[2]/2}, glassResolution[1], 1, colors.electricBlue)
+end
+
 function AR.clear(glasses)
     glasses.removeAll()
 end
 
-local resolution={1920,1080}
-local x=1920/3
-local y=1080/3
-local scale=3
-local screen = {}
--- Small = 1, Normal = 2, Large = 3, Auto = 4x to 10x (Even)
-function screen.size(resolution, scale)
-    scale = scale or 3
-    return {resolution[1] / scale, resolution[2] / scale}
-end
+
 
 local function drawEnergyHUD()
     AR.hudRectangle(glasses, 2, 2, x, y, xcolors.midnightBlue, 0.4)
+    AR.testGrid(glasses, resolution, scale)
 end
     
 initialize(lsc)
