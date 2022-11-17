@@ -361,7 +361,7 @@ local function drawEnergyScreen()
     gpu.setForeground(rateColor)
     EUrate=sciNot(energyData.energyPerTick)
     if energyData.energyPerTick>0 then
-        EUrate='+'..EuRate
+        EUrate='+'..EUrate
     end
     gpu.set((halfW)-(#EUrate/2),h-1,EUrate)
 
