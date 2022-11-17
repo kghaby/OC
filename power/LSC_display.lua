@@ -596,9 +596,6 @@ end
 
 
 --redstone power control
-local powerControl = {}
-local powerControlData = {}
-
 local enableFraction = 0.2 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
