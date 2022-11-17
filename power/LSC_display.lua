@@ -458,7 +458,7 @@ function AR.hudNewRectangle(glasses, x, y, w, h, color, alpha)
     return rect
 end
 
-function AR.hudRectangle(rect,glasses, x, y, w, h, color, alpha)
+function AR.hudRectangle(rect, x, y, w, h, color, alpha)
     alpha = alpha or 1.0
     rect.setPosition(x, y)
     rect.setSize(h, w)
@@ -486,7 +486,7 @@ function AR.hudNewText(glasses, displayText, x, y, color, scale)
     return text
 end
 
-function AR.hudText(text, glasses, displayText, x, y, color, scale)
+function AR.hudText(text, displayText, x, y, color, scale)
     scale = scale or 1
     text.setText(displayText)
     text.setPosition(x, y)
@@ -526,33 +526,41 @@ function AR.clear(glasses)
 end
 
 local hudObjects = {
-    energyBar=AR.hudNewRectangle(glasses, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1),
-    maxEU=AR.hudNewText(glasses, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1),
-    currentEU=AR.hudNewText(glasses, EUstor, 6, 320, xcolors.electricBlue, 1),
-    rate=AR.hudNewText(glasses, EUrate, 108-6*(#EUrate/2), 350, xcolors.black, 1),
-    ouput=AR.hudNewText(glasses, EUout, 6, 350, xcolors.maroon, 1),
-    input=AR.hudNewText(glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1),
-    percent=AR.hudNewText(glasses, percentEU, 108-6*(#percentEU/2), 320, xcolors.black, 1),
-    time=AR.hudNewText(glasses, " ", 108, 334, xcolors.lightGray, 1)
+    energyBar = glasses.addRect(),
+    --energyBar=AR.hudNewRectangle(glasses, 4, 330, 6, 16, xcolors.electricBlue, 1),
+    maxEU = glasses.addTextLabel(),
+    --maxEU=AR.hudNewText(glasses, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1),
+    currentEU = glasses.addTextLabel(),
+    --currentEU=AR.hudNewText(glasses, EUstor, 6, 320, xcolors.electricBlue, 1),
+    rate = glasses.addTextLabel(),
+    --rate=AR.hudNewText(glasses, EUrate, 108-6*(#EUrate/2), 350, xcolors.black, 1),
+    ouput = glasses.addTextLabel(),
+    --ouput=AR.hudNewText(glasses, EUout, 6, 350, xcolors.maroon, 1),
+    input = glasses.addTextLabel(),
+    --input=AR.hudNewText(glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1),
+    percent = glasses.addTextLabel(),
+    --percent=AR.hudNewText(glasses, percentEU, 108-6*(#percentEU/2), 320, xcolors.black, 1),
+    time = glasses.addTextLabel()
+    --time=AR.hudNewText(glasses, " ", 108, 334, xcolors.lightGray, 1)
 }
 
 
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    hudObjects.energyBar=AR.hudRectangle(hudObjects.energyBar,glasses, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
+    hudObjects.energyBar=AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
-    hudObjects.maxEU=AR.hudText(hudObjects.maxEU,glasses, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
+    hudObjects.maxEU=AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
     --glasses.removeObject(hudObjects.currentEU.getID())
-    hudObjects.currentEU=AR.hudText(hudObjects.currentEU,glasses, EUstor, 6, 320, xcolors.electricBlue, 1)
+    hudObjects.currentEU=AR.hudText(hudObjects.currentEU, EUstor, 6, 320, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.rate.getID())
-    hudObjects.rate=AR.hudText(hudObjects.rate,glasses, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
+    hudObjects.rate=AR.hudText(hudObjects.rate, EUrate, 108-6*(#EUrate/2), 350, rateColor, 1)
     --glasses.removeObject(hudObjects.ouput.getID())
-    hudObjects.ouput=AR.hudText(hudObjects.ouput,glasses, EUout, 6, 350, xcolors.maroon, 1)
+    hudObjects.ouput=AR.hudText(hudObjects.ouput, EUout, 6, 350, xcolors.maroon, 1)
     --glasses.removeObject(hudObjects.input.getID())
-    hudObjects.input=AR.hudText(hudObjects.input,glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
+    hudObjects.input=AR.hudText(hudObjects.input, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1)
     --glasses.removeObject(hudObjects.percent.getID())
-    hudObjects.percent=AR.hudText(hudObjects.percent,glasses, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
+    hudObjects.percent=AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
         hudObjects.time=AR.hudText(hudObjects.time,glasses, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
