@@ -458,7 +458,7 @@ function AR.hudNewRectangle(glasses, x, y, w, h, color, alpha)
     return rect
 end
 
-function AR.hudRectangle(rect(), x, y, w, h, color, alpha)
+function AR.hudRectangle(rect, x, y, w, h, color, alpha)
     alpha = alpha or 1.0
     rect.setPosition(x, y)
     rect.setSize(h, w)
@@ -486,8 +486,9 @@ function AR.hudNewText(glasses, displayText, x, y, color, scale)
     return text
 end
 
-function AR.hudText(text(), displayText, x, y, color, scale)
+function AR.hudText(text, displayText, x, y, color, scale)
     scale = scale or 1
+    print(type(text),text)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
