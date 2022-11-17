@@ -482,7 +482,7 @@ function AR.hudNewText(glasses, displayText, x, y, color, scale)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
     text.setScale(scale)
-    AR.textSize(text, scale)
+    --AR.textSize(text, scale)
     return text
 end
 
@@ -564,10 +564,10 @@ local function drawEnergyHUD()
     AR.hudText(hudObjects.percent, percentEU, 108-6*(#percentEU/2), 320, percentColor, 1)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time,glasses, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
+        AR.hudText(hudObjects.time, problemMessage, 108-6*(#problemMessage/2), 334, xcolors.red, 1)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time,glasses, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
+        AR.hudText(hudObjects.time, fillTimeString, 108-6*(#fillTimeString/2), 334, xcolors.lightGray, 1)
     end
 end
 
@@ -588,7 +588,7 @@ outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue,
 outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
 outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
 backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
-checkRes()
+--checkRes()
 
  while true do
     updateEnergyData(powerStatus)
