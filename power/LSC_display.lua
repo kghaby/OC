@@ -285,8 +285,8 @@ end
 
 local function drawEnergyScreen() 
     
-    --gpu.setBackground(xcolors.white)
-    --gpu.fill(1, 1, w, h, " ")
+    gpu.setBackground(xcolors.white)
+    gpu.fill(1, 1, w, h, " ")
     
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage/w)
@@ -320,7 +320,7 @@ local function drawEnergyScreen()
         problemMessage="MAINT REQUIRED"
         gpu.set((w/2)-(#problemMessage/2),3,problemMessage)
     else
-        gpu.setForeground(xcolors.white)
+        gpu.setForeground(xcolors.gray)
         if energyData.energyPerTick > 0 then
             fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
             fillTimeString = "Full: " .. time.format(math.abs(fillTime))
