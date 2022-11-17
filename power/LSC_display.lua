@@ -332,6 +332,7 @@ local function drawEnergyScreen()
         else
             fillTimeString = ""
         gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
+        end
     end
 end
 
