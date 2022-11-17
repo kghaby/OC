@@ -604,7 +604,7 @@ local function drawEnergyHUD()
         AR.hudText(hudObjects.time, problemMessage, 108-4*(#problemMessage/2), 344, xcolors.red, 0.6)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, fillTimeString, 108-4*(#fillTimeString/2), 344, xcolors.gray, 0.6)
+        AR.hudText(hudObjects.time, fillTimeString, 108-4*(#fillTimeString/2), 344, xcolors.black, 0.6)
     end
 end
 
