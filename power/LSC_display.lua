@@ -3,8 +3,9 @@ local computer = require("computer")
 local os = require("os")
 local Serial = require("serialization")
 local math = require("math")
-
 local gpu = component.gpu
+local glasses=component.glasses
+
 local lsc = component.proxy("83d81a1c-55e4-4a46-a63b-70a5997f142a")
 local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
@@ -48,6 +49,13 @@ local xcolors = {           --NIDAS colors
     orange = 0xFF6600,
     darkGreen= 0x008000
 }
+
+local function hex2RGB(hex)
+    local r = ((hex >> 16) & 0xFF) / 255.0
+    local g = ((hex >> 8) & 0xFF) / 255.0
+    local b = ((hex) & 0xFF) / 255.0
+    return r, g, b
+end
 
 local function round(num) return math.floor(num+.5) end
 
@@ -351,7 +359,126 @@ local function drawEnergyScreen()
     end
 end
 
+--AR stuff
+local AR = {}
+
+
+local terminal = {x = -474, y = 57, z = 300}
+--local terminal = {x = 0, y = 0, z = 0}
+
+function AR.cube(glasses, x, y, z, color, alpha, scale)
+    scale = scale or 1
+    alpha = alpha or 1
+    local cube = glasses.addCube3D()
+    cube.set3DPos(x - terminal.x, y - terminal.y, z - terminal.z)
+    cube.setColor(hex2RGB(color))
+    cube.setAlpha(alpha)
+    cube.setScale(scale)
+    return cube
+end
+
+function AR.line(glasses, source, dest, color, alpha, scale)
+    scale = scale or 1
+    alpha = alpha or 1
+    local line = glasses.addLine3D()
+    line.setVertex(1, source.x - terminal.x + 0.5, source.y - terminal.y + 0.5, source.z - terminal.z + 0.5)
+    line.setVertex(2, dest.x - terminal.x + 0.5, dest.y - terminal.y + 0.5, dest.z - terminal.z + 0.5)
+    line.setColor(hex2RGB(color))
+    line.setAlpha(alpha)
+    line.setScale(scale)
+    return line
+end
+
+function AR.worldText(glasses, name, x, y, z, color, alpha, scale)
+    scale = scale or 0.04
+    alpha = alpha or 1
+    local text = glasses.addFloatingText()
+    text.set3DPos(x - terminal.x, y - terminal.y, z - terminal.z)
+    text.setColor(hex2RGB(color))
+    text.setAlpha(alpha)
+    text.setScale(scale)
+    text.setText(name)
+    return text
+end
+
+function AR.hudTriangle(glasses, a, b, c, color, alpha)
+    alpha = alpha or 1.0
+    local triangle = glasses.addTriangle()
+    triangle.setColor(hex2RGB(color))
+    triangle.setAlpha(alpha)
+    triangle.setVertex(1, a[1], a[2])
+    triangle.setVertex(2, b[1], b[2])
+    triangle.setVertex(3, c[1], c[2])
+    return triangle
+end
+
+function AR.hudQuad(glasses, a, b, c, d, color, alpha)
+    alpha = alpha or 1.0
+    local quad = glasses.addQuad()
+    quad.setColor(hex2RGB(color))
+    quad.setAlpha(alpha)
+    quad.setVertex(1, a[1], a[2])
+    quad.setVertex(2, b[1], b[2])
+    quad.setVertex(3, c[1], c[2])
+    quad.setVertex(4, d[1], d[2])
+    return quad
+end
+
+function AR.hudRectangle(glasses, x, y, w, h, color, alpha)
+    alpha = alpha or 1.0
+    local rect = glasses.addRect()
+    rect.setPosition(x, y)
+    rect.setSize(h, w)
+    rect.setColor(hex2RGB(color))
+    rect.setAlpha(alpha)
+    return rect
+end
+
+function AR.textSize(textObject, scale)
+    local oldX, oldY = textObject.getPosition()
+    oldX = oldX * textObject.getScale()
+    oldY = oldY * textObject.getScale()
+    textObject.setScale(scale)
+    textObject.setPosition(oldX / (scale + 1), oldY / (scale + 1))
+end
+
+function AR.hudText(glasses, displayText, x, y, color, scale)
+    scale = scale or 1
+    local text = glasses.addTextLabel()
+    text.setText(displayText)
+    text.setPosition(x, y)
+    text.setColor(hex2RGB(color))
+    AR.textSize(text, scale)
+    return text
+end
+
+function AR.remove(glasses, objects)
+    for i = 1, #objects do
+        glasses.removeObject(objects[i].getID())
+    end
+end
+
+function AR.clear(glasses)
+    glasses.removeAll()
+end
+
+local resolution={1920,1080}
+local x=1920/3
+local y=1080/3
+local scale=3
+local screen = {}
+-- Small = 1, Normal = 2, Large = 3, Auto = 4x to 10x (Even)
+function screen.size(resolution, scale)
+    scale = scale or 3
+    return {resolution[1] / scale, resolution[2] / scale}
+end
+
+local function drawEnergyHUD()
+    AR.hudRectangle(glasses, 2, 2, x, y, xcolors.midnightBlue, 0.4)
+end
+    
 initialize(lsc)
+AR.clear(glasses)
 --local oldtime=0
 
 --stats_fh = io.open("stats.dat","w")
@@ -360,7 +487,7 @@ initialize(lsc)
     updateEnergyData(powerStatus)
     
     drawEnergyScreen()
-    --drawEnergyHUD()
+    drawEnergyHUD()
     
     --gpu.fill(1, 1, w, h, " ")
     --gpu.set(40,1,tostring(energyData.energyPerTick))
