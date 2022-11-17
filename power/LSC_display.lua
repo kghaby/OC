@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x00006E,
+    midnightBlue = 0x0A0A58,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -531,11 +531,20 @@ local function drawEnergyHUD()
     end
 end
 
+local function checkRes()
+    for i=1,x,1 do 
+        AR.hudText(glasses, i, i, 1, xcolors.black, 1)
+    end
+    for j=1,y,1 do
+        AR.hudText(glasses, j, 1, j, xcolors.black, 1)
+    end
+end
 
 initialize(lsc)
 AR.clear(glasses)
 AR.hudRectangle(glasses, 1, 360, 203, 24, xcolors.midnightBlue, 0.4)
 AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.midnightBlue, 0.2)
+checkRes()
 
  while true do
     updateEnergyData(powerStatus)
