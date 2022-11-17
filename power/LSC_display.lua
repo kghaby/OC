@@ -468,14 +468,14 @@ function AR.remove(glasses, objects)
     end
 end
 
-function AR.rectangle(glasses, v1, width, heigth, color, alpha)
+function AR.rectangle(glasses, v1, width, height, color, alpha)
     alpha = alpha or 1.0
     local rect = glasses.addQuad()
-    rect.setColor(RGB(color))
+    rect.setColor(hex2RGB(color))
     rect.setAlpha(alpha)
     rect.setVertex(1, v1[1], v1[2])
-    rect.setVertex(2, v1[1], v1[2] + heigth)
-    rect.setVertex(3, v1[1] + width, v1[2] + heigth)
+    rect.setVertex(2, v1[1], v1[2] + height)
+    rect.setVertex(3, v1[1] + width, v1[2] + height)
     rect.setVertex(4, v1[1] + width, v1[2])
     return rect
 end
@@ -494,8 +494,7 @@ end
 
 
 local function drawEnergyHUD()
-    AR.hudRectangle(glasses, 2, 2, x, y, xcolors.midnightBlue, 0.4)
-    AR.testGrid(glasses, resolution, scale)
+    AR.hudRectangle(glasses, 0.04*x, 0.92*y, 0.2*x, 0.04*y, xcolors.midnightBlue, 0.4)
 end
     
 initialize(lsc)
