@@ -464,7 +464,7 @@ function AR.hudRectangle(rect, x, y, w, h, color, alpha)
     rect.setSize(h, w)
     rect.setColor(hex2RGB(color))
     rect.setAlpha(alpha)
-    --return rect
+    return rect
 end
 
 function AR.textSize(textObject, scale)
@@ -494,7 +494,7 @@ function AR.hudText(text, displayText, x, y, color, scale)
     text.setColor(hex2RGB(color))
     
     --AR.textSize(text, scale)
-    --return text
+    return text
 end
 
 function AR.remove(glasses, objects)
@@ -549,7 +549,7 @@ local hudObjects = {
 local function drawEnergyHUD()
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, 33, (percentage*207)+4, 16, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 4, 330, (percentage*207)+4, 16, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
     AR.hudText(hudObjects.maxEU, EUcap, 215-6*#EUcap, 320, xcolors.darkSlateBlue, 1)
     --glasses.removeObject(hudObjects.currentEU.getID())
@@ -573,10 +573,10 @@ end
 
 local function checkRes()
     for i=1,x,20 do 
-        AR.hudText(glasses, tostring(i), i, 1, xcolors.black, 1)
+        AR.hudNewText(glasses, tostring(i), i, 1, xcolors.black, 1)
     end
     for j=1,y,20 do
-        AR.hudText(glasses, tostring(j), 1, j, xcolors.black, 1)
+        AR.hudNewText(glasses, tostring(j), 1, j, xcolors.black, 1)
     end
 end
 
@@ -588,7 +588,7 @@ outerRect.bot=AR.hudNewRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue,
 outerRect.left=AR.hudNewRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.85)
 outerRect.right=AR.hudNewRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.85)
 backRect=AR.hudNewRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
---checkRes()
+checkRes()
 
  while true do
     updateEnergyData(powerStatus)
