@@ -13,6 +13,8 @@ local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 --local w,h=160,50
 gpu.setResolution(32,6)
 local w, h = gpu.getResolution()
+local halfW=w/2
+local vertBarr=h-4
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
 
@@ -297,9 +299,9 @@ local function drawEnergyScreen()
     
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage*w)
-    gpu.fill(1, 3, fillLength, h-4, " ")
+    gpu.fill(1, 3, fillLength, vertBarr, " ")
     gpu.setBackground(xcolors.midnightBlue)
-    gpu.fill(fillLength+1, 3, w, h-4, " ")
+    gpu.fill(fillLength+1, 3, w, vertBarr, " ")
     gpu.setBackground(xcolors.white)
     
     --2nd top row
@@ -310,7 +312,7 @@ local function drawEnergyScreen()
     gpu.set(w-#(EUcap),2,EUcap)
     spectrumRedGreen(percentage,0,1)
     local percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
-    gpu.set((w/2)-(#percentEU/2),2,percentEU)
+    gpu.set((halfW)-(#percentEU/2),2,percentEU)
     
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
@@ -320,7 +322,7 @@ local function drawEnergyScreen()
     gpu.set(w-#(EUinp),h-1,EUinp)
     spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
     local EUrate=sciNot(energyData.energyPerTick)
-    gpu.set((w/2)-(#EUrate/2),h-1,EUrate)
+    gpu.set((halfW)-(#EUrate/2),h-1,EUrate)
 
     
     
@@ -335,13 +337,13 @@ local function drawEnergyScreen()
     else
         fillTimeString = ""
     end
-    gpu.set((w/2)-(#fillTimeString/2),1,fillTimeString)
+    gpu.set((halfW)-(#fillTimeString/2),1,fillTimeString)
     
     --alert maint
     if powerStatus.problems>0 then
         gpu.setForeground(xcolors.red)
         problemMessage="MAINT REQUIRED"
-        gpu.set((w/2)-(#problemMessage/2),h,problemMessage)
+        gpu.set((halfW)-(#problemMessage/2),h,problemMessage)
     end
 end
 
