@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x1D1D58,
+    midnightBlue = 0x00014C,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -520,14 +520,14 @@ local function drawEnergyHUD()
     hudObjects.energyBar=AR.hudRectangle(glasses, 2, 356, (percentage*210)+4, 16, xcolors.electricBlue, 1)
     hudObjects.maxEU=AR.hudText(glasses, EUcap, x, y, xcolors.darkSlateBlue, 1)
     hudObjects.currentEU=AR.hudText(glasses, EUstor, x, y, xcolors.electricBlue, 1)
-    hudObjects.rate=AR.hudText(glasses, EUrate, x, y, rateColor, 1)
+    hudObjects.rate=AR.hudText(glasses, EUrate, x, y, rateColor, 1.4)
     hudObjects.ouput=AR.hudText(glasses, EUout, x, y, xcolors.maroon, 1)
     hudObjects.input=AR.hudText(glasses, EUinp, x, y, xcolors.darkGreen, 1)
-    hudObjects.percent=AR.hudText(glasses, percentEU, x, y, percentColor, 1)
+    hudObjects.percent=AR.hudText(glasses, percentEU, x, y, percentColor, 1.4)
     if powerStatus.problems>0 then
-        hudObjects.prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.red, 1)
+        hudObjects.prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.red, 0.8)
     else
-        hudObjects.time=AR.hudText(glasses, fillTimeString, x, y, xcolors.gray, 1)
+        hudObjects.time=AR.hudText(glasses, fillTimeString, x, y, xcolors.gray, 0.8)
     end
 end
 
@@ -542,11 +542,11 @@ end
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 1, 316, 217, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 1, 348, 217, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 1, 332, 3, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 215, 332, 3, 16, xcolors.midnightBlue, 0.8)
-AR.hudRectangle(glasses, 4, 332, 211, 16, xcolors.midnightBlue, 0.5)
+AR.hudRectangle(glasses, 1, 314, 217, 16, xcolors.midnightBlue, 0.9)
+AR.hudRectangle(glasses, 1, 346, 217, 16, xcolors.midnightBlue, 0.9)
+AR.hudRectangle(glasses, 1, 330, 3, 16, xcolors.midnightBlue, 0.9)
+AR.hudRectangle(glasses, 215, 330, 3, 16, xcolors.midnightBlue, 0.9)
+AR.hudRectangle(glasses, 4, 330, 211, 16, xcolors.midnightBlue, 0.5)
 checkRes()
 
  while true do
