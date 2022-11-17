@@ -560,8 +560,10 @@ local hudObjects = {
     --input=AR.hudNewText(glasses, EUinp, 215-6*#EUinp, 350, xcolors.darkGreen, 1),
     percent = glasses.addTextLabel(),
     --percent=AR.hudNewText(glasses, percentEU, 108-6*(#percentEU/2), 320, xcolors.black, 1),
-    time = glasses.addTextLabel()
+    time = glasses.addTextLabel(),
     --time=AR.hudNewText(glasses, " ", 108, 334, xcolors.lightGray, 1)
+    RSenable = glasses.addRect(),
+    RSdisable = glasses.addRect()
 }
 
 
@@ -597,8 +599,8 @@ end
 local powerControl = {}
 local powerControlData = {}
 
-local enableFraction = 0.15 -- [0,1]
-local disableFraction = 0.85 -- [0,1]
+local enableFraction = 0.2 -- [0,1]
+local disableFraction = 0.9 -- [0,1]
 
 local function disengage()
     redstone.setOutput({0, 0, 0, 0, 0, 0})
@@ -609,8 +611,22 @@ end
 
 --local checkingInterval = 1500
 --local counter = checkingInterval
+
+local function drawRedstone(enableFraction,disableFraction)
+    gpu.setBackground(xcolors.maroon)
+    gpu.fill(disbleFraction*w, 3, 1, vertBarr, " ")
+    gpu.setBackground(xcolors.red)
+    gpu.fill(enableFraction*w, 3, 1, vertBarr, " ")
+end
+
+local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
+    AR.hudRectangle(hudObjects.RSenable, enableFraction*(330-4), 330, 2, 16, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, disableFraction*(330-4), 330, 2, 16, xcolors.maroon, 1)
+end
+
 local function checkPower(fillFraction,enableFraction,disableFraction)
     --if counter == checkingInterval then
+    drawRedstone(enableFraction,disableFraction)
     if fillFraction < enableFraction then
         engage()
     elseif fillFraction > disableFraction then
@@ -623,9 +639,10 @@ local function checkPower(fillFraction,enableFraction,disableFraction)
 end
 
 initialize(lsc)
+drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
 
  while true do
-    updateEnergyData(powerStatus)
+    updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
     drawEnergyHUD()
     checkPower(percentage)
