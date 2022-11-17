@@ -35,7 +35,7 @@ local xcolors = {           --NIDAS colors
     dodgerBlue = 0x1E90FF,
     steelBlue = 0x4682B4,
     darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x0A0A60,
+    midnightBlue = 0x00006E,
     darkBlue = 0x000080,
     darkOrange = 0xFFA500,
     rosyBrown = 0xBC8F8F,
@@ -504,23 +504,15 @@ end
 function AR.clear(glasses)
     glasses.removeAll()
 end
-local percentColor=""
-local rateColor=""
-local EUout=""
-local EUinp=""
-local EUrate=""
-local EUcap=""
-local EUstor=""
-local percentEU=""
 
 local hudObjects = {
-    energyBar=AR.hudRectangle(glasses, 2, 356, 2, 16, xcolors.electricBlue, 0.01)
-    maxEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
-    currentEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
-    rate=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
-    ouput=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
-    input=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
-    percent=AR.hudText(glasses, "0.00%", x, y, xcolors.black, 0.01)
+    energyBar=AR.hudRectangle(glasses, 2, 356, 2, 16, xcolors.electricBlue, 0.01),
+    maxEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
+    currentEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
+    rate=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
+    ouput=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
+    input=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01),
+    percent=AR.hudText(glasses, "0.00%", x, y, xcolors.black, 0.01),
     prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.black, 0.01)
 }
 local function drawEnergyHUD()
@@ -544,27 +536,11 @@ initialize(lsc)
 AR.clear(glasses)
 AR.hudRectangle(glasses, 1, 360, 203, 24, xcolors.midnightBlue, 0.4)
 AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.midnightBlue, 0.2)
---local oldtime=0
 
---stats_fh = io.open("stats.dat","w")
  while true do
-    
     updateEnergyData(powerStatus)
-    
     drawEnergyScreen()
-    drawEnergyHUD()
+    --drawEnergyHUD()
     
-    --gpu.fill(1, 1, w, h, " ")
-    --gpu.set(40,1,tostring(energyData.energyPerTick))
-    --gpu.set(40,2,tostring(energyData.intervalCounter))
-    --gpu.set(40,3,tostring(energyData.input))
-    --gpu.set(40,4,tostring(energyData.output))
-  --  if energyData.energyIn[energyData.intervalCounter] > 0 then
-  --      stats_fh:write(energyData.intervalCounter,'     ',round((computer.uptime()-oldtime)*20),'     ',energyData.energyIn[energyData.intervalCounter],'\n')
-  --      oldtime=computer.uptime()
-  --  end
-    
-    --for k,v in pairs(energyData.energyIn) do stats_fh:write(tostring(k)..'  '..tostring(v)..'\n') end
-    --stats_fh:close()
     os.sleep(sleepTime)
  end
