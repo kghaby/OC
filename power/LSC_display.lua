@@ -620,8 +620,8 @@ local function drawRedstone(enableFraction,disableFraction)
 end
 
 local function drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, enableFraction*(330-4), 330, 2, 16, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, disableFraction*(330-4), 330, 2, 16, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, enableFraction*326+4, 330, 1, 16, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, disableFraction*326+4, 330, 1, 16, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
@@ -645,7 +645,7 @@ drawRedstoneHUD(enableRect,enableFraction,disableRect,disableFraction)
     updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
     drawEnergyHUD()
-    checkPower(percentage)
+    checkPower(percentage,enableFraction,disableFraction)
     
     os.sleep(sleepTime)
  end
