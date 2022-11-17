@@ -290,17 +290,26 @@ end
 local function spectrumRedGreen(num,lowBound,highBound)
     local frac=math.abs(num/(highBound-lowBound))
     if frac > 0.8 then
-        gpu.setForeground(xcolors.green)
+        return xcolors.green
     elseif frac > 0.6 then
-        gpu.setForeground(xcolors.greenYellow)
+        return xcolors.greenYellow
     elseif frac > 0.4 then
-        gpu.setForeground(xcolors.darkYellow)
+        return xcolors.darkYellow
     elseif frac > 0.2 then
-        gpu.setForeground(xcolors.orange)
+        return xcolors.orange
     else
-        gpu.setForeground(xcolors.red)
+        return xcolors.red
     end
 end
+
+local percentColor=""
+local rateColor=""
+local EUout=""
+local EUinp=""
+local EUrate=""
+local EUcap=""
+local EUstor=""
+local percentEU=""
 
 local function drawEnergyScreen() 
     
@@ -317,22 +326,26 @@ local function drawEnergyScreen()
     
     --2nd top row
     gpu.setForeground(xcolors.electricBlue)
-    gpu.set(1,2,sciNot(currentEU))
+    EUstor=sciNot(currentEU)
+    gpu.set(1,2,EUstor)
     gpu.setForeground(xcolors.darkSlateBlue)
-    local EUcap=sciNot(maxEU)
+    EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
-    spectrumRedGreen(percentage,0,1)
-    local percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
+    percentColor=spectrumRedGreen(percentage,0,1)
+    gpu.setForeground(percentColor)
+    percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
     gpu.set((halfW)-(#percentEU/2),2,percentEU)
     
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
-    gpu.set(1,h-1,sciNot(energyData.output))
+    EUout=sciNot(energyData.output)
+    gpu.set(1,h-1,EUout)
     gpu.setForeground(xcolors.darkGreen)
-    local EUinp=sciNot(energyData.input)
+    EUinp=sciNot(energyData.input)
     gpu.set(w-#(EUinp),h-1,EUinp)
-    spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
-    local EUrate=sciNot(energyData.energyPerTick)
+    rateColor=spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
+    gpu.setForeground(rateColor)
+    EUrate=sciNot(energyData.energyPerTick)
     gpu.set((halfW)-(#EUrate/2),h-1,EUrate)
 
     
@@ -491,17 +504,46 @@ end
 function AR.clear(glasses)
     glasses.removeAll()
 end
+local percentColor=""
+local rateColor=""
+local EUout=""
+local EUinp=""
+local EUrate=""
+local EUcap=""
+local EUstor=""
+local percentEU=""
 
-
-local hudObjects = {}
+local hudObjects = {
+    energyBar=AR.hudRectangle(glasses, 2, 356, 2, 16, xcolors.electricBlue, 0.01)
+    maxEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
+    currentEU=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
+    rate=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
+    ouput=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
+    input=AR.hudText(glasses, "0.00E00", x, y, xcolors.black, 0.01)
+    percent=AR.hudText(glasses, "0.00%", x, y, xcolors.black, 0.01)
+    prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.black, 0.01)
+}
 local function drawEnergyHUD()
-    --AR.hudRectangle(glasses, 2, 300, 40, 4, xcolors.midnightBlue, 0.2)
+    AR.remove(glasses, hudObjects)
+    hudObjects.energyBar=AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.electricBlue, 1)
+    hudObjects.maxEU=AR.hudText(glasses, EUcap, x, y, xcolors.darkSlateBlue, 1)
+    hudObjects.currentEU=AR.hudText(glasses, EUstor, x, y, xcolors.electricBlue, 1)
+    hudObjects.rate=AR.hudText(glasses, EUrate, x, y, rateColor, 1)
+    hudObjects.ouput=AR.hudText(glasses, EUout, x, y, xcolors.maroon, 1)
+    hudObjects.input=AR.hudText(glasses, EUinp, x, y, xcolors.darkGreen, 1)
+    hudObjects.percent=AR.hudText(glasses, percentEU, x, y, percentColor, 1)
+    if powerStatus.problems>0 then
+        hudObjects.prob=AR.hudText(glasses, "MAINT REQUIRED", x, y, xcolors.red, 1)
+    else
+        hudObjects.time=AR.hudText(glasses, fillTimeString, x, y, xcolors.gray, 1)
+    end
 end
 
 
 initialize(lsc)
 AR.clear(glasses)
-AR.hudRectangle(glasses, 2, 356, 200, 16, xcolors.midnightBlue, 0.2)
+AR.hudRectangle(glasses, 1, 360, 203, 24, xcolors.midnightBlue, 0.4)
+AR.hudRectangle(glasses, 2, 356, (percentage*200)+2, 16, xcolors.midnightBlue, 0.2)
 --local oldtime=0
 
 --stats_fh = io.open("stats.dat","w")
