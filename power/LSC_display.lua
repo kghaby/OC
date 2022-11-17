@@ -11,6 +11,7 @@ local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 
 --local w,h=160,50
+gpu.setResolution(30,6)
 local w, h = gpu.getResolution()
 local sleepTime=0.05 --s
 local updateInterval = 80/(sleepTime/0.05) --4s
@@ -226,8 +227,7 @@ local powerStatus={}
 local function initialize(lsc)
     gpu.setBackground(xcolors.black)
     gpu.fill(1, 1, w, h, " ") -- clears the screen
-    gpu.setResolution(30,5)
-    w, h = gpu.getResolution()
+
     powerStatus=get_LSC_info(lsc)
 end
 
@@ -317,22 +317,26 @@ local function drawEnergyScreen()
     local EUrate=sciNot(energyData.energyPerTick)
     gpu.set((w/2)-(#EUrate/2),h,EUrate)
 
+    
+    
+    --time until full
+    gpu.setForeground(xcolors.gray)
+    if energyData.energyPerTick > 0 then
+        fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
+        fillTimeString = "Full: " .. time.format(math.abs(fillTime))
+    elseif energyData.energyPerTick < 0 then
+        fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
+        fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
+    else
+        fillTimeString = ""
+    end
+    gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
+    
+    --alert maint
     if problems>0 then
         gpu.setForeground(xcolors.red)
         problemMessage="MAINT REQUIRED"
-        gpu.set((w/2)-(#problemMessage/2),3,problemMessage)
-    else
-        gpu.setForeground(xcolors.gray)
-        if energyData.energyPerTick > 0 then
-            fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Full: " .. time.format(math.abs(fillTime))
-        elseif energyData.energyPerTick < 0 then
-            fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
-        else
-            fillTimeString = ""
-        gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
-        end
+        gpu.set((w/2)-(#problemMessage/2),4,problemMessage)
     end
 end
 
