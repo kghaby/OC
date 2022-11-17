@@ -52,8 +52,8 @@ local function sciNot(n)
 end
 
 
-local time = {}
-local function time.format(number)
+
+local function timeFormat(number)
     if number == 0 then
         return 0
     else
@@ -325,10 +325,10 @@ local function drawEnergyScreen()
         gpu.setForeground(xcolors.gray)
         if energyData.energyPerTick > 0 then
             fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Full: " .. time.format(math.abs(fillTime))
+            fillTimeString = "Full: " .. timeFormat(math.abs(fillTime))
         elseif energyData.energyPerTick < 0 then
             fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
-            fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
+            fillTimeString = "Empty: " .. timeFormat(math.abs(fillTime))
         else
             fillTimeString = ""
         gpu.set((w/2)-(#fillTimeString/2),3,fillTimeString)
