@@ -302,14 +302,14 @@ local function spectrumRedGreen(num,lowBound,highBound)
     end
 end
 
-local percentColor=" "
-local rateColor=" "
-local EUout=" "
-local EUinp=" "
-local EUrate=" "
-local EUcap=" "
-local EUstor=" "
-local percentEU=" "
+local percentColor=""
+local rateColor=""
+local EUout=""
+local EUinp=""
+local EUrate=""
+local EUcap=""
+local EUstor=""
+local percentEU=""
 
 local function drawEnergyScreen() 
     
@@ -481,7 +481,8 @@ function AR.hudNewText(glasses, displayText, x, y, color, scale)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
-    AR.textSize(text, scale)
+    text.setScale(scale)
+    --AR.textSize(text, scale)
     return text
 end
 
@@ -490,7 +491,8 @@ function AR.hudText(text, glasses, displayText, x, y, color, scale)
     text.setText(displayText)
     text.setPosition(x, y)
     text.setColor(hex2RGB(color))
-    AR.textSize(text, scale)
+    text.setScale(scale)
+    --AR.textSize(text, scale)
     return text
 end
 
