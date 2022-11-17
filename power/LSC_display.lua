@@ -307,6 +307,21 @@ local function spectrumRedGreen(num,lowBound,highBound)
     end
 end
 
+local function spectrumRedGreen2(num,lowBound,highBound)
+    local frac=num/(highBound-lowBound)
+    if frac > 0.8 then
+        return xcolors.green
+    elseif frac > 0.4 then
+        return xcolors.greenYellow
+    elseif frac > 0.0 then
+        return xcolors.darkYellow
+    elseif frac > -0.4 then
+        return xcolors.orange
+    else
+        return xcolors.red
+    end
+end
+
 local function drawRedstone(enableFraction,disableFraction)
     gpu.setBackground(xcolors.maroon)
     gpu.fill(disableFraction*w, 3, 1, vertBarr, " ")
@@ -357,7 +372,7 @@ local function drawEnergyScreen()
     gpu.setForeground(xcolors.darkGreen)
     EUinp=sciNot(energyData.input)
     gpu.set(w-#(EUinp),h-1,EUinp)
-    rateColor=spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
+    rateColor=spectrumRedGreen2(energyData.energyPerTick,energyData.output,energyData.input)
     gpu.setForeground(rateColor)
     EUrate=sciNot(energyData.energyPerTick)
     if energyData.energyPerTick>0 then
