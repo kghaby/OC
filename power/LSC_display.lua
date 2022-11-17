@@ -52,8 +52,9 @@ local xcolors = {           --NIDAS colors
     darkGray = 0x181828,
     darkSlateGrey = 0x2F4F4F,
     orange = 0xFF6600,
-    darkGreen= 0x008000,
-    darkYellow=0x9F9F00
+    darkGreen= 0x005000,
+    darkYellow=0x9F9F00,
+    darkElectricBlue=0x477B98
 }
 
 local function hex2RGB(hex)
@@ -332,7 +333,7 @@ local function drawEnergyScreen()
     gpu.setBackground(xcolors.electricBlue)
     local fillLength=math.ceil(percentage*w)
     gpu.fill(1, 3, fillLength, vertBarr, " ")
-    gpu.setBackground(xcolors.darkSlateGrey)
+    gpu.setBackground(xcolors.darkElectricBlue)
     gpu.fill(fillLength+1, 3, w, vertBarr, " ")
     drawRedstone(enableFraction,disableFraction)
     gpu.setBackground(xcolors.white)
@@ -341,7 +342,7 @@ local function drawEnergyScreen()
     gpu.setForeground(xcolors.electricBlue)
     EUstor=sciNot(currentEU)
     gpu.set(1,2,EUstor)
-    gpu.setForeground(xcolors.darkSlateBlue)
+    gpu.setForeground(xcolors.darkElectricBlue)
     EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
     percentColor=spectrumRedGreen(percentage,0,1)
@@ -359,6 +360,9 @@ local function drawEnergyScreen()
     rateColor=spectrumRedGreen(energyData.energyPerTick,energyData.highestOutput,energyData.highestInput)
     gpu.setForeground(rateColor)
     EUrate=sciNot(energyData.energyPerTick)
+    if energyPerTick>0 then
+        EUrate='+'..EuRate
+    end
     gpu.set((halfW)-(#EUrate/2),h-1,EUrate)
 
     
@@ -554,7 +558,7 @@ outerRect.top=AR.hudNewRectangle(glasses, 1, 333, 217, 9, xcolors.darkGray, 0.80
 outerRect.bot=AR.hudNewRectangle(glasses, 1, 351, 217, 9, xcolors.darkGray, 0.80)
 outerRect.left=AR.hudNewRectangle(glasses, 1, 342, 3, 9, xcolors.darkGray, 0.80)
 outerRect.right=AR.hudNewRectangle(glasses, 215, 342, 3, 9, xcolors.darkGray, 0.80)
-backRect=AR.hudNewRectangle(glasses, 4, 342, 211, 9, xcolors.darkSlateGrey, 0.5)
+backRect=AR.hudNewRectangle(glasses, 4, 342, 211, 9, xcolors.darkElectricBlue, 0.5)
 --checkRes()
 
 local hudObjects = {
@@ -584,9 +588,9 @@ local function drawEnergyHUD()
     --glasses.removeObject(hudObjects.energyBar.getID())
     AR.hudRectangle(hudObjects.energyBar, 4, 342, (percentage*207)+4, 9, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
-    AR.hudText(hudObjects.maxEU, EUcap, 215-4*#EUcap, 334, xcolors.darkSlateGrey, 0.6)
+    AR.hudText(hudObjects.maxEU, EUcap, 215-4*#EUcap, 336, xcolors.darkElectricBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
-    AR.hudText(hudObjects.currentEU, EUstor, 6, 334, xcolors.electricBlue, 0.6)
+    AR.hudText(hudObjects.currentEU, EUstor, 6, 336, xcolors.electricBlue, 0.6)
     --glasses.removeObject(hudObjects.rate.getID())
     AR.hudText(hudObjects.rate, EUrate, 108-4*(#EUrate/2), 353, rateColor, 0.6)
     --glasses.removeObject(hudObjects.ouput.getID())
@@ -594,13 +598,13 @@ local function drawEnergyHUD()
     --glasses.removeObject(hudObjects.input.getID())
     AR.hudText(hudObjects.input, EUinp, 215-4*#EUinp, 353, xcolors.darkGreen, 0.6)
     --glasses.removeObject(hudObjects.percent.getID())
-    AR.hudText(hudObjects.percent, percentEU, 108-4*(#percentEU/2), 334, percentColor, 0.6)
+    AR.hudText(hudObjects.percent, percentEU, 108-4*(#percentEU/2), 336, percentColor, 0.6)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, problemMessage, 108-4*(#problemMessage/2), 345, xcolors.red, 0.6)
+        AR.hudText(hudObjects.time, problemMessage, 108-4*(#problemMessage/2), 344, xcolors.red, 0.6)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, fillTimeString, 108-4*(#fillTimeString/2), 345, xcolors.lightGray, 0.6)
+        AR.hudText(hudObjects.time, fillTimeString, 108-4*(#fillTimeString/2), 344, xcolors.gray, 0.6)
     end
 end
 
