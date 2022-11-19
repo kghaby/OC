@@ -576,15 +576,17 @@ local function checkRes()
 end
 
 
-local function initializeHUD(glasses,x,y) do
+local function initializeHUD(glasses,x,y)
     AR.clear(glasses)
-    glasses.outerRect={}
-    outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80)
-    outerRect.bot=AR.hudNewRectangle(glasses, 1, y-9, 217, 9, xcolors.darkGray, 0.80)
-    outerRect.left=AR.hudNewRectangle(glasses, 1, y-18, 3, 9, xcolors.darkGray, 0.80)
-    outerRect.right=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80)
-    glasses.backRect=AR.hudNewRectangle(glasses, 4, y-18, 211, 9, xcolors.darkElectricBlue, 0.5)
-    glasses.hudObjects = {
+    glasses.hudObjects.static = {
+        outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80)
+        outerRect.bot=AR.hudNewRectangle(glasses, 1, y-9, 217, 9, xcolors.darkGray, 0.80)
+        outerRect.left=AR.hudNewRectangle(glasses, 1, y-18, 3, 9, xcolors.darkGray, 0.80)
+        outerRect.right=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80)
+        backRect=AR.hudNewRectangle(glasses, 4, y-18, 211, 9, xcolors.darkElectricBlue, 0.5)
+    }
+    
+    glasses.hudObjects.dynamic = {
         energyBar = glasses.addRect(),
         --energyBar=AR.hudNewRectangle(glasses, 4, 330, 6, 16, xcolors.electricBlue, 1),
         maxEU = glasses.addTextLabel(),
@@ -608,7 +610,7 @@ end
 --checkRes()
 
 
-local function drawEnergyHUD(hudObjects,x,y) do
+local function drawEnergyHUD(hudObjects,x,y)
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
     AR.hudRectangle(hudObjects.energyBar, 4, y-18, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
@@ -677,8 +679,8 @@ end
     drawEnergyScreen()
 
     for i=1,#glasses_l,1 do
-        drawEnergyHUD(glasses_l[i].hudObjects,RES_l[i][1],RES_l[i][2])
-        drawRedstoneHUD(glasses_l[i].hudObjects,RES_l[i][1],RES_l[i][2],enableRect,enableFraction,disableRect,disableFraction)
+        drawEnergyHUD(glasses_l[i].hudObjects.dynamic,RES_l[i][1],RES_l[i][2])
+        drawRedstoneHUD(glasses_l[i].hudObjects.dynamic,RES_l[i][1],RES_l[i][2],enableRect,enableFraction,disableRect,disableFraction)
     end
     
     checkPower(percentage,enableFraction,disableFraction)
