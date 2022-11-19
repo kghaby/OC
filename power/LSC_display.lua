@@ -578,11 +578,14 @@ end
 
 local function initializeHUD(glasses,x,y)
     AR.clear(glasses)
+    glasses.hudObjects={}
+    glasses.hudObjects.static={}
+    glasses.hudObjects.static.outerRect={}
     glasses.hudObjects.static = {
-        outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80)
-        outerRect.bot=AR.hudNewRectangle(glasses, 1, y-9, 217, 9, xcolors.darkGray, 0.80)
-        outerRect.left=AR.hudNewRectangle(glasses, 1, y-18, 3, 9, xcolors.darkGray, 0.80)
-        outerRect.right=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80)
+        outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80),
+        outerRect.bot=AR.hudNewRectangle(glasses, 1, y-9, 217, 9, xcolors.darkGray, 0.80),
+        outerRect.left=AR.hudNewRectangle(glasses, 1, y-18, 3, 9, xcolors.darkGray, 0.80),
+        outerRect.right=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80),
         backRect=AR.hudNewRectangle(glasses, 4, y-18, 211, 9, xcolors.darkElectricBlue, 0.5)
     }
     
