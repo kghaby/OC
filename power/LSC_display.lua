@@ -608,7 +608,7 @@ end
 --checkRes()
 
 
-local function drawEnergyHUD(hudObjects,x,y)
+local function drawEnergyHUD(hudObjects,x,y) do
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
     AR.hudRectangle(hudObjects.energyBar, 4, y-18, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
