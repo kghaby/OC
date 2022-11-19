@@ -668,7 +668,7 @@ end
 
 initialize(lsc)
 
-for i in #glasses_l do
+for i=1,#glasses_l,1 do
     initializeHUD(glasses_l[i],RES_l[i][1],RES_l[i][2])
 end
 
@@ -676,7 +676,7 @@ end
     updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
 
-    for i in #glasses_l do
+    for i=1,#glasses_l,1 do
         drawEnergyHUD(glasses_l[i].hudObjects,RES_l[i][1],RES_l[i][2])
         drawRedstoneHUD(glasses_l[i].hudObjects,RES_l[i][1],RES_l[i][2],enableRect,enableFraction,disableRect,disableFraction)
     end
