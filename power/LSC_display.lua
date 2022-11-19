@@ -1,7 +1,7 @@
 --personal resolutions for AR display
 local scale=3 -- gui size
-local RES_G={1920/scale,1080/scale}
-local RES_Z={1920/scale,1080/scale}
+local RES_G={1920/scale,1015/scale}
+local RES_Z={1920/scale,1015/scale}
 local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
@@ -25,8 +25,8 @@ local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
 
 --local w,h=160,50
---gpu.setResolution(32,6)
-gpu.setResolution(80,15)
+gpu.setResolution(32,6)
+--gpu.setResolution(80,15)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
@@ -580,13 +580,13 @@ local function initializeHUD(glasses,x,y)
     AR.clear(glasses)
     glasses.hudObjects={}
     glasses.hudObjects.static={}
-    glasses.hudObjects.static.outerRect={}
+    --glasses.hudObjects.static.outerRect={}
     glasses.hudObjects.static = {
-        outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80),
-        outerRect.bot=AR.hudNewRectangle(glasses, 1, y-9, 217, 9, xcolors.darkGray, 0.80),
-        outerRect.left=AR.hudNewRectangle(glasses, 1, y-18, 3, 9, xcolors.darkGray, 0.80),
-        outerRect.right=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80),
-        backRect=AR.hudNewRectangle(glasses, 4, y-18, 211, 9, xcolors.darkElectricBlue, 0.5)
+        outerRecttop=AR.hudNewRectangle(glasses, 0, y-27, 217, 9, xcolors.darkGray, 0.80),
+        outerRectbot=AR.hudNewRectangle(glasses, 0, y-9, 217, 9, xcolors.darkGray, 0.80),
+        outerRectleft=AR.hudNewRectangle(glasses, 0, y-18, 3, 9, xcolors.darkGray, 0.80),
+        outerRectright=AR.hudNewRectangle(glasses, 215, y-18, 3, 9, xcolors.darkGray, 0.80),
+        backRect=AR.hudNewRectangle(glasses, 3, y-18, 211, 9, xcolors.darkElectricBlue, 0.5)
     }
     
     glasses.hudObjects.dynamic = {
@@ -616,25 +616,25 @@ end
 local function drawEnergyHUD(hudObjects,x,y)
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 4, y-18, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
+    AR.hudRectangle(hudObjects.energyBar, 3, y-18, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
-    AR.hudText(hudObjects.maxEU, EUcap, 215-4*#EUcap, y-24, xcolors.darkElectricBlue, 0.6)
+    AR.hudText(hudObjects.maxEU, EUcap, 215-3.8*#EUcap, y-24, xcolors.darkElectricBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
-    AR.hudText(hudObjects.currentEU, EUstor, 6, y-24, xcolors.electricBlue, 0.6)
+    AR.hudText(hudObjects.currentEU, EUstor, 3, y-24, xcolors.electricBlue, 0.6)
     --glasses.removeObject(hudObjects.rate.getID())
-    AR.hudText(hudObjects.rate, EUrate, 108-4*(#EUrate/2), y-7, rateColor, 0.6)
+    AR.hudText(hudObjects.rate, EUrate, 108-3.8*(#EUrate/2), y-7, rateColor, 0.6)
     --glasses.removeObject(hudObjects.ouput.getID())
-    AR.hudText(hudObjects.ouput, EUout, 6, y-7, xcolors.maroon, 0.6)
+    AR.hudText(hudObjects.ouput, EUout, 3, y-7, xcolors.maroon, 0.6)
     --glasses.removeObject(hudObjects.input.getID())
-    AR.hudText(hudObjects.input, EUinp, 215-4*#EUinp, y-7, xcolors.darkGreen, 0.6)
+    AR.hudText(hudObjects.input, EUinp, 215-3.8*#EUinp, y-7, xcolors.darkGreen, 0.6)
     --glasses.removeObject(hudObjects.percent.getID())
-    AR.hudText(hudObjects.percent, percentEU, 108-4*(#percentEU/2), y-24, percentColor, 0.6)
+    AR.hudText(hudObjects.percent, percentEU, 108-3.8*(#percentEU/2), y-24, percentColor, 0.6)
     if powerStatus.problems>0 then
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, problemMessage, 108-4*(#problemMessage/2), y-16, xcolors.red, 0.6)
+        AR.hudText(hudObjects.time, problemMessage, 108-3.8*(#problemMessage/2), y-16, xcolors.red, 0.6)
     else
         --glasses.removeObject(hudObjects.time.getID())
-        AR.hudText(hudObjects.time, fillTimeString, 108-4*(#fillTimeString/2), y-16, xcolors.black, 0.6)
+        AR.hudText(hudObjects.time, fillTimeString, 108-3.8*(#fillTimeString/2), y-16, xcolors.black, 0.6)
     end
 end
 
@@ -654,8 +654,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(hudObjects,x,y,enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+6, y-18, 1, 9, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+6, y-18, 1, 9, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+5, y-18, 1, 9, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+5, y-18, 1, 9, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
