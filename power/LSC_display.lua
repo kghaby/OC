@@ -25,8 +25,8 @@ local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
 
 --local w,h=160,50
-gpu.setResolution(32,6)
---gpu.setResolution(80,15)
+--gpu.setResolution(32,6)
+gpu.setResolution(80,15)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
