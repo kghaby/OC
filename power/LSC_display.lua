@@ -1,7 +1,8 @@
 --personal resolutions for AR display
-local RES_G={1920,1080}
-local RES_Z={1920,1080}
-local RES_K={1920,1080}
+local scale=3 -- gui size
+local RES_G={1920/scale,1080/scale}
+local RES_Z={1920/scale,1080/scale}
+local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
 
@@ -420,9 +421,6 @@ end
 
 --AR stuff
 
---local x=1920/3
---local y=1080/3
-local scale=3
 local screen = {}
 -- Small = 1, Normal = 2, Large = 3, Auto = 4x to 10x (Even)
 function screen.size(resolution, scale)
@@ -578,7 +576,7 @@ local function checkRes()
 end
 
 
-local initializeHUD(glasses,x,y)
+local function initializeHUD(glasses,x,y) do
     AR.clear(glasses)
     glasses.outerRect={}
     outerRect.top=AR.hudNewRectangle(glasses, 1, y-27, 217, 9, xcolors.darkGray, 0.80)
