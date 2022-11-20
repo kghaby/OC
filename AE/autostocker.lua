@@ -1,11 +1,22 @@
---HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM,FLUID, OR ESSENTIA STOCKING LIST BELOW. DONT FORGET THE COMMA
+--HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM, FLUID, OR ESSENTIA STOCKING LIST BELOW. 
 --format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
+	--DONT FORGET THE COMMA
 --damage is the number after the colon in an item's extended name. Only use to fistinguish between 2 items with same name
 	--eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 
-local stock_l={
+local itemStock_l={
 
 	{label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
+}
+
+local fluidStock_l={ --units of mB
+
+	{label="Example",checkLvl=10,craftAmt=1000}
+}
+
+local essentiaStock_l={
+
+	{label="Example",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
 local component = require("component")
@@ -71,9 +82,8 @@ local function getCPU(name)
 end
 
 
-local function getItem(stockEntry)
+local function makeStockReq(stockEntry)
 	local stockReq={}
-    
 	if stockEntry.label~=nil then
 		stockReq["label"]=stockEntry.label
 	end
@@ -86,8 +96,10 @@ local function getItem(stockEntry)
 	if stockEntry.name~=nil then
 		stockReq["name"]=stockEntry.name
 	end
-    
-	local item_l=ME.getItemsInNetwork(stockReq)
+    return stockReq
+end
+
+local function getItem(stockReq)
 	if #item_l>1 then 
 		print("More than 1 item found with parameters "..Serial.serialize(stockReq))
 		print("Use damage, name, or tag to narrow search")
@@ -106,8 +118,48 @@ local function getItem(stockEntry)
 	end
 end
 
-local function requestCraft(item, amt)
-    local recipe = ME.getCraftables(item)[1]
+local function getFluid(stockReq)
+	local item_l=ME.getFluidInNetwork(stockReq)
+	if #item_l>1 then 
+		print("More than 1 item found with parameters "..Serial.serialize(stockReq))
+		print("Use damage, name, or tag to narrow search")
+		SR_fh = io.open("item_SR.dat","w")
+		for i=1,#item_l,1 do
+			for k,v in pairs(item_l[i]) do
+				SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
+			end
+			SR_fh:write('\n')
+		end
+		print("The item search results have been written to item_SR.dat. Exiting...")
+		SR_fh:close()
+		os.exit()
+	else
+		return item_l[1]
+	end
+end
+
+local function getEssentia(stockReq)
+	local item_l=ME.getEssentiaInNetwork(stockReq)
+	if #item_l>1 then 
+		print("More than 1 item found with parameters "..Serial.serialize(stockReq))
+		print("Use damage, name, or tag to narrow search")
+		SR_fh = io.open("item_SR.dat","w")
+		for i=1,#item_l,1 do
+			for k,v in pairs(item_l[i]) do
+				SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
+			end
+			SR_fh:write('\n')
+		end
+		print("The item search results have been written to item_SR.dat. Exiting...")
+		SR_fh:close()
+		os.exit()
+	else
+		return item_l[1]
+	end
+end
+
+local function requestCraft(stockReq, amt)
+    local recipe = ME.getCraftables(stockReq)[1]
     local req = recipe.request({amount=amt,cpuName=CPUname})
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. item["label"])
 	while req.isDone() == false do
@@ -116,13 +168,46 @@ local function requestCraft(item, amt)
     print("[" .. getDisplayTime() .. "] Done!"..'\n')
 end
 
-local function iterStockQuery(stock_l)
+local function iterItemStockQuery(stock_l)
 	for i=1,#stock_l,1 do
-		local stockReq=stock_l[i]
+		local stockEntry=stock_l[i]
+        local stockReq=makeStockReq(stockEntry)
 		local item=getItem(stockReq)
         if item.size < stockReq.checkLvl then
-            print(getCPU(CPUname).isBusy())
-            while getCPU(CPUname).isBusy() == true do
+            print(getCPU(CPUname).busy)
+            while getCPU(CPUname).busy do
+                os.sleep()
+            end
+            --request craft
+            requestCraft(stockReq, stockReq.craftAmt)
+        end
+        os.sleep(1)
+    end
+end
+
+local function iterFluidStockQuery(stock_l)
+	for i=1,#stock_l,1 do
+		local stockReq=stock_l[i]
+		local item=getFluid(stockReq)
+        if item.size < stockReq.checkLvl then
+            print(getCPU(CPUname).busy)
+            while getCPU(CPUname).busy do
+                os.sleep()
+            end
+            --request craft
+            requestCraft(item, stockReq.craftAmt)
+        end
+        os.sleep(1)
+    end
+end
+
+local function iterEssentiaStockQuery(stock_l)
+	for i=1,#stock_l,1 do
+		local stockReq=stock_l[i]
+		local item=getEssentia(stockReq)
+        if item.size < stockReq.checkLvl then
+            print(getCPU(CPUname).busy)
+            while getCPU(CPUname).busy do
                 os.sleep()
             end
             --request craft
@@ -135,7 +220,9 @@ end
 
 
 while true do
-	iterStockQuery(stock_l)
+	iterItemStockQuery(itemStock_l)
+	--iterFluidStockQuery(itemStock_l)
+	--iterEssentiaStockQuery(itemStock_l)
 	os.sleep()
 end
 
