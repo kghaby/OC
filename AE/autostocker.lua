@@ -108,7 +108,7 @@ end
 
 local function requestCraft(item, amt)
     local recipe = ME.getCraftables(item)[1]
-    local req = recipe.request(amount=amt,cpuName=CPUname)
+    local req = recipe.request({amount=amt,cpuName=CPUname})
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. item["label"])
 	while req.isDone() == false do
 		os.sleep()
@@ -120,13 +120,13 @@ local function iterStockQuery(stock_l)
 	for i=1,#stock_l,1 do
 		local stockReq=stock_l[i]
 		local item=getItem(stockReq)
-        if item.size < stock_l.checkLvl then
+        if item.size < stockReq.checkLvl then
             print(getCPU(CPUname).isBusy())
             while getCPU(CPUname).isBusy() == true do
                 os.sleep()
             end
             --request craft
-            requestCraft(item, stock_l.craftAmt)
+            requestCraft(item, stockReq.craftAmt)
         end
         os.sleep(1)
     end
