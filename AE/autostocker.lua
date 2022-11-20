@@ -75,32 +75,33 @@ end
 
 local function getItem(stockEntry)
 	local stockReq={}
+    
 	if stockEntry.label~=nil then
-		table.insert(stockReq,{label=stockEntry.label})
+		stockReq["label"]=label=stockEntry.label
 	end
 	if stockEntry.damage~=nil then
-		table.insert(stockReq,{damage=stockEntry.damage})
+		stockReq["damage"]=stockEntry.damage
 	end
 	if stockEntry.tag~=nil then
-		table.insert(stockReq,{tag=stockEntry.tag})
+		stockReq["tag"]=stockEntry.tag
 	end
 	if stockEntry.name~=nil then
-		table.insert(stockReq,{name=stockEntry.name})
+		stockReq["name"]=stockEntry.name
 	end
-
+    
 	local item_l=ME.getItemsInNetwork(stockReq)
 	if #item_l>1 then 
 		print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-		print("Use damage, tag, or name to narrow search")
+		print("Use damage, name, or tag to narrow search")
 		SR_fh = io.open("item_SR.dat","w")
 		for i=1,#item_l,1 do
 			for k,v in pairs(item_l[i]) do
-				SR_fh:write(tostring(k)..'	'..tostring(v)..'\n')
+				SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
 			end
 			SR_fh:write('\n')
 		end
 		print("The item search results have been written to item_SR.dat. Exiting...")
-		SR_fh.close()
+		SR_fh:close()
 		os.exit()
 	else
 		return item_l[1]
