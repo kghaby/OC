@@ -5,7 +5,7 @@
 
 local stock_l={
 
-	{name="Example",checkLvl=10,craftAmt=1000}
+	{label="Dirt",checkLvl=10,craftAmt=1000}
 }
 
 local component = require("component")
@@ -70,12 +70,53 @@ local function getCPU(name)
     print("Could not find CPU "..name)
 end
 
-local function iterItems()
 
+
+
+local function getItem(stockEntry)
+	local stockReq={}
+	if stockEntry.label~=nil then
+		table.insert(stockReq,{label=stockEntry.label}}
+	end
+	if stockEntry.damage~=nil then
+		table.insert(stockReq,{damage=stockEntry.damage}}
+	end
+	if stockEntry.tag~=nil then
+		table.insert(stockReq,{tag=stockEntry.tag}}
+	end
+	if stockEntry.name~=nil then
+		table.insert(stockReq,{name=stockEntry.name}}
+	end
+
+	local item_l=ME.getItemsInNetwork(Serialize.serialize(stockReq))
+	if #item_l>1 then 
+		print("More than 1 item found with parameters "..Serial.serialize(stockReq)))
+		print("Use damage, tag, or name to narrow search")
+		SR_fh = io.open("item_SR.dat","w")
+		for i=1,#item_l,1 do
+			for k,v in pairs(item_l[i]) do
+				SR_fh:write(k..'	'..v..'\n')
+			end
+			SR_fh:write('\n')
+		end
+		print("The item search results have been written to item_SR.dat. Exiting...")
+		SR_fh.close()
+		os.exit()
+	else
+		return item_l[1]
+	end
+end
+
+local function iterStockQuery(stock_l)
+	for i=1,#stock_l,1 do
+		stockReq=stock_l[i]
+		item=getItem(stockReq)
+		print("got item "..Serial.serialize)
 end
 
 
 while true do
-	os.sleep()
+	iterStockQuery(stock_l)
+	os.sleep(5)
 end
 
