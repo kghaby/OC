@@ -36,7 +36,7 @@ local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
 
-local xcolors = {           --NIDAS colors
+local xcolors = {           --mostly NIDAS colors
     red = 0xFF0000,
     lime = 0x00FF00,
     blue = 0x0000FF,
@@ -689,4 +689,8 @@ end
     checkPower(percentage,enableFraction,disableFraction)
     
     os.sleep(sleepTime)
+    
+    if round(computer.uptime()) % 3600 == 0 then
+        os.execute("reboot")
+    end
  end
