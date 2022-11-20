@@ -1,6 +1,11 @@
---HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE STOCKING LIST BELOW
+--HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE STOCKING LIST BELOW. DONT FORGET THE COMMA IF APPENDING
+--format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
+--damage is the number after the colon in an item's extended name. Only use to fistinguish between 2 items with same name
+	--eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
+
 local stock_l={
 
+	{name="Example",checkLvl=10,craftAmt=1000}
 }
 
 local component = require("component")
@@ -64,3 +69,13 @@ local function getCPU(name)
     end
     print("Could not find CPU "..name)
 end
+
+local function iterItems()
+
+end
+
+
+while true do
+	os.sleep()
+end
+
