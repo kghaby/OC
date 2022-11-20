@@ -66,7 +66,7 @@ local xcolors = {           --mostly NIDAS colors
 }
 
 function getDisplayTime()
-	return os.date("%H:%M:%S", os.time())
+    return os.date("%H:%M:%S", os.time())
 end
 
 
@@ -83,25 +83,25 @@ end
 
 
 local function makeStockReq(stockEntry)
-	local stockReq={}
-	if stockEntry.label~=nil then
+    local stockReq={}
+    if stockEntry.label~=nil then
         stockReq["label"]=stockEntry.label
-	end
-	if stockEntry.damage~=nil then
+    end
+    if stockEntry.damage~=nil then
         stockReq["damage"]=stockEntry.damage
-	end
-	if stockEntry.tag~=nil then
+    end
+    if stockEntry.tag~=nil then
         stockReq["tag"]=stockEntry.tag
-	end
-	if stockEntry.name~=nil then
+    end
+    if stockEntry.name~=nil then
         stockReq["name"]=stockEntry.name
-	end
+    end
     return stockReq
 end
 
 local function getItem(stockReq)
     local item_l=ME.getItemsInNetwork(stockReq)
-	if #item_l>1 then 
+    if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, or tag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
@@ -116,12 +116,12 @@ local function getItem(stockReq)
         os.exit()
         else
             return item_l[1]
-	end
+    end
 end
 
 local function getFluid(stockReq)
-	local item_l=ME.getFluidInNetwork(stockReq)
-	if #item_l>1 then 
+    local item_l=ME.getFluidInNetwork(stockReq)
+    if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, or tag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
@@ -136,12 +136,12 @@ local function getFluid(stockReq)
         os.exit()
         else
             return item_l[1]
-	end
+    end
 end
 
 local function getEssentia(stockReq)
-	local item_l=ME.getEssentiaInNetwork(stockReq)
-	if #item_l>1 then 
+    local item_l=ME.getEssentiaInNetwork(stockReq)
+    if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, or tag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
@@ -156,7 +156,7 @@ local function getEssentia(stockReq)
         os.exit()
         else
             return item_l[1]
-	end
+    end
 end
 
 local function requestCraft(stockReq, amt)
@@ -164,14 +164,14 @@ local function requestCraft(stockReq, amt)
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"])
     local req = recipe.request(amt,false,CPUname)
 
-	while req.isDone() == false do
+    while req.isDone() == false do
         os.sleep()
-	end
+    end
     print("[" .. getDisplayTime() .. "] Done!"..'\n')
 end
 
 local function iterItemStockQuery(stock_l)
-	for i=1,#stock_l,1 do
+    for i=1,#stock_l,1 do
         local stockEntry=stock_l[i]
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
@@ -188,12 +188,11 @@ local function iterItemStockQuery(stock_l)
 end
 
 local function iterFluidStockQuery(stock_l)
-	for i=1,#stock_l,1 do
+    for i=1,#stock_l,1 do
         local stockEntry=stock_l[i]
         local stockReq=makeStockReq(stockEntry)
         local item=getFluid(stockReq)
         if item.size < stockEntry.checkLvl then
-            print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
@@ -205,12 +204,11 @@ local function iterFluidStockQuery(stock_l)
 end
 
 local function iterEssentiaStockQuery(stock_l)
-	for i=1,#stock_l,1 do
+    for i=1,#stock_l,1 do
         local stockEntry=stock_l[i]
         local stockReq=makeStockReq(stockEntry)
         local item=getEssentia(stockReq)
         if item.size < stockEntry.checkLvl then
-            print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
@@ -224,9 +222,9 @@ end
 
 
 while true do
-	iterItemStockQuery(itemStock_l)
-	--iterFluidStockQuery(itemStock_l)
-	--iterEssentiaStockQuery(itemStock_l)
-	os.sleep()
+    iterItemStockQuery(itemStock_l)
+    --iterFluidStockQuery(itemStock_l)
+    --iterEssentiaStockQuery(itemStock_l)
+    os.sleep()
 end
 
