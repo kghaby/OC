@@ -1,11 +1,11 @@
---HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE STOCKING LIST BELOW. DONT FORGET THE COMMA IF APPENDING
+--HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE STOCKING LIST BELOW. DONT FORGET THE COMMA
 --format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
 --damage is the number after the colon in an item's extended name. Only use to fistinguish between 2 items with same name
 	--eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 
 local stock_l={
 
-	{label="Dirt",checkLvl=10,craftAmt=1000}
+	{label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
 local component = require("component")
@@ -59,7 +59,7 @@ function getDisplayTime()
 end
 
 
-local name="ZAutostocker"
+local CPUname="ZAutostocker"
 local function getCPU(name)
     local CPU_l=ME.getCPUs()
     for i=1,#CPU_l,1 do 
@@ -71,13 +71,11 @@ local function getCPU(name)
 end
 
 
-
-
 local function getItem(stockEntry)
 	local stockReq={}
     
 	if stockEntry.label~=nil then
-		stockReq["label"]=label=stockEntry.label
+		stockReq["label"]=stockEntry.label
 	end
 	if stockEntry.damage~=nil then
 		stockReq["damage"]=stockEntry.damage
@@ -108,17 +106,36 @@ local function getItem(stockEntry)
 	end
 end
 
+local function requestCraft(item, amt)
+    local recipe = ME.getCraftables(item)[1]
+    local req = recipe.request(amount=amt,cpuName=CPUname)
+    print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. item["label"])
+	while req.isDone() == false do
+		os.sleep()
+    end
+    print("[" .. getDisplayTime() .. "] Done!"..'\n')
+end
+
 local function iterStockQuery(stock_l)
 	for i=1,#stock_l,1 do
-		stockReq=stock_l[i]
-		item=getItem(stockReq)
-		print("got item "..Serial.serialize)
+		local stockReq=stock_l[i]
+		local item=getItem(stockReq)
+        if item.size < stock_l.checkLvl then
+            print(getCPU(CPUname).isBusy())
+            while getCPU(CPUname).isBusy() == true do
+                os.sleep()
+            end
+            --request craft
+            requestCraft(item, stock_l.craftAmt)
+        end
+        os.sleep(1)
     end
 end
 
 
+
 while true do
 	iterStockQuery(stock_l)
-	os.sleep(5)
+	os.sleep()
 end
 
