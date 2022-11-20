@@ -100,6 +100,7 @@ local function makeStockReq(stockEntry)
 end
 
 local function getItem(stockReq)
+    local item_l=ME.getItemsInNetwork(stockReq)
 	if #item_l>1 then 
 		print("More than 1 item found with parameters "..Serial.serialize(stockReq))
 		print("Use damage, name, or tag to narrow search")
@@ -173,13 +174,13 @@ local function iterItemStockQuery(stock_l)
 		local stockEntry=stock_l[i]
         local stockReq=makeStockReq(stockEntry)
 		local item=getItem(stockReq)
-        if item.size < stockReq.checkLvl then
+        if item.size < stockEntry.checkLvl then
             print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
             --request craft
-            requestCraft(stockReq, stockReq.craftAmt)
+            requestCraft(stockReq, stockEntry.craftAmt)
         end
         os.sleep(1)
     end
@@ -187,15 +188,16 @@ end
 
 local function iterFluidStockQuery(stock_l)
 	for i=1,#stock_l,1 do
-		local stockReq=stock_l[i]
+		local stockEntry=stock_l[i]
+        local stockReq=makeStockReq(stockEntry)
 		local item=getFluid(stockReq)
-        if item.size < stockReq.checkLvl then
+        if item.size < stockEntry.checkLvl then
             print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
             --request craft
-            requestCraft(item, stockReq.craftAmt)
+            requestCraft(item, stockEntry.craftAmt)
         end
         os.sleep(1)
     end
@@ -203,15 +205,16 @@ end
 
 local function iterEssentiaStockQuery(stock_l)
 	for i=1,#stock_l,1 do
-		local stockReq=stock_l[i]
+		local stockEntry=stock_l[i]
+        local stockReq=makeStockReq(stockEntry)
 		local item=getEssentia(stockReq)
-        if item.size < stockReq.checkLvl then
+        if item.size < stockEntry.checkLvl then
             print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
             --request craft
-            requestCraft(item, stockReq.craftAmt)
+            requestCraft(item, stockEntry.craftAmt)
         end
         os.sleep(1)
     end
