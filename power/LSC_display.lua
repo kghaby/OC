@@ -374,6 +374,7 @@ local function drawEnergyScreen()
     EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
     percentColor=spectrumRedGreen(percentage,0,1)
+    gpu.fill(11, 2, 10, 1, " ") -- reset % space to white 
     gpu.setForeground(percentColor)
     percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
     gpu.set((halfW)-(#percentEU/2),2,percentEU)
