@@ -163,11 +163,15 @@ local function requestCraft(stockReq, amt)
     local recipe = ME.getCraftables(stockReq)[1]
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"])
     local req = recipe.request(amt,false,CPUname)
-
-    while req.isDone() == false do
+    local cStatus,reason=req.isDone()
+    while cStatus == false and req.isCanceled() == false do  
         os.sleep()
     end
-    print("[" .. getDisplayTime() .. "] Done!"..'\n')
+    if req.isCanceled() == true then
+        print("[" .. getDisplayTime() .. "] Canceled. Reason: "..reason..'\n'
+    else
+        print("[" .. getDisplayTime() .. "] Done. "..'\n')
+    end
 end
 
 local function iterItemStockQuery(stock_l)
