@@ -1,4 +1,4 @@
---HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE STOCKING LIST BELOW. DONT FORGET THE COMMA
+--HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM,FLUID, OR ESSENTIA STOCKING LIST BELOW. DONT FORGET THE COMMA
 --format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
 --damage is the number after the colon in an item's extended name. Only use to fistinguish between 2 items with same name
 	--eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
@@ -61,7 +61,7 @@ end
 
 local CPUname="ZAutostocker"
 local function getCPU(name)
-    local CPU_l=ME.getCPUs()
+    local CPU_l=ME.getCpus()
     for i=1,#CPU_l,1 do 
         if CPU_l[i].name == name then
             return CPU_l[i]
