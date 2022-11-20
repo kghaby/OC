@@ -23,7 +23,9 @@ local lsc = component.proxy("83d81a1c-55e4-4a46-a63b-70a5997f142a")
 local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
 local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
 local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
+local RScard=component.proxy("02e29142-f3bf-4ddf-a71b-30dc578a7541")
 
+RScard.setWakeThreshold(0)
 --local w,h=160,50
 gpu.setResolution(32,6)
 --gpu.setResolution(80,15)
