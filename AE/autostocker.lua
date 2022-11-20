@@ -5,7 +5,7 @@
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 
 local itemStock_l={
-
+    {label="drop of Air",checkLvl=10000000000,craftAmt=1000000},
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
@@ -168,7 +168,10 @@ local function requestCraft(stockReq, amt)
         os.sleep()
     end
     if req.isCanceled() == true then
-        print("[" .. getDisplayTime() .. "] Canceled. Reason: "..reason..'\n'
+        if reason == nil then
+            reason="Dunno. Maybe human."
+        end
+        print("[" .. getDisplayTime() .. "] Canceled. Reason: "..reason..'\n')
     else
         print("[" .. getDisplayTime() .. "] Done. "..'\n')
     end
@@ -179,14 +182,18 @@ local function iterItemStockQuery(stock_l)
         local stockEntry=stock_l[i]
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
+        if item==nil then
+            print("No item yielded with query "..Serial.serialize(stockReq)
+            goto continue
+        end
         if item.size < stockEntry.checkLvl then
-            print(getCPU(CPUname).busy)
             while getCPU(CPUname).busy do
                 os.sleep()
             end
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt)
         end
+        ::continue::
         os.sleep(1)
     end
 end
@@ -229,6 +236,6 @@ while true do
     iterItemStockQuery(itemStock_l)
     --iterFluidStockQuery(itemStock_l)
     --iterEssentiaStockQuery(itemStock_l)
-    os.sleep()
+    os.sleep(10)
 end
 
