@@ -1,4 +1,5 @@
 --HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM STOCKING LIST BELOW, REBOOT, AND RUN "autostocker"
+--The script checks if the current stock (including any stock that is current being crafted) is *less than* the checkLvl
 --format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
     --DONT FORGET THE COMMA
 --damage is the number after the colon in an item's extended name. Only use to distinguish between 2 items with same name
