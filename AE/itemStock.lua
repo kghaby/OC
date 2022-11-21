@@ -7,15 +7,15 @@
 
 local itemStock_l={
     {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
-    {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Rack",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Adapter",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Keyboard",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Central Processing Unit (CPU) (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Internet Card",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Rack",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Adapter",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Keyboard",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Central Processing Unit (CPU) (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
+    {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=1,craftAmt=1},
     {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=6},
-    {label="Server (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Server (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
