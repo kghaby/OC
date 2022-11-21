@@ -1,7 +1,6 @@
 local component = require("component")
 local computer = require("computer")
 local os = require("os")
-os.execute("reboot")
 local Serial = require("serialization")
 local math = require("math")
 local gpu = component.gpu
