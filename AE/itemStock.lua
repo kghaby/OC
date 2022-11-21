@@ -5,7 +5,7 @@
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
-itemStock_l={
+local itemStock_l={
     {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
     {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
