@@ -1,6 +1,7 @@
 local component = require("component")
 local computer = require("computer")
 local os = require("os")
+os.execute("reboot")
 local Serial = require("serialization")
 local math = require("math")
 local gpu = component.gpu
@@ -8,6 +9,10 @@ local basew,baseh=160,50
 gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
+
+--autoreboot with comparator next to comp >not gate>signal back into comp
+RScard=component.proxy("dfeb5ae3-3e58-4467-b834-853af8bc6a9a")
+RScard.setWakeThreshold(10)
 
 local itemStock_l=require("itemStock")
 local sleepTime=60 --s
