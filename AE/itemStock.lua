@@ -11,7 +11,7 @@ local itemStock_l={
     {label="Steel Screw",checkLvl=8,craftAmt=16},
     {label="Nanoprocessor",checkLvl=4,craftAmt=8},
     {label="Cable Anchor",checkLvl=40,craftAmt=100},
-    {label="Drilling Fluid Cell",checkLvl=1000,craftAmt=1000},
+    {label="Drilling Fluid Cell",checkLvl=3000,craftAmt=3000},
     {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
     {label="Internet Card",hasTag=false,checkLvl=1,craftAmt=1},
     {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
