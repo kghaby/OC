@@ -22,14 +22,31 @@ function getDisplayTime()
     return os.date("%H:%M:%S", os.time())
 end
 
-
+local running_l={}
 local CPUname="Auto"
+
+
+local function getAmtCrafting(name,stockReq)
+    --gets the amount of the item thats already being crafted in <name> cpus
+    local CPU_l=ME.getCpus()
+    local amtCrafting=0
+    for i=1,#CPU_l,1 do 
+        if string.find(CPU_l[i].name,name) and CPU_l[i].busy then
+                local cpu=CPU_l[i].cpu
+                if cpu.finalOutput().label == stockReq.label then
+                    amtCrafting=amtCrafting+cpu.finalOutput.size()
+                end
+        end
+    end
+    return amtCrafting
+end
+
 local function getCPU(name)
     local CPU_l=ME.getCpus()
     local found=false
     while not found do
         for i=1,#CPU_l,1 do 
-            --look for an avail CPU with Auto in the name 
+            --look for an avail CPU with Auto in the name
             if string.find(CPU_l[i].name,name) and not CPU_l[i].busy then 
                 found=true
                 return CPU_l[i]
@@ -86,7 +103,6 @@ local function requestCraft(stockReq, amt,CPU)
     local recipe = ME.getCraftables(stockReq)[1]
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
     local req = recipe.request(amt,false,CPU.name)
-    
     --while not req.isDone() and not req.isCanceled() do  
     --    cStatus,reason=req.isDone()
     --    os.sleep()
@@ -112,7 +128,8 @@ local function iterItemStockQuery(stock_l)
             print("No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
-        if item.size < stockEntry.checkLvl then
+        check=stockEntry.checkLvl+getAmtCrafting(CPUname,stockReq)
+        if item.size < check then
             local CPU=getCPU(CPUname)
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt,CPU)
