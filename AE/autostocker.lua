@@ -1,7 +1,7 @@
 --HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM STOCKING LIST BELOW. 
 --format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
     --DONT FORGET THE COMMA
---damage is the number after the colon in an item's extended name. Only use to fistinguish between 2 items with same name
+--damage is the number after the colon in an item's extended name. Only use to distinguish between 2 items with same name
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
@@ -101,7 +101,7 @@ local function requestCraft(stockReq, amt)
     local req = recipe.request(amt,false,CPUname)
     local cStatus,reason=req.isDone()
     while cStatus == false and req.isCanceled() == false do  
-        os.sleep(1)
+        os.sleep()
         if cStatus or req.isCanceled() then
             break
         end   
@@ -127,7 +127,7 @@ local function iterItemStockQuery(stock_l)
         end
         if item.size < stockEntry.checkLvl then
             while getCPU(CPUname).busy do
-                os.sleep(1)
+                os.sleep(0)
                 if not getCPU(CPUname).busy then
                     break
                 end
