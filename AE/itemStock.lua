@@ -6,6 +6,7 @@
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
 local itemStock_l={
+    {label="Drilling Fluid Cell",checkLvl=1000,craftAmt=1000}
     {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
     {label="Internet Card",hasTag=false,checkLvl=1,craftAmt=1},
     {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
@@ -16,7 +17,7 @@ local itemStock_l={
     {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=1,craftAmt=1},
     {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=6},
     {label="Server (Tier 3)",hasTag=false,checkLvl=1,craftAmt=1},
-    {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
+    {label="Pyrotheum Dust",damage=2843,checkLvl=100,craftAmt=1000}
 }
 
 return itemStock_l
