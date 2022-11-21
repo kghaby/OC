@@ -5,6 +5,16 @@
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 
 local itemStock_l={
+    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Rack",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Adapter",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Keyboard",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Central Processing Unit (CPU) (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=1},
+    {label="Server (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
@@ -60,7 +70,7 @@ local function getItem(stockReq)
     local item_l=ME.getItemsInNetwork(stockReq)
     if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, or tag to narrow search")
+        print("Use damage, name, tag, etc to narrow search")
         SR_fh = io.open("item_SR.dat","w")
         for i=1,#item_l,1 do
             for k,v in pairs(item_l[i]) do
