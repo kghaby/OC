@@ -33,9 +33,10 @@ local w, h = gpu.getResolution()
 local ME = component.me_interface
 
 
-itemStock_fh = io.open("itemStock.dat","r")
-itemStock_l = Serial.unserialize(itemStock_fh:read())
-itemStock_fh:close()
+--itemStock_fh = io.open("itemStock.dat","r")
+--itemStock_l = Serial.unserialize(itemStock_fh:read())
+--itemStock_fh:close()
+
 
 local function round(num) return math.floor(num+.5) end
 
@@ -104,6 +105,9 @@ local function requestCraft(stockReq, amt)
     local cStatus,reason=req.isDone()
     while cStatus == false and req.isCanceled() == false do  
         os.sleep(1)
+        if cStatus or req.isCanceled() then
+            break
+        end   
     end
     if req.isCanceled() == true then
         if reason == nil then
@@ -127,6 +131,9 @@ local function iterItemStockQuery(stock_l)
         if item.size < stockEntry.checkLvl then
             while getCPU(CPUname).busy do
                 os.sleep(1)
+                if not getCPU(CPUname).busy then
+                    break
+                end
             end
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt)
