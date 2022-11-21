@@ -161,7 +161,7 @@ local function iterItemStockQuery(stock_l)
             requestCraft(stockReq, stockEntry.craftAmt)
         end
         ::continue::
-        os.sleep(4)
+        os.sleep(10)
     end
 end
 
