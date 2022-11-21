@@ -19,6 +19,10 @@ local itemStock_l={
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
+itemStock_fh = io.open("itemStock.dat","r")
+itemStock_l = Serial.unserialize(itemStock_fh:read())
+itemStock_fh:close()
+
 local component = require("component")
 local computer = require("computer")
 local os = require("os")
