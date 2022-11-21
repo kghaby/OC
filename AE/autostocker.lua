@@ -6,7 +6,7 @@
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
 local itemStock_l={
-    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=1},
+    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
     {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Rack",hasTag=false,checkLvl=0,craftAmt=1},
@@ -14,14 +14,12 @@ local itemStock_l={
     {label="Keyboard",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Central Processing Unit (CPU) (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=1},
+    {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=6},
     {label="Server (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
-itemStock_fh = io.open("itemStock.dat","r")
-itemStock_l = Serial.unserialize(itemStock_fh:read())
-itemStock_fh:close()
+
 
 local component = require("component")
 local computer = require("computer")
@@ -32,8 +30,12 @@ local gpu = component.gpu
 local basew,baseh=160,50
 gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
-
 local ME = component.me_interface
+
+
+itemStock_fh = io.open("itemStock.dat","r")
+itemStock_l = Serial.unserialize(itemStock_fh:read())
+itemStock_fh:close()
 
 local function round(num) return math.floor(num+.5) end
 
@@ -101,7 +103,7 @@ local function requestCraft(stockReq, amt)
     local req = recipe.request(amt,false,CPUname)
     local cStatus,reason=req.isDone()
     while cStatus == false and req.isCanceled() == false do  
-        os.sleep()
+        os.sleep(1)
     end
     if req.isCanceled() == true then
         if reason == nil then
@@ -124,13 +126,12 @@ local function iterItemStockQuery(stock_l)
         end
         if item.size < stockEntry.checkLvl then
             while getCPU(CPUname).busy do
-                os.sleep()
+                os.sleep(1)
             end
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt)
         end
         ::continue::
-        os.sleep(10)
     end
 end
 
@@ -149,8 +150,8 @@ end
 
 while true do
     iterItemStockQuery(itemStock_l)
-    displayStats() --lags server! 1k ms tick
+    --displayStats() --lags server! 1k ms tick
     
-    os.sleep()
+    os.sleep(1)
 end
 
