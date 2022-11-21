@@ -5,18 +5,7 @@
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 
 local itemStock_l={
-    {label="drop of Air",checkLvl=10000000000,craftAmt=1000000},
     {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
-}
-
-local fluidStock_l={ --units of mB
-
-    {label="Example",checkLvl=10,craftAmt=1000}
-}
-
-local essentiaStock_l={
-
-    {label="Example",damage=2843,checkLvl=10,craftAmt=1000}
 }
 
 local component = require("component")
@@ -31,39 +20,7 @@ local w, h = gpu.getResolution()
 
 local ME = component.me_interface
 
-local xcolors = {           --mostly NIDAS colors
-    red = 0xFF0000,
-    lime = 0x00FF00,
-    blue = 0x0000FF,
-    magenta = 0xFF00FF,
-    yellow = 0xFFFF00,
-    cyan = 0x00FFFF,
-    greenYellow = 0xADFF2F,
-    green = 0x00B000,
-    darkOliveGreen = 0x556B2F,
-    indigo = 0x4B0082,
-    purple = 0x800080,
-    electricBlue = 0x00A6FF,
-    dodgerBlue = 0x1E90FF,
-    steelBlue = 0x4682B4,
-    darkSlateBlue = 0x483D8B,
-    midnightBlue = 0x00014C,
-    darkBlue = 0x000080,
-    darkOrange = 0xFFA500,
-    rosyBrown = 0xBC8F8F,
-    golden = 0xDAA520,
-    maroon = 0x800000,
-    black = 0x000000,
-    white = 0xFFFFFF,
-    gray = 0x3C5B72,
-    lightGray = 0xA9A9A9,
-    darkGray = 0x181828,
-    darkSlateGrey = 0x2F4F4F,
-    orange = 0xFF6600,
-    darkGreen= 0x007000,
-    darkYellow=0x9F9F00,
-    darkElectricBlue=0x477B98
-}
+local function round(num) return math.floor(num+.5) end
 
 function getDisplayTime()
     return os.date("%H:%M:%S", os.time())
@@ -183,7 +140,7 @@ local function iterItemStockQuery(stock_l)
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
         if item==nil then
-            print("No item yielded with query "..Serial.serialize(stockReq)
+            print("No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
         if item.size < stockEntry.checkLvl then
@@ -198,44 +155,25 @@ local function iterItemStockQuery(stock_l)
     end
 end
 
-local function iterFluidStockQuery(stock_l)
-    for i=1,#stock_l,1 do
-        local stockEntry=stock_l[i]
-        local stockReq=makeStockReq(stockEntry)
-        local item=getFluid(stockReq)
-        if item.size < stockEntry.checkLvl then
-            while getCPU(CPUname).busy do
-                os.sleep()
-            end
-            --request craft
-            requestCraft(stockReq, stockEntry.craftAmt)
-        end
-        os.sleep(1)
-    end
+local function displayStats()
+    local totalTypes=#ME.getItemsInNetwork()
+    local totalCraftables=#ME.getCraftables()
+    gpu.fill(130,1,30,3," ")
+    header="====STATS===="
+    typeMsg=tostring(totalTypes).." Types"
+    patternMsg=tostring(totalCraftables).." Patterns"
+    gpu.set(w-#header-2,1,header)
+    gpu.set(w-#typeMsg-2,2,typeMsg)
+    gpu.set(w-#patternMsg-2,3,patternMsg)
 end
-
-local function iterEssentiaStockQuery(stock_l)
-    for i=1,#stock_l,1 do
-        local stockEntry=stock_l[i]
-        local stockReq=makeStockReq(stockEntry)
-        local item=getEssentia(stockReq)
-        if item.size < stockEntry.checkLvl then
-            while getCPU(CPUname).busy do
-                os.sleep()
-            end
-            --request craft
-            requestCraft(stockReq, stockEntry.craftAmt)
-        end
-        os.sleep(1)
-    end
-end
-
 
 
 while true do
     iterItemStockQuery(itemStock_l)
-    --iterFluidStockQuery(itemStock_l)
-    --iterEssentiaStockQuery(itemStock_l)
-    os.sleep(10)
+    if round(computer.uptime()) % 1800 == 0 then --every 30 min
+        displayStats()
+    end
+    
+    os.sleep(60)
 end
 
