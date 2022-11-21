@@ -10,7 +10,7 @@ local w, h = gpu.getResolution()
 local ME = component.me_interface
 
 local itemStock_l=require("itemStock")
-
+local sleepTime=60 --s
 
 local function round(num) return math.floor(num+.5) end
 
@@ -128,7 +128,7 @@ while true do
     print("[" .. getDisplayTime() .. '] Checking items...\n')
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
-    
-    os.sleep(60)
+    print("[" .. getDisplayTime() .. '] Resting for '..sleepTime..' seconds.\n')
+    os.sleep(sleepTime)
 end
 
