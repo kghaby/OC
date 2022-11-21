@@ -6,7 +6,7 @@
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
 local itemStock_l={
-    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=0,craftAmt=1},
+    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=1},
     {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Rack",hasTag=false,checkLvl=0,craftAmt=1},
