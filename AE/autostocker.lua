@@ -19,15 +19,21 @@ function getDisplayTime()
 end
 
 
-local CPUname="ZAutostocker"
+local CPUname="Auto"
 local function getCPU(name)
     local CPU_l=ME.getCpus()
-    for i=1,#CPU_l,1 do 
-        if CPU_l[i].name == name then
-            return CPU_l[i]
+    local found=false
+    while not found do
+        for i=1,#CPU_l,1 do 
+            --look for an avail CPU with Auto in the name 
+            if string.find(CPU_l[i].name,name) and not CPU_l[i].busy then 
+                found=true
+                return CPU_l[i]
+            end
         end
+        os.sleep()
     end
-    print("Could not find CPU "..name)
+    print("Could not find CPU containing "..name)
 end
 
 
@@ -72,10 +78,10 @@ local function getItem(stockReq)
 end
 
 
-local function requestCraft(stockReq, amt)
+local function requestCraft(stockReq, amt,CPU)
     local recipe = ME.getCraftables(stockReq)[1]
-    print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"])
-    local req = recipe.request(amt,false,CPUname)
+    print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
+    local req = recipe.request(amt,false,CPU.name)
     local cStatus,reason=req.isDone()
     while not req.isDone() and not req.isCanceled() do  
         cStatus,reason=req.isDone()
@@ -101,11 +107,9 @@ local function iterItemStockQuery(stock_l)
             goto continue
         end
         if item.size < stockEntry.checkLvl then
-            while getCPU(CPUname).busy do
-                os.sleep()
-            end
+            local CPU=getCPU(CPUname)
             --request craft
-            requestCraft(stockReq, stockEntry.craftAmt)
+            requestCraft(stockReq, stockEntry.craftAmt,CPU)
         end
         ::continue::
     end
