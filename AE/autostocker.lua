@@ -1,26 +1,3 @@
---HELLO FRIENDS, IF YOU WANT TO ADD AN ITEM THEN ADD TO THE TOP OF THE ITEM STOCKING LIST BELOW. 
---format: {name="Example",damage="0",checkLvl=10,craftAmt=1000},
-    --DONT FORGET THE COMMA
---damage is the number after the colon in an item's extended name. Only use to distinguish between 2 items with same name
-    --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
---Essentia and fluids are represented as drops (1 drop = 1 mB)
-
-local itemStock_l={
-    {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
-    {label="Internet Card",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Graphics Card (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Rack",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Adapter",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Keyboard",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Central Processing Unit (CPU) (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=6},
-    {label="Server (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Pyrotheum Dust",damage=2843,checkLvl=100,craftAmt=1000}
-}
-
-
-
 local component = require("component")
 local computer = require("computer")
 local os = require("os")
@@ -100,12 +77,10 @@ local function requestCraft(stockReq, amt)
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"])
     local req = recipe.request(amt,false,CPUname)
     local cStatus,reason=req.isDone()
-    while not cStatus and not req.isCanceled() do  
+    while not req.isDone() and not req.isCanceled() do  
+        cStatus,reason=req.isDone()
         print(cStatus)
         os.sleep()
-        if cStatus or req.isCanceled() then
-            break
-        end   
     end
     if req.isCanceled() == true then
         if reason == nil then
@@ -129,9 +104,6 @@ local function iterItemStockQuery(stock_l)
         if item.size < stockEntry.checkLvl then
             while getCPU(CPUname).busy do
                 os.sleep()
-                if not getCPU(CPUname).busy then
-                    break
-                end
             end
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt)
@@ -154,7 +126,7 @@ end
 
 
 while true do
-    print(print("[" .. getDisplayTime() .. '] Checking items...\n')
+    print("[" .. getDisplayTime() .. '] Checking items...\n')
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
     
