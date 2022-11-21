@@ -82,18 +82,20 @@ local function requestCraft(stockReq, amt,CPU)
     local recipe = ME.getCraftables(stockReq)[1]
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
     local req = recipe.request(amt,false,CPU.name)
+    
+    --while not req.isDone() and not req.isCanceled() do  
+    --    cStatus,reason=req.isDone()
+    --    os.sleep()
+    --end
+    os.sleep(1)
     local cStatus,reason=req.isDone()
-    while not req.isDone() and not req.isCanceled() do  
-        cStatus,reason=req.isDone()
-        os.sleep()
-    end
     if req.isCanceled() == true then
         if reason == nil then
             reason="Dunno. Maybe human."
         end
         print("[" .. getDisplayTime() .. "] Canceled. Reason: "..reason..'\n')
-    else
-        print("[" .. getDisplayTime() .. "] Done. "..'\n')
+    --else
+        --print("[" .. getDisplayTime() .. "] Done. "..'\n')
     end
 end
 
