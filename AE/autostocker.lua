@@ -32,10 +32,7 @@ gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
 
-
---itemStock_fh = io.open("itemStock.dat","r")
---itemStock_l = Serial.unserialize(itemStock_fh:read())
---itemStock_fh:close()
+local itemStock_l=require("itemStock")
 
 
 local function round(num) return math.floor(num+.5) end
