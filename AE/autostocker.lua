@@ -16,7 +16,7 @@ local itemStock_l={
     {label="Hard Disk Drive (Tier 3) (4MB)",hasTag=false,checkLvl=0,craftAmt=1},
     {label="Screen (Tier 3)",hasTag=false,checkLvl=6,craftAmt=6},
     {label="Server (Tier 3)",hasTag=false,checkLvl=0,craftAmt=1},
-    {label="Pyrotheum Dust",damage=2843,checkLvl=10,craftAmt=1000}
+    {label="Pyrotheum Dust",damage=2843,checkLvl=100,craftAmt=1000}
 }
 
 
@@ -100,7 +100,8 @@ local function requestCraft(stockReq, amt)
     print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"])
     local req = recipe.request(amt,false,CPUname)
     local cStatus,reason=req.isDone()
-    while cStatus == false and req.isCanceled() == false do  
+    while not cStatus and not req.isCanceled() do  
+        print(cStatus)
         os.sleep()
         if cStatus or req.isCanceled() then
             break
@@ -127,7 +128,7 @@ local function iterItemStockQuery(stock_l)
         end
         if item.size < stockEntry.checkLvl then
             while getCPU(CPUname).busy do
-                os.sleep(0)
+                os.sleep()
                 if not getCPU(CPUname).busy then
                     break
                 end
@@ -153,6 +154,7 @@ end
 
 
 while true do
+    print(print("[" .. getDisplayTime() .. '] Checking items...\n')
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
     
