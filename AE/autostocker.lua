@@ -63,6 +63,9 @@ local function makeStockReq(stockEntry)
     if stockEntry.name~=nil then
         stockReq["name"]=stockEntry.name
     end
+    if stockEntry.hasTag~=nil then
+        stockReq["hasTag"]=stockEntry.hasTag
+    end
     return stockReq
 end
 
@@ -70,7 +73,7 @@ local function getItem(stockReq)
     local item_l=ME.getItemsInNetwork(stockReq)
     if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, tag, etc to narrow search")
+        print("Use damage, name, tag, or hasTag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
         for i=1,#item_l,1 do
             for k,v in pairs(item_l[i]) do
@@ -86,45 +89,6 @@ local function getItem(stockReq)
     end
 end
 
-local function getFluid(stockReq)
-    local item_l=ME.getFluidInNetwork(stockReq)
-    if #item_l>1 then 
-        print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, or tag to narrow search")
-        SR_fh = io.open("item_SR.dat","w")
-        for i=1,#item_l,1 do
-            for k,v in pairs(item_l[i]) do
-                SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
-            end
-            SR_fh:write('\n')
-        end
-        print("The item search results have been written to item_SR.dat. Exiting...")
-        SR_fh:close()
-        os.exit()
-        else
-            return item_l[1]
-    end
-end
-
-local function getEssentia(stockReq)
-    local item_l=ME.getEssentiaInNetwork(stockReq)
-    if #item_l>1 then 
-        print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, or tag to narrow search")
-        SR_fh = io.open("item_SR.dat","w")
-        for i=1,#item_l,1 do
-            for k,v in pairs(item_l[i]) do
-                SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
-            end
-            SR_fh:write('\n')
-        end
-        print("The item search results have been written to item_SR.dat. Exiting...")
-        SR_fh:close()
-        os.exit()
-        else
-            return item_l[1]
-    end
-end
 
 local function requestCraft(stockReq, amt)
     local recipe = ME.getCraftables(stockReq)[1]
