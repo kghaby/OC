@@ -151,7 +151,7 @@ local function iterItemStockQuery(stock_l)
             requestCraft(stockReq, stockEntry.craftAmt)
         end
         ::continue::
-        os.sleep(1)
+        os.sleep(4)
     end
 end
 
@@ -170,10 +170,8 @@ end
 
 while true do
     iterItemStockQuery(itemStock_l)
-    if round(computer.uptime()) % 1800 == 0 then --every 30 min
-        displayStats()
-    end
+    displayStats() --lags server! 1k ms tick
     
-    os.sleep(60)
+    os.sleep()
 end
 
