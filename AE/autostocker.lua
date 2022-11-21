@@ -79,7 +79,6 @@ local function requestCraft(stockReq, amt)
     local cStatus,reason=req.isDone()
     while not req.isDone() and not req.isCanceled() do  
         cStatus,reason=req.isDone()
-        print(cStatus)
         os.sleep()
     end
     if req.isCanceled() == true then
@@ -130,6 +129,6 @@ while true do
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
     
-    os.sleep(1)
+    os.sleep(60)
 end
 
