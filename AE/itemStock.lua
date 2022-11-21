@@ -6,6 +6,11 @@
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
 
 local itemStock_l={
+    {label="BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84",checkLvl=8,craftAmt=16},
+    {label="Lubricant Cell",checkLvl=4,craftAmt=8},
+    {label="Steel Screw",checkLvl=8,craftAmt=16},
+    {label="Nanoprocessor",checkLvl=4,craftAmt=8},
+    {label="Cable Anchor",checkLvl=40,craftAmt=100},
     {label="Drilling Fluid Cell",checkLvl=1000,craftAmt=1000},
     {label="Memory (Tier 3.5)",hasTag=false,checkLvl=4,craftAmt=4},
     {label="Internet Card",hasTag=false,checkLvl=1,craftAmt=1},
