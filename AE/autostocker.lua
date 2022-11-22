@@ -128,8 +128,8 @@ local function iterItemStockQuery(stock_l)
             print("No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
-        check=stockEntry.checkLvl+getAmtCrafting(CPUname,stockReq)
-        if item.size < check then
+        totSize=item.size+getAmtCrafting(CPUname,stockReq)
+        if totSize < stockEntry.checkLvl then
             local CPU=getCPU(CPUname)
             --request craft
             requestCraft(stockReq, stockEntry.craftAmt,CPU)
