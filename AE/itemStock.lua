@@ -5,6 +5,7 @@
 --damage is the number after the colon in an item's extended name. Only use to distinguish between 2 items with same name
     --eg. for "Plastic Circuit Board 7124:32007", the damage is "32007"
 --Essentia and fluids are represented as drops (1 drop = 1 mB)
+--make a request trigger when all players are offline with offlineOnly=true
 
 local itemStock_l={
     {label="BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84",checkLvl=8,craftAmt=16},
