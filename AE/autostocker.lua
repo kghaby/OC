@@ -19,7 +19,7 @@ local sleepTime=60 --s
 --online detect
 local onlineDetector=component.onlinedetector
 local function allOffline()
-    if #onlineDetector.getPlayerList()==0
+    if #onlineDetector.getPlayerList()==0 then
         return true
     else
         return false
@@ -136,14 +136,14 @@ local function iterItemStockQuery(stock_l)
         local stockEntry=stock_l[i]
         if stockEntry.offlineOnly then
             if not allOffline() then
-                print("Player(s) online. Skipping "..stockEntry.label)
+                print("[" .. getDisplayTime() .. "] Player(s) online. Skipping "..stockEntry.label)
                 goto continue
             end
         end
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
         if item==nil then
-            print("No item yielded with query "..Serial.serialize(stockReq))
+            print("[" .. getDisplayTime() .. "] No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
         totSize=item.size+getAmtCrafting(CPUname,stockReq)
