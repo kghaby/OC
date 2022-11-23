@@ -41,8 +41,9 @@ local function getAmtCrafting(name,stockReq)
     local CPU_l=ME.getCpus()
     local amtCrafting=0
     for i=1,#CPU_l,1 do 
-        if string.find(CPU_l[i].name,name) and CPU_l[i].busy then
-                local cpu=CPU_l[i].cpu
+        local CPU=CPU_l[i]
+        if string.find(CPU.name,name) and CPU.busy then
+                local cpu=CPU.cpu
                 local finalOutput=cpu.finalOutput()
                 local finalLabel=finalOutput.label
                 if finalOutput~=nil then
