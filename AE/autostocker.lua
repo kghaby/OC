@@ -44,11 +44,11 @@ local function getAmtCrafting(name,stockReq)
         if string.find(CPU_l[i].name,name) and CPU_l[i].busy then
                 local cpu=CPU_l[i].cpu
                 local finalOutput=cpu.finalOutput()
-                local finalLabel=cpu.finalOutput().label
+                local finalLabel=finalOutput.label
                 if finalOutput~=nil then
                     if stockReq ~=nil then
                         if finalLabel == stockReq.label then
-                            amtCrafting=amtCrafting+cpu.finalOutput().size
+                            amtCrafting=amtCrafting+finalOutput.size
                         end
                     end
                 end
