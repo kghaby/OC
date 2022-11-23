@@ -17,7 +17,6 @@ local itemStock_l=require("itemStock")
 local sleepTime=60 --s
 
 --online detect
-local playersOffline=false
 local onlineDetector=component.onlinedetector
 local function allOffline()
     if #onlineDetector.getPlayerList()==0
