@@ -16,6 +16,17 @@ RScard.setWakeThreshold(10)
 local itemStock_l=require("itemStock")
 local sleepTime=60 --s
 
+--online detect
+local playersOffline=false
+local onlineDetector=component.onlinedetector
+local function allOffline()
+    if #onlineDetector.getPlayerList()==0
+        return true
+    else
+        return false
+    end
+end
+
 local function round(num) return math.floor(num+.5) end
 
 function getDisplayTime()
@@ -124,6 +135,12 @@ end
 local function iterItemStockQuery(stock_l)
     for i=1,#stock_l,1 do
         local stockEntry=stock_l[i]
+        if stockEntry.offlineOnly then
+            if not allOffline() then
+                print("Player(s) online. Skipping "..stockEntry.label)
+                goto continue
+            end
+        end
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
         if item==nil then
