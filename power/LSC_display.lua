@@ -1,7 +1,7 @@
 --personal resolutions for AR display
 local scale=3 -- gui size
 local RES_G={1920/scale,1015/scale}
-local RES_Z={1920/scale,1015/scale}
+local RES_Z={1920/scale,1016/scale}
 local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
@@ -203,13 +203,8 @@ local energyData = {
     energyIn = getNewTable(updateInterval, 0),
     energyOut = getNewTable(updateInterval, 0),
     input = 0,
-    output = 0,
+    output = 0
 }
-
-
-
-
-
 
 local function getProbs(problemsString)
     local problems = string.match(problemsString or "", "Has Problems") and "1" or "0"
@@ -617,11 +612,17 @@ local function initializeHUD(glasses,x,y)
 end
 --checkRes()
 
-
+local energyBarLength=0
 local function drawEnergyHUD(hudObjects,x,y)
     --AR.remove(glasses, hudObjects)
     --glasses.removeObject(hudObjects.energyBar.getID())
-    AR.hudRectangle(hudObjects.energyBar, 3, y-18, math.floor(percentage*207)+4, 9, xcolors.electricBlue, 1)
+    if percentage==1 then
+        energyBarLength=math.floor(percentage*207)+1
+    else
+        energyBarLength=math.floor(percentage*207)
+    end
+    
+    AR.hudRectangle(hudObjects.energyBar, 3, y-18, energyBarLength+4, 9, xcolors.electricBlue, 1)
     --glasses.removeObject(hudObjects.maxEU.getID())
     AR.hudText(hudObjects.maxEU, EUcap, 214-3.5*#EUcap, y-24, xcolors.darkElectricBlue, 0.6)
     --glasses.removeObject(hudObjects.currentEU.getID())
