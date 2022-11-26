@@ -28,8 +28,12 @@ end
 
 local function round(num) return math.floor(num+.5) end
 
-function getDisplayTime()
+local function getDisplayTime()
     return os.date("%H:%M:%S", os.time())
+end
+
+local function getTimestamp()
+    return "[" .. getDisplayTime() .. "] "
 end
 
 local running_l={}
@@ -116,21 +120,25 @@ end
 
 local function requestCraft(stockReq, amt,CPU)
     local recipe = ME.getCraftables(stockReq)[1]
-    print("[" .. getDisplayTime() .. "] Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
-    local req = recipe.request(amt,false,CPU.name)
-    --while not req.isDone() and not req.isCanceled() do  
-    --    cStatus,reason=req.isDone()
-    --    os.sleep()
-    --end
-    os.sleep(1)
-    local cStatus,reason=req.isDone()
-    if req.isCanceled() == true then
-        if reason == nil then
-            reason="Dunno. Maybe human."
+    if recipe ~=nil then
+        print(getTimestamp().."Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
+        local req = recipe.request(amt,false,CPU.name)
+        --while not req.isDone() and not req.isCanceled() do  
+        --    cStatus,reason=req.isDone()
+        --    os.sleep()
+        --end
+        os.sleep(1)
+        local cStatus,reason=req.isDone()
+        if req.isCanceled() == true then
+            if reason == nil then
+                reason="Dunno. Maybe human."
+            end
+            print(getTimestamp().."Canceled. Reason: "..reason)
+        --else
+            --print("[" .. getDisplayTime() .. "] Done. "..'\n')
         end
-        print("[" .. getDisplayTime() .. "] Canceled. Reason: "..reason..'\n')
-    --else
-        --print("[" .. getDisplayTime() .. "] Done. "..'\n')
+    else
+        print(getTimestamp().."Recipe was nil. Skipping.")
     end
 end
 
@@ -139,14 +147,14 @@ local function iterItemStockQuery(stock_l)
         local stockEntry=stock_l[i]
         if stockEntry.offlineOnly then
             if not allOffline() then
-                print("[" .. getDisplayTime() .. "] Player(s) online. Skipping "..stockEntry.label)
+                print(getTimestamp().."Player(s) online. Skipping "..stockEntry.label)
                 goto continue
             end
         end
         local stockReq=makeStockReq(stockEntry)
         local item=getItem(stockReq)
         if item==nil then
-            print("[" .. getDisplayTime() .. "] No item yielded with query "..Serial.serialize(stockReq))
+            print(getTimestamp().."No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
         totSize=item.size+getAmtCrafting(CPUname,stockReq)
@@ -173,10 +181,10 @@ end
 
 
 while true do
-    print("[" .. getDisplayTime() .. '] Checking items...\n')
+    print(getTimestamp().."Checking items...\n')
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
-    print("[" .. getDisplayTime() .. '] Resting for '..sleepTime..' seconds.\n')
+    print(getTimestamp().."Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
 end
 
