@@ -181,10 +181,10 @@ end
 
 
 while true do
-    print(getTimestamp().."Checking items...\n')
+    print(getTimestamp()..'Checking items...\n')
     iterItemStockQuery(itemStock_l)
     --displayStats() --lags server! 1k ms tick
-    print(getTimestamp().."Resting for '..sleepTime..' seconds.\n')
+    print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
 end
 
