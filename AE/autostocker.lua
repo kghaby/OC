@@ -112,8 +112,8 @@ local function getItem(stockReq)
         print("The item search results have been written to item_SR.dat. Exiting...")
         SR_fh:close()
         os.exit()
-        else
-            return item_l[1]
+    else
+        return item_l[1]
     end
 end
 
@@ -132,8 +132,8 @@ local function getPattern(stockReq)
         print("The pattern search results have been written to pattern_SR.dat. Exiting...")
         SR_fh:close()
         os.exit()
-        else
-            return pattern_l[1]
+    else
+        return pattern_l[1]
     end
 end
 
