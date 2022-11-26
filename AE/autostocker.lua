@@ -117,9 +117,28 @@ local function getItem(stockReq)
     end
 end
 
+local function getPattern(stockReq)
+    local pattern_l=ME.getCraftables(stockReq)
+    if #pattern_l>1 then 
+        print("More than 1 pattern found with parameters "..Serial.serialize(stockReq))
+        print("Use damage, name, tag, or hasTag to narrow search")
+        SR_fh = io.open("pattern_SR.dat","w")
+        for i=1,#pattern_l,1 do
+            for k,v in pairs(pattern_l[i]) do
+                SR_fh:write(tostring(k)..'    '..tostring(v)..'\n')
+            end
+            SR_fh:write('\n')
+        end
+        print("The pattern search results have been written to pattern_SR.dat. Exiting...")
+        SR_fh:close()
+        os.exit()
+        else
+            return pattern_l[1]
+    end
+end
 
 local function requestCraft(stockReq, amt,CPU)
-    local recipe = ME.getCraftables(stockReq)[1]
+    local recipe = getPattern(stockReq)
     if recipe ~=nil then
         print(getTimestamp().."Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
         local req = recipe.request(amt,false,CPU.name)
@@ -138,7 +157,7 @@ local function requestCraft(stockReq, amt,CPU)
             --print("[" .. getDisplayTime() .. "] Done. "..'\n')
         end
     else
-        print(getTimestamp().."Recipe was nil. Skipping.")
+        print(getTimestamp().."No pattern yielded with query "..Serial.serialize(stockReq))
     end
 end
 
