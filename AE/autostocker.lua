@@ -29,7 +29,7 @@ end
 local function round(num) return math.floor(num+.5) end
 
 local function getDisplayTime()
-    return os.date("%H:%M:%S", os.time())
+    return os.date("%H:%M:%S", computer.uptime())
 end
 
 local function getTimestamp()
@@ -71,9 +71,11 @@ local function getCPU(name)
                 return CPU_l[i]
             end
         end
-        os.sleep()
+        print("All CPUs busy; resting 10 seconds.")
+        os.sleep(10)
+        CPU_l=ME.getCpus()
     end
-    print("Could not find CPU containing "..name)
+    print("Could not find CPU containing "..name) --does not currently reach this line. need break in while loop
 end
 
 
