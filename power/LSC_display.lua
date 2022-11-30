@@ -87,6 +87,10 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
+local function tierAmps(n) 
+    local amp_string=
+    return amp_string
+end
 
 local time = {}
 function time.format(number)
@@ -271,7 +275,9 @@ local function updateEnergyData(powerStatus)
     currentEU = powerStatus.storedEU
     maxEU = powerStatus.EUCapacity
     percentage = math.min(currentEU/maxEU, 1.0)
-    
+    if percentage >0.999 then
+        percentage=1.0
+    end
     energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
     energyData.energyOut[energyData.intervalCounter] = -1*powerStatus.EUOut
     
@@ -375,7 +381,7 @@ local function drawEnergyScreen()
     percentColor=spectrumRedGreen(percentage,0,1)
     gpu.fill(11, 2, 10, 1, " ") -- reset % space to white 
     gpu.setForeground(percentColor)
-    percentEU=string.format("%." .. (2) .. "f", percentage*100)..'%'
+    percentEU=string.format("%." .. (1) .. "f", percentage*100)..'%'
     gpu.set((halfW)-(#percentEU/2),2,percentEU)
     
     --2nd bot row
@@ -398,10 +404,18 @@ local function drawEnergyScreen()
     --time until full
     gpu.setForeground(xcolors.gray)
     if energyData.energyPerTick > 0 then
-        fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
+        if percentage>0.999 then
+            fillTime = 0
+        else
+            fillTime = math.floor((maxEU-currentEU)/(energyData.energyPerTick*20))
+        end  
         fillTimeString = "Full: " .. time.format(math.abs(fillTime))
     elseif energyData.energyPerTick < 0 then
-        fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
+        if percentage>0.999 then
+            fillTime = 0
+        else
+            fillTime = math.floor((currentEU)/(energyData.energyPerTick*20))
+        end  
         fillTimeString = "Empty: " .. time.format(math.abs(fillTime))
     else
         fillTimeString = ""
@@ -607,7 +621,7 @@ end
 local energyBarLength=0
 local function drawEnergyHUD(hudObjects,x,y)
     energyBarLength=math.floor(percentage*207)
-    if percentage>0.9999 then
+    if percentage>0.999 then
         energyBarLength=energyBarLength+1
     end    
     AR.hudRectangle(hudObjects.energyBar, 3, y-18, energyBarLength+4, 9, xcolors.electricBlue, 1)
