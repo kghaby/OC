@@ -381,7 +381,7 @@ local function drawEnergyScreen()
     EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
     percentColor=spectrumRedGreen(percentage,0,1)
-    gpu.fill(11, 2, 10, 1, " ") -- reset % space to white 
+    gpu.fill((halfW)-6, 2, 12, 1, " ") -- reset % space to white 
     gpu.setForeground(percentColor)
     percentEU=string.format("%." .. (1) .. "f", percentage*100)..'%'
     gpu.set((halfW)-(#percentEU/2),2,percentEU)
@@ -389,9 +389,11 @@ local function drawEnergyScreen()
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
     EUout=tierAmps(energyData.output,V)
+    gpu.fill(1, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(1,h-1,EUout)
     gpu.setForeground(xcolors.darkGreen)
     EUinp=tierAmps(energyData.input,V)
+    gpu.fill(w-12, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(w-#(EUinp),h-1,EUinp)
     rateColor=spectrumRedGreen2(energyData.energyPerTick,energyData.output,energyData.input)
     gpu.setForeground(rateColor)
@@ -399,6 +401,7 @@ local function drawEnergyScreen()
     if energyData.energyPerTick>0 then
         EUrate='+'..EUrate
     end
+    gpu.fill((halfW)-6, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set((halfW)-(#EUrate/2),h-1,EUrate)
 
     
