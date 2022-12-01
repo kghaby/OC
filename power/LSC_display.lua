@@ -375,10 +375,10 @@ local function drawEnergyScreen()
     
     --2nd top row
     gpu.setForeground(xcolors.electricBlue)
-    EUstor=tierAmps(currentEU,V)
+    EUstor=sciNot(currentEU)
     gpu.set(1,2,EUstor)
     gpu.setForeground(xcolors.darkElectricBlue)
-    EUcap=tierAmps(maxEU,V)
+    EUcap=sciNot(maxEU)
     gpu.set(w-#(EUcap),2,EUcap)
     percentColor=spectrumRedGreen(percentage,0,1)
     gpu.fill(11, 2, 10, 1, " ") -- reset % space to white 
