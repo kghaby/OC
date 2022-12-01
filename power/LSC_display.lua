@@ -97,7 +97,7 @@ end
 local time = {}
 function time.format(number)
     if number == 0 then
-        return (00 .. "h " .. 00 .. "m " .. 00 .. "s")
+        return ("00h " .."00m " .."00s")
     else
         local hours = math.floor(number / 3600)
         local minutes = math.floor((number - math.floor(number / 3600) * 3600) / 60)
