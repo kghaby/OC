@@ -6,6 +6,8 @@ local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
 
+local V={131072,"ZPM"}
+
 local component = require("component")
 local computer = require("computer")
 local os = require("os")
@@ -29,7 +31,7 @@ RScard=component.proxy("02e29142-f3bf-4ddf-a71b-30dc578a7541")
 RScard.setWakeThreshold(10)
 
 --local w,h=160,50
-gpu.setResolution(32,6)
+gpu.setResolution(40,8)
 --gpu.setResolution(80,15)
 local w, h = gpu.getResolution()
 local halfW=w/2
@@ -87,8 +89,8 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
-local function tierAmps(n) 
-    local amp_string=
+local function tierAmps(n,V) 
+    local amp_string=string.format("%." .. (1) .. "f", n/V[1])..'A '..V[2]
     return amp_string
 end
 
@@ -373,10 +375,10 @@ local function drawEnergyScreen()
     
     --2nd top row
     gpu.setForeground(xcolors.electricBlue)
-    EUstor=sciNot(currentEU)
+    EUstor=tierAmps(currentEU,V)
     gpu.set(1,2,EUstor)
     gpu.setForeground(xcolors.darkElectricBlue)
-    EUcap=sciNot(maxEU)
+    EUcap=tierAmps(maxEU,V)
     gpu.set(w-#(EUcap),2,EUcap)
     percentColor=spectrumRedGreen(percentage,0,1)
     gpu.fill(11, 2, 10, 1, " ") -- reset % space to white 
@@ -386,14 +388,14 @@ local function drawEnergyScreen()
     
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
-    EUout=sciNot(energyData.output)
+    EUout=tierAmps(energyData.output,V)
     gpu.set(1,h-1,EUout)
     gpu.setForeground(xcolors.darkGreen)
-    EUinp=sciNot(energyData.input)
+    EUinp=tierAmps(energyData.input,V)
     gpu.set(w-#(EUinp),h-1,EUinp)
     rateColor=spectrumRedGreen2(energyData.energyPerTick,energyData.output,energyData.input)
     gpu.setForeground(rateColor)
-    EUrate=sciNot(energyData.energyPerTick)
+    EUrate=tierAmps(energyData.energyPerTick,V)
     if energyData.energyPerTick>0 then
         EUrate='+'..EUrate
     end
