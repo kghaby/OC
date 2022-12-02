@@ -625,10 +625,8 @@ end
 
 local energyBarLength=0
 local function drawEnergyHUD(hudObjects,x,y)
-    energyBarLength=math.ceil(percentage*207)
-    if percentage>0.999 then
-        energyBarLength=energyBarLength+1
-    end    
+    energyBarLength=math.ceil(percentage*211)
+
     AR.hudRectangle(hudObjects.energyBar, 3, y-18, energyBarLength, 9, xcolors.electricBlue, 1)
     AR.hudText(hudObjects.maxEU, EUcap, 214-3.5*#EUcap, y-24, xcolors.darkElectricBlue, 0.6) 
     AR.hudText(hudObjects.currentEU, EUstor, 3, y-24, xcolors.electricBlue, 0.6)
@@ -659,8 +657,8 @@ end
 --local counter = checkingInterval
 
 local function drawRedstoneHUD(hudObjects,x,y,enableRect,enableFraction,disableRect,disableFraction)
-    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*207)+3, y-18, 1, 9, xcolors.red, 1)
-    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*207)+3, y-18, 1, 9, xcolors.maroon, 1)
+    AR.hudRectangle(hudObjects.RSenable, math.ceil(enableFraction*211)+3, y-18, 1, 9, xcolors.red, 1)
+    AR.hudRectangle(hudObjects.RSdisable, math.ceil(disableFraction*211)+3, y-18, 1, 9, xcolors.maroon, 1)
 end
 
 local function checkPower(fillFraction,enableFraction,disableFraction)
@@ -695,7 +693,7 @@ end
     
     os.sleep(sleepTime)
     
-    if round(computer.uptime()) % 3600 == 0 then
+    if round(computer.uptime()) % 36000 == 0 then
         os.execute("reboot")
     end
  end
