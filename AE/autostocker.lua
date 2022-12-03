@@ -116,6 +116,7 @@ local function trimListList(queryListList,bigList)
             if not noMatch then
                 table.insert(trimmedList,bigEntry)
                 print(bigEntry.label,queryList.label)
+                os.sleep(2)
             end
 
         end
