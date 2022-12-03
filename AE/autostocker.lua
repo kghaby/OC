@@ -71,7 +71,7 @@ local function getCPU(name)
                 return CPU_l[i]
             end
         end
-        print("All CPUs busy; resting 10 seconds.")
+        print("    All CPUs busy; resting 10 seconds.")
         os.sleep(10)
         CPU_l=ME.getCpus()
     end
@@ -160,7 +160,7 @@ local function getItem(stockReq,itemList)
     local item_l=trimList(stockReq,itemList)
     if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, tag, or hasTag to narrow search")
+        print("    Use damage, name, tag, or hasTag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
         for i=1,#item_l,1 do
             for k,v in pairs(item_l[i]) do
@@ -168,7 +168,7 @@ local function getItem(stockReq,itemList)
             end
             SR_fh:write('\n')
         end
-        print("The item search results have been written to item_SR.dat. Exiting...")
+        print("    The item search results have been written to item_SR.dat. Exiting...")
         SR_fh:close()
         os.exit()
     else
@@ -181,7 +181,7 @@ local function getPattern(stockReq)
     pattern_l=ME.getCraftables(stockReq)
     if #pattern_l>1 then 
         print("More than 1 pattern found with parameters "..Serial.serialize(stockReq))
-        print("Use damage, name, tag, or hasTag to narrow search")
+        print("    Use damage, name, tag, or hasTag to narrow search")
         SR_fh = io.open("pattern_SR.dat","w")
         for i=1,#pattern_l,1 do
             for k,v in pairs(pattern_l[i]) do
@@ -189,7 +189,7 @@ local function getPattern(stockReq)
             end
             SR_fh:write('\n')
         end
-        print("The pattern search results have been written to pattern_SR.dat. Exiting...")
+        print("    The pattern search results have been written to pattern_SR.dat. Exiting...")
         SR_fh:close()
         os.exit()
     else
@@ -212,7 +212,7 @@ local function requestCraft(stockReq, amt,CPU)
             if reason == nil then
                 reason="Dunno. Maybe human."
             end
-            print(getTimestamp().."Canceled. Reason: "..reason)
+            print(getTimestamp().."    Canceled. Reason: "..reason)
         --else
             --print("[" .. getDisplayTime() .. "] Done. "..'\n')
         end
@@ -239,12 +239,24 @@ local function iterItemStockQuery(stockList,itemList)
             print(getTimestamp().."No item yielded with query "..Serial.serialize(stockReq))
             goto continue
         end
-        totSize=item.size+getAmtCrafting(CPUname,stockReq)
-        if totSize < stockEntry.checkLvl then
-            local CPU=getCPU(CPUname)
-            --request craft
-            requestCraft(stockReq, stockEntry.craftAmt,CPU)
+        amtCrafting=getAmtCrafting(CPUname,stockReq)
+        if amtCrafting > 0 then
+            if stockEntry.multCPU then
+                totSize=item.size+amtCrafting
+                if totSize < stockEntry.checkLvl then
+                    local CPU=getCPU(CPUname)
+                    --request craft
+                    requestCraft(stockReq, stockEntry.craftAmt,CPU)
+                end
+            end
+        else 
+            if item.size < stockEntry.checkLvl then
+                local CPU=getCPU(CPUname)
+                --request craft
+                requestCraft(stockReq, stockEntry.craftAmt,CPU)
+            end
         end
+
         ::continue::
     end
 end
@@ -261,7 +273,7 @@ end
 
 
 while true do
-    print(getTimestamp()..'Checking items...\n')
+    print(getTimestamp()..'Checking items...')
 
     local itemList=ME.getItemsInNetwork()
     itemList=trimListList(itemStockList,itemList)
