@@ -99,19 +99,25 @@ local function makeStockReq(stockEntry)
     return stockReq
 end
 
+local noMatch=false
 local function trimListList(queryListList,bigList)
     local trimmedList={}
     for i=1,#bigList,1 do 
         local bigEntry=bigList[i]
+        
         for k,v in pairs(queryListList) do
-            local queryList=queryListList[k]
+            local queryList=makeStockReq(queryListList[k])
+            noMatch=false
             for k,v in pairs(queryList) do
                 if queryList[k]~=bigEntry[k] then
-                    goto noMatch
+                    noMatch=true
                 end
             end
-            table.insert(trimmedList,bigEntry)
-            ::noMatch::
+            if not noMatch then
+                table.insert(trimmedList,bigEntry)
+                print(bigEntry.label,queryList.label)
+            end
+
         end
     end
     return trimmedList
@@ -121,13 +127,16 @@ local function trimList(queryList,bigList)
     local trimmedList={}
     for i=1,#bigList,1 do 
         local bigEntry=bigList[i]
+        noMatch=false
         for k,v in pairs(queryList) do
             if queryList[k]~=bigEntry[k] then
-                goto noMatch
+                noMatch=true
             end
         end
-        table.insert(trimmedList,bigEntry)
-        ::noMatch::
+        if not noMatch then
+            table.insert(trimmedList,bigEntry)
+        end
+
     end
     return trimmedList
 end
