@@ -268,8 +268,9 @@ while true do
 
     iterItemStockQuery(itemStockList,itemList)
 
-    displayStats(totalTypes,totalCraftables) 
+    
     print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
+    displayStats(totalTypes,totalCraftables) 
     os.sleep(sleepTime)
 end
 
