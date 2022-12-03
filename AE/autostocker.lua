@@ -52,7 +52,7 @@ local function getAmtCrafting(name,stockReq)
                 if finalOutput~=nil then
                     local finalLabel=finalOutput.label
                     if finalLabel == stockReq.label then
-                        amtCrafting=amtCrafting+finalOutput.size
+                        amtCrafting=amtCrafting+math.abs(finalOutput.size)
                     end
                 end
         end
