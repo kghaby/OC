@@ -106,7 +106,7 @@ local function trimListList(queryListList,bigList)
     local trimmedList={}
     totalCraftables=0
     totalTypes=#bigList
-    for i=1,#totalTypes,1 do 
+    for i=1,totalTypes,1 do 
         local bigEntry=bigList[i]
 
         --count patterns
