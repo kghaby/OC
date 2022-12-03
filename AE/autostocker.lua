@@ -13,7 +13,7 @@ local ME = component.me_interface
 RScard=component.proxy("dfeb5ae3-3e58-4467-b834-853af8bc6a9a")
 RScard.setWakeThreshold(10)
 
-local itemStock_l=require("itemStock")
+local itemStockList=require("itemStock")
 local sleepTime=60 --s
 
 --online detect
@@ -99,6 +99,24 @@ local function makeStockReq(stockEntry)
     return stockReq
 end
 
+local function trimListList(queryListList,bigList)
+    local trimmedList={}
+    for i=1,#bigList,1 do 
+        local bigEntry=bigList[i]
+        for k,v in pairs(queryListList) do
+            local queryList=queryListList[k]
+            for k,v in pairs(queryList) do
+                if queryList[k]~=bigEntry[k] then
+                    goto noMatch
+                end
+            end
+            table.insert(trimmedList,bigEntry)
+            ::noMatch::
+        end
+    end
+    return trimmedList
+end
+
 local function trimList(queryList,bigList)
     local trimmedList={}
     for i=1,#bigList,1 do 
@@ -182,11 +200,10 @@ end
 
 
 
-local function iterItemStockQuery(stock_l)
-    local itemList=getItemsInNetwork()
-    local patternList=getCraftables()
-    for i=1,#stock_l,1 do
-        local stockEntry=stock_l[i]
+local function iterItemStockQuery(stockList,itemList,patternList)
+
+    for i=1,#stockList,1 do
+        local stockEntry=stockList[i]
         if stockEntry.offlineOnly then
             if not allOffline() then
                 print(getTimestamp().."Player(s) online. Skipping "..stockEntry.label)
@@ -209,9 +226,9 @@ local function iterItemStockQuery(stock_l)
     end
 end
 
-local function displayStats()
-    local totalTypes=#ME.getItemsInNetwork()
-    local totalCraftables=#ME.getCraftables()
+local function displayStats(itemList,patternList)
+    local totalTypes=#itemList
+    local totalCraftables=#patternList
     gpu.fill(130,1,30,3," ")
     header="====STATS===="
     typeMsg=tostring(totalTypes).." Types"
@@ -224,12 +241,15 @@ end
 
 while true do
     print(getTimestamp()..'Checking items...\n')
-    
 
-    
-    iterItemStockQuery(itemStock_l)
+    local itemList=ME.getItemsInNetwork()
+    itemList=trimListList(itemStockList,itemList)
+    local patternList=ME.getCraftables()
+    patternList=trimListList(itemStockList,patternList)
 
-    --displayStats() --lags server! 1k ms tick
+    iterItemStockQuery(itemStockList,itemList,patternList)
+
+    --displayStats(itemList,patternList) --lags server! 1k ms tick
     print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
 end
