@@ -99,12 +99,21 @@ local function makeStockReq(stockEntry)
     return stockReq
 end
 
+local totalCraftables=0
+local totalTypes=0
 local match=true
 local function trimListList(queryListList,bigList)
     local trimmedList={}
-    for i=1,#bigList,1 do 
+    totalCraftables=0
+    totalTypes=#bigList
+    for i=1,#totalTypes,1 do 
         local bigEntry=bigList[i]
-        
+
+        --count patterns
+        if bigEntry.isCraftable then
+            totalCraftables=totalCraftables+1
+        end
+
         for k,v in pairs(queryListList) do
             local queryList=makeStockReq(queryListList[k])
             match=true
@@ -197,7 +206,7 @@ local function requestCraft(stockReq, amt,CPU)
         --    cStatus,reason=req.isDone()
         --    os.sleep()
         --end
-        os.sleep(1)
+        os.sleep()
         local cStatus,reason=req.isDone()
         if req.isCanceled() == true then
             if reason == nil then
@@ -240,16 +249,7 @@ local function iterItemStockQuery(stockList,itemList)
     end
 end
 
-local function displayStats(itemList)
-    local totalTypes=#itemList
-    local totalCraftables=0
-    for i=1,#totalTypes,1 do
-        local entry=itemList[i] 
-        if entry.isCraftable then
-            totalCraftables=totalCraftables+1
-        end
-    end  
-
+local function displayStats(totalTypes,totalCraftables)
     gpu.fill(130,1,30,3," ")
     header="====STATS===="
     typeMsg=tostring(totalTypes).." Types"
@@ -263,12 +263,12 @@ end
 while true do
     print(getTimestamp()..'Checking items...\n')
 
-    local itemListFull=ME.getItemsInNetwork()
-    itemList=trimListList(itemStockList,itemListFull)
+    local itemList=ME.getItemsInNetwork()
+    itemList=trimListList(itemStockList,itemList)
 
     iterItemStockQuery(itemStockList,itemList)
 
-    --displayStats(itemListFull) 
+    displayStats(totalTypes,totalCraftables) 
     print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
 end
