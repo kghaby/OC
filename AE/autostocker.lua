@@ -99,8 +99,24 @@ local function makeStockReq(stockEntry)
     return stockReq
 end
 
-local function getItem(stockReq)
-    local item_l=ME.getItemsInNetwork(stockReq)
+local function trimList(queryList,bigList)
+    local trimmedList={}
+    for i=1,#bigList,1 do 
+        local bigEntry=bigList[i]
+        for k,v in pairs(queryList) do
+            if queryList[k]~=bigEntry[k] then
+                goto noMatch
+            end
+        end
+        table.insert(trimmedList,bigEntry)
+        ::noMatch::
+    end
+    return trimmedList
+end
+
+
+local function getItem(stockReq,itemList)
+    local item_l=trimList(stockReq,itemList)
     if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, tag, or hasTag to narrow search")
@@ -119,8 +135,9 @@ local function getItem(stockReq)
     end
 end
 
-local function getPattern(stockReq)
-    local pattern_l=ME.getCraftables(stockReq)
+
+local function getPattern(stockReq,patternList)
+    local pattern_l=trimList(stockReq,patternList)
     if #pattern_l>1 then 
         print("More than 1 pattern found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, tag, or hasTag to narrow search")
@@ -139,8 +156,8 @@ local function getPattern(stockReq)
     end
 end
 
-local function requestCraft(stockReq, amt,CPU)
-    local recipe = getPattern(stockReq)
+local function requestCraft(stockReq, patternList,amt,CPU)
+    local recipe = getPattern(stockReq,patternList)
     if recipe ~=nil then
         print(getTimestamp().."Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
         local req = recipe.request(amt,false,CPU.name)
@@ -163,7 +180,11 @@ local function requestCraft(stockReq, amt,CPU)
     end
 end
 
+
+
 local function iterItemStockQuery(stock_l)
+    local itemList=getItemsInNetwork()
+    local patternList=getCraftables()
     for i=1,#stock_l,1 do
         local stockEntry=stock_l[i]
         if stockEntry.offlineOnly then
@@ -173,7 +194,7 @@ local function iterItemStockQuery(stock_l)
             end
         end
         local stockReq=makeStockReq(stockEntry)
-        local item=getItem(stockReq)
+        local item=getItem(stockReq,itemList)
         if item==nil then
             print(getTimestamp().."No item yielded with query "..Serial.serialize(stockReq))
             goto continue
@@ -182,7 +203,7 @@ local function iterItemStockQuery(stock_l)
         if totSize < stockEntry.checkLvl then
             local CPU=getCPU(CPUname)
             --request craft
-            requestCraft(stockReq, stockEntry.craftAmt,CPU)
+            requestCraft(stockReq, patternList,stockEntry.craftAmt,CPU)
         end
         ::continue::
     end
@@ -203,7 +224,11 @@ end
 
 while true do
     print(getTimestamp()..'Checking items...\n')
+    
+
+    
     iterItemStockQuery(itemStock_l)
+
     --displayStats() --lags server! 1k ms tick
     print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
