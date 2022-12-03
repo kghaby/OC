@@ -129,7 +129,6 @@ end
 
 local function trimList(queryList,bigList)
     local trimmedList={}
-    local queryList=makeStockReq(queryList)
     for i=1,#bigList,1 do 
         local bigEntry=bigList[i]
         match=true
@@ -139,7 +138,7 @@ local function trimList(queryList,bigList)
                 break
             end
         end
-        if not match then
+        if match then
             table.insert(trimmedList,bigEntry)
         end
 
@@ -169,8 +168,8 @@ local function getItem(stockReq,itemList)
 end
 
 
-local function getPattern(stockReq,patternList)
-    local pattern_l=trimList(stockReq,patternList)
+local function getPattern(stockReq)
+    pattern_l=ME.getCraftables(stockReq)
     if #pattern_l>1 then 
         print("More than 1 pattern found with parameters "..Serial.serialize(stockReq))
         print("Use damage, name, tag, or hasTag to narrow search")
@@ -189,8 +188,8 @@ local function getPattern(stockReq,patternList)
     end
 end
 
-local function requestCraft(stockReq, patternList,amt,CPU)
-    local recipe = getPattern(stockReq,patternList)
+local function requestCraft(stockReq, amt,CPU)
+    local recipe = getPattern(stockReq)
     if recipe ~=nil then
         print(getTimestamp().."Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
         local req = recipe.request(amt,false,CPU.name)
@@ -215,7 +214,7 @@ end
 
 
 
-local function iterItemStockQuery(stockList,itemList,patternList)
+local function iterItemStockQuery(stockList,itemList)
 
     for i=1,#stockList,1 do
         local stockEntry=stockList[i]
@@ -235,15 +234,22 @@ local function iterItemStockQuery(stockList,itemList,patternList)
         if totSize < stockEntry.checkLvl then
             local CPU=getCPU(CPUname)
             --request craft
-            requestCraft(stockReq, patternList,stockEntry.craftAmt,CPU)
+            requestCraft(stockReq, stockEntry.craftAmt,CPU)
         end
         ::continue::
     end
 end
 
-local function displayStats(itemList,patternList)
+local function displayStats(itemList)
     local totalTypes=#itemList
-    local totalCraftables=#patternList
+    local totalCraftables=0
+    for i=1,#totalTypes,1 do
+        local entry=itemList[i] 
+        if entry.isCraftable then
+            totalCraftables=totalCraftables+1
+        end
+    end  
+
     gpu.fill(130,1,30,3," ")
     header="====STATS===="
     typeMsg=tostring(totalTypes).." Types"
@@ -257,14 +263,12 @@ end
 while true do
     print(getTimestamp()..'Checking items...\n')
 
-    local itemList=ME.getItemsInNetwork()
-    itemList=trimListList(itemStockList,itemList)
-    local patternList=ME.getCraftables()
-    patternList=trimListList(itemStockList,patternList)
+    local itemListFull=ME.getItemsInNetwork()
+    itemList=trimListList(itemStockList,itemListFull)
 
-    iterItemStockQuery(itemStockList,itemList,patternList)
+    iterItemStockQuery(itemStockList,itemList)
 
-    --displayStats(itemList,patternList) --lags server! 1k ms tick
+    --displayStats(itemListFull) 
     print(getTimestamp()..'Resting for '..sleepTime..' seconds.\n')
     os.sleep(sleepTime)
 end
