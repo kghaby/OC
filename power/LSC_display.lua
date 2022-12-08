@@ -22,10 +22,14 @@ local glasses_K=component.proxy("662a8ec2-fdde-44f2-a973-21a401acf053")
 local glasses_l={glasses_G,glasses_Z,glasses_K}
 
 local lsc = component.proxy("e8cd0c39-095a-43d1-b728-cf316ebb0fc4")
-local inputHatch = component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f") 
-local outputHatch = component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
-local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
+local inputHatchList = {
+    component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f")
+} 
+local outputHatchList = {
+    component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f")
+}
 
+local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
 --autoreboot with comparator next to comp >not gate>signal back into comp
 RScard=component.proxy("02e29142-f3bf-4ddf-a71b-30dc578a7541")
 RScard.setWakeThreshold(10)
@@ -240,6 +244,17 @@ local function get_LSC_info(lsc)
         if problems > 0 then
             state = states.BROKEN
         end
+
+        local totEUIn=0
+        for inputHatch in inputHatchList do
+            totEUIn=totEUIn+inputHatch.getEUInputAverage()
+        end
+
+        local totEUOut=0
+        for outputHatch in outputHatchList do
+            totEUOut=totEUIn+outputHatch.getEUOutputAverage()
+        end
+
         local status = {
             address=lsc.address,
             name = "LSC",
@@ -249,8 +264,8 @@ local function get_LSC_info(lsc)
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
-            EUIn = inputHatch.getEUInputAverage(), --parser.getInteger(sensorInformation[5] or 0), 
-            EUOut = outputHatch.getEUOutputAverage(), --parser.getInteger(sensorInformation[6] or 0), 
+            EUIn = totEUIn, --parser.getInteger(sensorInformation[5] or 0), 
+            EUOut = totEUOut, --parser.getInteger(sensorInformation[6] or 0), 
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
