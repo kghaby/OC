@@ -212,8 +212,6 @@ local energyData = {
     endTime = 0,
     energyPerTick = 0,
     offset = 0,
-    highestInput = 1,
-    highestOutput= -1,
     energyIn = getNewTable(ratesTblSize, 0),
     energyOut = getNewTable(ratesTblSize, 0),
     input = 0,
@@ -331,16 +329,7 @@ local function updateEnergyData(powerStatus)
         
         energyData.input = round(getAverage(energyData.energyIn))
         energyData.output = round(getAverage(energyData.energyOut))-powerStatus.passiveLoss
-        energyData.energyPerTick = energyData.input+energyData.output
-        if energyData.energyPerTick >= 0 then
-            if energyData.energyPerTick > energyData.highestInput then
-                energyData.highestInput = energyData.energyPerTick
-            end
-        else
-            if energyData.energyPerTick < energyData.highestOutput then
-                energyData.highestOutput = energyData.energyPerTick
-            end
-        end      
+        energyData.energyPerTick = energyData.input+energyData.output  
         energyData.updateCounter = 1
     end
 end
@@ -714,7 +703,7 @@ for i=1,#glasses_l,1 do
 end
 
  while true do
-    starttime=computer.uptime()
+ --   starttime=computer.uptime()
     updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
 
@@ -725,14 +714,9 @@ end
     
     checkPower(percentage,enableFraction,disableFraction)
     
-    endtime-computer.uptime()
-    if round(endtime-starttime)==0 then
-        os.sleep(0.05)
-    else
-        print(round(endtime-starttime))
-        os.sleep()
-    end
-    
+--    endtime=computer.uptime()
+--    print((endtime-starttime))
+    os.sleep(0)
     if round(computer.uptime()) % 36000 == 0 then
         os.execute("reboot")
     end
