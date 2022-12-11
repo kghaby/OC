@@ -37,15 +37,14 @@ RScard=component.proxy("02e29142-f3bf-4ddf-a71b-30dc578a7541")
 RScard.setWakeThreshold(10)
 
 --local w,h=160,50
-gpu.setResolution(44,8)
+--gpu.setResolution(44,8)
 --gpu.setResolution(80,15)
---gpu.setResolution(160,50)
+gpu.setResolution(160,50)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
-local sleepTime=0.05 --s
-local updateInterval = 40/(sleepTime/0.05) --2s
-local ratesTblSize=1200/(sleepTime/0.05) --loops every 60s
+local updateInterval = 40 --in ticks
+local ratesTblSize=1200 --in ticks
 local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
@@ -319,8 +318,8 @@ local function updateEnergyData(powerStatus)
  
     if energyData.updateCounter < energyData.updateInterval then
         --if energyData.updateCounter == 1 then  
-            --energyData.startTime = computer.uptime()
-            --energyData.readings[1] = currentEU
+        --    energyData.startTime = computer.uptime()
+        --    energyData.readings[1] = currentEU
         --end
         energyData.updateCounter = energyData.updateCounter + 1
         
@@ -715,6 +714,7 @@ for i=1,#glasses_l,1 do
 end
 
  while true do
+    starttime=computer.uptime()
     updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
 
@@ -725,7 +725,13 @@ end
     
     checkPower(percentage,enableFraction,disableFraction)
     
-    os.sleep(sleepTime)
+    endtime-computer.uptime()
+    if round(endtime-starttime)==0 then
+        os.sleep(0.05)
+    else
+        print(round(endtime-starttime))
+        os.sleep()
+    end
     
     if round(computer.uptime()) % 36000 == 0 then
         os.execute("reboot")
