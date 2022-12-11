@@ -44,7 +44,8 @@ local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
 local sleepTime=0.05 --s
-local updateInterval = 80/(sleepTime/0.05) --40s
+local updateInterval = 40/(sleepTime/0.05) --2s
+local ratesTblSize=1200/(sleepTime/0.05) --loops every 60s
 local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
@@ -203,18 +204,19 @@ local function getAverage(array)
 end
 
 local energyData = {
-    intervalCounter = 1,
-    animationCounter = 1,
+    updateCounter = 1,
+    updateInterval = updateInterval,
+    rateCounter = 1,
+    rateInterval = ratesTblSize,
     readings = {},
     startTime = 0,
     endTime = 0,
-    updateInterval = updateInterval,
     energyPerTick = 0,
     offset = 0,
     highestInput = 1,
     highestOutput= -1,
-    energyIn = getNewTable(updateInterval, 0),
-    energyOut = getNewTable(updateInterval, 0),
+    energyIn = getNewTable(ratesTblSize, 0),
+    energyOut = getNewTable(ratesTblSize, 0),
     input = 0,
     output = 0
 }
@@ -249,18 +251,14 @@ local function get_LSC_info(lsc)
         end
 
         local totEUIn=0
-        local totIHatchEU=0
-        for i=1,#inputHatchList,1 do
+        --for i=1,#inputHatchList,1 do
             --totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
-            totIHatchEU=totIHatchEU+inputHatchList[i].getEUStored()
-        end
+        --end
 
         local totEUOut=0
-        local totOHatchEU=0
-        for i=1,#outputHatchList,1 do
+        --for i=1,#outputHatchList,1 do
             --totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
-            totOHatchEU=totOHatchEU+outputHatchList[i].getEUStored()
-        end
+        --end
 
 
 
@@ -276,8 +274,6 @@ local function get_LSC_info(lsc)
             location = lsc.getCoordinates,
             EUIn =  parser.getInteger(sensorInformation[5] or 0), --totEUIn,  
             EUOut = parser.getInteger(sensorInformation[6] or 0),  --totEUOut, 
-            iHatchEU=totIHatchEU
-            oHatchEU=totOHatchEU
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
@@ -311,30 +307,24 @@ local function updateEnergyData(powerStatus)
         percentage=1.0
     end
 
-    --energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
-    --energyData.energyOut[energyData.intervalCounter] = -1*powerStatus.EUOut
+    energyData.energyIn[energyData.rateCounter] = powerStatus.EUIn
+    energyData.energyOut[energyData.rateCounter] = -1*powerStatus.EUOut
    
-    local iHatchRate=powerStatus.iHatchEU-prevIHatchEU
-    if iHatchRate<1 then
-        iHatchRate=0
-    end
-    prevIHatchEU=powerStatus.iHatchEU
-    local oHatchRate=powerStatus.oHatchEU-prevOHatchEU
-    if oHatchRate>1 then
-        oHatchRate=0
-    end
-    prevOHatchEU=powerStatus.oHatchEU
-    energyData.energyIn[energyData.intervalCounter] = iHatchRate
-    energyData.energyOut[energyData.intervalCounter] = -1*oHatchRate
 
-    if energyData.intervalCounter < energyData.updateInterval then
-        --if energyData.intervalCounter == 1 then  
+    if energyData.rateCounter < energyData.rateInterval then
+        energyData.rateCounter = energyData.rateCounter + 1
+    elseif energyData.rateCounter == energyData.rateInterval then
+        energyData.rateCounter = 1
+    end
+ 
+    if energyData.updateCounter < energyData.updateInterval then
+        --if energyData.updateCounter == 1 then  
             --energyData.startTime = computer.uptime()
             --energyData.readings[1] = currentEU
         --end
-        energyData.intervalCounter = energyData.intervalCounter + 1
+        energyData.updateCounter = energyData.updateCounter + 1
         
-    elseif energyData.intervalCounter == energyData.updateInterval then
+    elseif energyData.updateCounter == energyData.updateInterval then
         --energyData.endTime = computer.uptime()
         --energyData.readings[2] = currentEU
         --ticks = round((energyData.endTime - energyData.startTime) * 20)
@@ -352,7 +342,7 @@ local function updateEnergyData(powerStatus)
                 energyData.highestOutput = energyData.energyPerTick
             end
         end      
-        energyData.intervalCounter = 1
+        energyData.updateCounter = 1
     end
 end
 
