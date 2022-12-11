@@ -23,11 +23,11 @@ local glasses_l={glasses_G,glasses_Z,glasses_K}
 
 local lsc = component.proxy("95bf178e-b353-4a92-86ba-87483840453f")
 local inputHatchList = {
-    component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f"),
+    component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f"), --wired
     component.proxy("b30eafff-339f-45dc-8311-04eaafeff7ba")
 } 
 local outputHatchList = {
-    component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f"),
+    component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f"), --wired
     component.proxy("5bda861a-cce3-411c-bbc9-c30ddb1f014c")
 }
 
@@ -247,15 +247,15 @@ local function get_LSC_info(lsc)
             state = states.BROKEN
         end
 
-        local totEUIn=0
-        for i=1,#inputHatchList,1 do
-            totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
-        end
+        --local totEUIn=0
+        --for i=1,#inputHatchList,1 do
+        --    totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
+        --end
 
-        local totEUOut=0
-        for i=1,#outputHatchList,1 do
-            totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
-        end
+        --local totEUOut=0
+        --for i=1,#outputHatchList,1 do
+        --    totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
+        --end
 
         local status = {
             address=lsc.address,
@@ -266,8 +266,8 @@ local function get_LSC_info(lsc)
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
-            EUIn = totEUIn, --parser.getInteger(sensorInformation[5] or 0), 
-            EUOut = totEUOut, --parser.getInteger(sensorInformation[6] or 0), 
+            EUIn =  parser.getInteger(sensorInformation[5]) --totEUIn, --parser.getInteger(sensorInformation[5] or 0), 
+            EUOut = parser.getInteger(sensorInformation[6]) --totEUOut, --parser.getInteger(sensorInformation[6] or 0), 
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
