@@ -38,12 +38,13 @@ RScard.setWakeThreshold(10)
 
 --local w,h=160,50
 --gpu.setResolution(44,8)
-gpu.setResolution(80,15)
+--gpu.setResolution(80,15)
+gpu.setResolution(160,50)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
 local sleepTime=0.05 --s
-local updateInterval = 80/(sleepTime/0.05) --4s
+local updateInterval = 800/(sleepTime/0.05) --40s
 local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
@@ -247,15 +248,22 @@ local function get_LSC_info(lsc)
             state = states.BROKEN
         end
 
-        --local totEUIn=0
-        --for i=1,#inputHatchList,1 do
-        --    totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
-        --end
+        local totEUIn=0
+        local totIHatchEU=0
+        for i=1,#inputHatchList,1 do
+            --totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
+            totIHatchEU=totIHatchEU+inputHatchList[i].getEUStored()
+        end
 
-        --local totEUOut=0
-        --for i=1,#outputHatchList,1 do
-        --    totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
-        --end
+        local totEUOut=0
+        local totOHatchEU=0
+        for i=1,#outputHatchList,1 do
+            --totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
+            totOHatchEU=totOHatchEU+outputHatchList[i].getEUStored()
+        end
+
+
+
 
         local status = {
             address=lsc.address,
@@ -266,8 +274,10 @@ local function get_LSC_info(lsc)
             problems = problems,
             passiveLoss = parser.getInteger(sensorInformation[4] or 0),
             location = lsc.getCoordinates,
-            EUIn =  parser.getInteger(sensorInformation[5]), --totEUIn, --parser.getInteger(sensorInformation[5] or 0), 
-            EUOut = parser.getInteger(sensorInformation[6]), --totEUOut, --parser.getInteger(sensorInformation[6] or 0), 
+            EUIn =  parser.getInteger(sensorInformation[5] or 0), --totEUIn,  
+            EUOut = parser.getInteger(sensorInformation[6] or 0),  --totEUOut, 
+            iHatchEU=totIHatchEU
+            oHatchEU=totOHatchEU
             wirelessEU = parser.getInteger(sensorInformation[12] or 0)
         }
         return status
@@ -289,6 +299,9 @@ local currentEU=0
 local maxEU=0
 local percentage=0
 
+local prevIHatchEU=0
+local prevOHatchEU=0
+
 local function updateEnergyData(powerStatus)
     powerStatus=get_LSC_info(lsc)
     currentEU = powerStatus.storedEU
@@ -297,9 +310,23 @@ local function updateEnergyData(powerStatus)
     if percentage >0.999 then
         percentage=1.0
     end
-    energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
-    energyData.energyOut[energyData.intervalCounter] = -1*powerStatus.EUOut
-    
+
+    --energyData.energyIn[energyData.intervalCounter] = powerStatus.EUIn
+    --energyData.energyOut[energyData.intervalCounter] = -1*powerStatus.EUOut
+   
+    local iHatchRate=powerStatus.iHatchEU-prevIHatchEU
+    if iHatchRate<1 then
+        iHatchRate=0
+    end
+    prevIHatchEU=powerStatus.iHatchEU
+    local oHatchRate=powerStatus.oHatchEU-prevOHatchEU
+    if oHatchRate>1 then
+        oHatchRate=0
+    end
+    prevOHatchEU=powerStatus.oHatchEU
+    energyData.energyIn[energyData.intervalCounter] = iHatchRate
+    energyData.energyOut[energyData.intervalCounter] = -1*oHatchRate
+
     if energyData.intervalCounter < energyData.updateInterval then
         --if energyData.intervalCounter == 1 then  
             --energyData.startTime = computer.uptime()
