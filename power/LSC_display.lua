@@ -703,7 +703,7 @@ for i=1,#glasses_l,1 do
 end
 
  while true do
- --   starttime=computer.uptime()
+    starttime=computer.uptime()
     updateEnergyData(powerStatus,enableFraction,disableFraction)
     drawEnergyScreen()
 
@@ -714,9 +714,13 @@ end
     
     checkPower(percentage,enableFraction,disableFraction)
     
---    endtime=computer.uptime()
+    endtime=computer.uptime()
 --    print((endtime-starttime))
-    os.sleep(0.01)
+    if endtime-starttime<0.01 then
+        os.sleep(0.01)
+    else
+        os.sleep()
+    end
     if round(computer.uptime()) % 36000 == 0 then
         os.execute("reboot")
     end
