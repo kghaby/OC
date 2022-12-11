@@ -716,7 +716,7 @@ end
     
 --    endtime=computer.uptime()
 --    print((endtime-starttime))
-    os.sleep(0)
+    os.sleep(0.01)
     if round(computer.uptime()) % 36000 == 0 then
         os.execute("reboot")
     end
