@@ -21,14 +21,14 @@ local glasses_Z=component.proxy("1aac0142-80bf-4a59-846f-fa579551322e")
 local glasses_K=component.proxy("662a8ec2-fdde-44f2-a973-21a401acf053")
 local glasses_l={glasses_G,glasses_Z,glasses_K}
 
-local lsc = component.proxy("1e1697f4-0fea-45b3-ada1-95adf3731256")
+local lsc = component.proxy("95bf178e-b353-4a92-86ba-87483840453f")
 local inputHatchList = {
-    component.proxy("9d833aeb-7457-419c-b3dc-87c059ad6e54"),
-    component.proxy("9622f854-c6be-403f-b8b5-3bf5dce5f670")
+    component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f"),
+    component.proxy("b30eafff-339f-45dc-8311-04eaafeff7ba")
 } 
 local outputHatchList = {
-    component.proxy("432d0e5b-e4bb-4146-8d46-b7eb86a113b1"),
-    component.proxy("4d694e39-82f7-4085-9128-8913dbe80d3e")
+    component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f"),
+    component.proxy("5bda861a-cce3-411c-bbc9-c30ddb1f014c")
 }
 
 local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
