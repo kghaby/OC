@@ -38,13 +38,13 @@ RScard.setWakeThreshold(10)
 
 --local w,h=160,50
 --gpu.setResolution(44,8)
---gpu.setResolution(80,15)
-gpu.setResolution(160,50)
+gpu.setResolution(80,15)
+--gpu.setResolution(160,50)
 local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
 local updateInterval = 40 --in ticks
-local ratesTblSize=1200 --in ticks
+local ratesTblSize=600 --in ticks
 local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
