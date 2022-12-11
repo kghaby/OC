@@ -247,12 +247,12 @@ local function get_LSC_info(lsc)
 
         local totEUIn=0
         for i=1,#inputHatchList,1 do
-            totEUIn=totEUIn+inputHatch[i].getEUInputAverage()
+            totEUIn=totEUIn+inputHatchList[i].getEUInputAverage()
         end
 
         local totEUOut=0
         for i=1,#outputHatchList,1 do
-            totEUOut=totEUOut+outputHatch[i].getEUOutputAverage()
+            totEUOut=totEUOut+outputHatchList[i].getEUOutputAverage()
         end
 
         local status = {
