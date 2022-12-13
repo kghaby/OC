@@ -22,6 +22,9 @@ local function getEnergyInfo(cable)
     local sensorInformation=cable.getSensorInformation()
     local ampStrings = split(sensorInformation[3], "/")
     local currentA = ampStrings[1]:gsub("([^0-9]+)", "")
+    if #currentA=1 then
+        currentA="0"..currentA
+    end
     local maxA = ampStrings[2]:gsub("([^0-9]+)", "")
     return {currentA,maxA}
 end
