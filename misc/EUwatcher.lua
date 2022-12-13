@@ -23,7 +23,7 @@ local function getEnergyInfo(cable)
     local ampStrings = split(sensorInformation[3], "/")
     local currentA = ampStrings[1]:gsub("([^0-9]+)", "")
     local maxA = ampStrings[2]:gsub("([^0-9]+)", "")
-    return currentA,maxA
+    return {currentA,maxA}
 end
 
 
@@ -38,7 +38,7 @@ end
 gpu.setResolution(14,2+#cableList)
 gpu.set(1,1, "CABLE CAPACITY")
 for i=1,#cableList,1 do
-    gpu.set(1,2+i,cableList[i].label.."00/00")
+    gpu.set(1,2+i,cableList[i].label..": 00/00")
 end
 
 
@@ -46,9 +46,9 @@ end
 while true do
     for i=1,#cableList,1 do
         ampInfo=getEnergyInfo(cableList[i].cable)
-        if highestTable[cableList[i].label] <= ampInfo[1] then
-            highestTable[cableList[i].label]=ampInfo[1]
-            gpu.set(1,2+i,cableList[i].label..ampInfo[1].."/"..ampInfo[2])
+        if highestTable[cableList[i].label] <= tonumber(ampInfo[1]) then
+            highestTable[cableList[i].label]=tonumber(ampInfo[1])
+            gpu.set(1,2+i,cableList[i].label..": "..ampInfo[1].."/"..ampInfo[2])
         end
     end
     os.sleep()
