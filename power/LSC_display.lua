@@ -44,7 +44,7 @@ local w, h = gpu.getResolution()
 local halfW=w/2
 local vertBarr=h-4
 local updateInterval = 100 --in ticks
-local ratesTblSize=100 --in ticks
+local ratesTblSize=600 --in ticks
 local enableFraction = 0.3 -- [0,1]
 local disableFraction = 0.9 -- [0,1]
 
