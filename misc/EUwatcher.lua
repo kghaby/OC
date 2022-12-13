@@ -38,7 +38,7 @@ end
 gpu.setResolution(14,2+#cableList)
 gpu.set(1,1, "CABLE CAPACITY")
 for i=1,#cableList,1 do
-    gpu.set(1,2+i,cableList[i].label+00+"/"+00)
+    gpu.set(1,2+i,cableList[i].label.."00/00")
 end
 
 
@@ -48,7 +48,7 @@ while true do
         ampInfo=getEnergyInfo(cableList[i].cable)
         if highestTable[cableList[i].label] <= ampInfo[1] then
             highestTable[cableList[i].label]=ampInfo[1]
-            gpu.set(1,2+i,cableList[i].label+ampInfo[1]+"/"+ampInfo[2])
+            gpu.set(1,2+i,cableList[i].label..ampInfo[1].."/"..ampInfo[2])
         end
     end
     os.sleep()
