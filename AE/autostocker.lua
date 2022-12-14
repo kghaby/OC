@@ -60,7 +60,7 @@ local function getAmtCrafting(name,stockReq)
     return amtCrafting
 end
 
-local function getCPU(name)
+local function getFreeCPU(name)
     local CPU_l=ME.getCpus()
     local found=false
     while not found do
@@ -76,6 +76,21 @@ local function getCPU(name)
         CPU_l=ME.getCpus()
     end
     print("Could not find CPU containing "..name) --does not currently reach this line. need break in while loop
+end
+
+local function getCPU(name)
+    --requires specific name
+    local CPU_l=ME.getCpus()
+    local found=false
+    for i=1,#CPU_l,1 do 
+        --look for an avail CPU with Auto in the name
+        if CPU_l[i].name==name then 
+            found=true
+            return CPU_l[i]
+        end
+    end
+    print("Could not find CPU containing "..name)
+    return
 end
 
 
@@ -246,14 +261,14 @@ local function iterItemStockQuery(stockList,itemList)
             if stockEntry.multCPU then
                 totSize=item.size+amtCrafting
                 if totSize < stockEntry.checkLvl then
-                    local CPU=getCPU(CPUname)
+                    local CPU=getFreeCPU(CPUname)
                     --request craft
                     requestCraft(stockReq, stockEntry.craftAmt,CPU)
                 end
             end
         else 
             if item.size < stockEntry.checkLvl then
-                local CPU=getCPU(CPUname)
+                local CPU=getFreeCPU(CPUname)
                 --request craft
                 requestCraft(stockReq, stockEntry.craftAmt,CPU)
             end
