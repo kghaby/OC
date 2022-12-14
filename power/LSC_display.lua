@@ -16,9 +16,9 @@ local math = require("math")
 local gpu = component.gpu
 
 
-local glasses_G=component.proxy("b172fc79-86eb-4675-9079-270214f8a324")
-local glasses_Z=component.proxy("1aac0142-80bf-4a59-846f-fa579551322e")
-local glasses_K=component.proxy("662a8ec2-fdde-44f2-a973-21a401acf053")
+local glasses_G=component.proxy("4bd78d88-a274-4b36-b716-2baad89f807f")
+local glasses_Z=component.proxy("fa31e49a-7d87-4aa0-9d17-415682b2cce6")
+local glasses_K=component.proxy("a9632778-5059-4275-a337-3f04ae974866")
 local glasses_l={glasses_G,glasses_Z,glasses_K}
 
 local lsc = component.proxy("95bf178e-b353-4a92-86ba-87483840453f")
