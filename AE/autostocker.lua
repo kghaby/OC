@@ -218,7 +218,7 @@ local function requestCraft(stockReq, amt,CPU)
         print(getTimestamp().."Requesting " .. amt .. " " .. stockReq["label"].." on "..CPU.name)
         local req = recipe.request(amt,false,CPU.name)
         local reqCPU=getCPU(CPU.name)
-        while not reqCPU.busy() and not req.isCanceled() do  
+        while not reqCPU.busy and not req.isCanceled() do  
             reqCPU=getCPU(CPU.name)
             cStatus,reason=req.isDone()
             os.sleep(0.05)
