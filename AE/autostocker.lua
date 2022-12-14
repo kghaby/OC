@@ -220,7 +220,7 @@ local function requestCraft(stockReq, amt,CPU)
         local reqCPU=getCPU(CPU.name)
         while not reqCPU.busy and not req.isCanceled() do  
             reqCPU=getCPU(CPU.name)
-            cStatus,reason=req.isDone()
+            local cStatus,reason=req.isDone()
             os.sleep(0.05)
         end
         os.sleep(0.05)
