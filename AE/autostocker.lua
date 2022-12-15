@@ -246,7 +246,7 @@ local function iterItemStockQuery(stockList,itemList)
         local stockEntry=stockList[i]
         if stockEntry.offlineOnly then
             if not allOffline() then
-                print(getTimestamp().."Player(s) online. Skipping "..stockEntry.label)
+                --print(getTimestamp().."Player(s) online. Skipping "..stockEntry.label)
                 goto continue
             end
         end
