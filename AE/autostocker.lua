@@ -175,7 +175,8 @@ local function getItem(stockReq,itemList)
     local item_l=trimList(stockReq,itemList)
     if #item_l>1 then 
         print("More than 1 item found with parameters "..Serial.serialize(stockReq))
-        print("    Use damage, name, tag, or hasTag to narrow search")
+        print("    Check that the item is listed only once in itemStock.lua")
+        print("    Otherwise use damage, name, tag, or hasTag to narrow search")
         SR_fh = io.open("item_SR.dat","w")
         for i=1,#item_l,1 do
             for k,v in pairs(item_l[i]) do
