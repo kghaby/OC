@@ -297,7 +297,7 @@ local function updateEnergyData(powerStatus)
     powerStatus=get_LSC_info(lsc)
     currentEU = powerStatus.storedEU
     if currentEU==nil then
-        currentEU=0
+        goto skipIter
     end
     maxEU = powerStatus.EUCapacity
     percentage = math.min(currentEU/maxEU, 1.0)
@@ -333,6 +333,7 @@ local function updateEnergyData(powerStatus)
         energyData.energyPerTick = energyData.input+energyData.output  
         energyData.updateCounter = 1
     end
+    ::skipIter::
 end
 
 local function spectrumRedGreen(num,lowBound,highBound)
