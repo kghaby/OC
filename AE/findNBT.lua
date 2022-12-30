@@ -57,7 +57,7 @@ for _, v in ipairs(tagsizeList) do
 end
 tags_fh:close()
 
-local size=math.ceil(fs.size(path))
+local size=math.ceil(fs.size("tags.dat"))
 print("tags.dat is "..sizeFormat(size).." and contains "..#tagsizeList.."tags.")
 
 
