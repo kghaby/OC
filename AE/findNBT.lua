@@ -8,8 +8,26 @@ local basew,baseh=160,50
 gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
+local fs = component.filesystem
 
 
+function round(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
+
+
+function sizeFormat(size) 
+  if size < 1024 then
+    return(size .. " B")
+  end
+  if size > 1024 and size < 1048576 then
+    return(round(size / 1024, 2) .. " KiB")
+  end
+  if size > 1048576 and size < 1073741824 then
+    return(round(size / 1048576, 2) .. " MiB")
+  end
+end
 
 local function getTagsizeList(itemList)
     local tagsizeList={}
@@ -38,7 +56,9 @@ for _, v in ipairs(tagsizeList) do
     tags_fh:write(v[1], v[2],'\n') 
 end
 tags_fh:close()
-print("done")
+
+local size=math.ceil(fs.size(path))
+print("tags.dat is "..sizeFormat(size).." and contains "..#tagsizeList.."tags.")
 
 
 
