@@ -297,7 +297,7 @@ local function updateEnergyData(powerStatus)
     powerStatus=get_LSC_info(lsc)
     currentEU = powerStatus.storedEU
     if currentEU==nil then
-        goto skipIter
+        return "skipIter"
     end
     maxEU = powerStatus.EUCapacity
     percentage = math.min(currentEU/maxEU, 1.0)
@@ -333,7 +333,7 @@ local function updateEnergyData(powerStatus)
         energyData.energyPerTick = energyData.input+energyData.output  
         energyData.updateCounter = 1
     end
-    ::skipIter::
+    return
 end
 
 local function spectrumRedGreen(num,lowBound,highBound)
@@ -706,7 +706,10 @@ end
 
  while true do
     starttime=computer.uptime()
-    updateEnergyData(powerStatus,enableFraction,disableFraction)
+    iter=updateEnergyData(powerStatus,enableFraction,disableFraction)
+    if iter=="skipIter" then
+        goto skipIter
+    end
     drawEnergyScreen()
 
     for i=1,#glasses_l,1 do
@@ -716,6 +719,7 @@ end
     
     checkPower(percentage,enableFraction,disableFraction)
     
+    ::skipIter::
     endtime=computer.uptime()
 --    print((endtime-starttime))
     if endtime-starttime<0.01 then
