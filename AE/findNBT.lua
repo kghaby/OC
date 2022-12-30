@@ -8,7 +8,7 @@ local basew,baseh=160,50
 gpu.setResolution(basew/1,baseh/1)
 local w, h = gpu.getResolution()
 local ME = component.me_interface
-local fs = component.filesystem
+local fs = component.proxy("e7f123ff-fa30-4772-8bdf-a7e13ab5e8e8")
 
 
 function round(num, numDecimalPlaces)
@@ -57,7 +57,7 @@ for _, v in ipairs(tagsizeList) do
 end
 tags_fh:close()
 
-local size=math.ceil(fs.size("tags.dat"))
+local size=math.ceil(fs.size("/home/tags.dat"))
 print("tags.dat is "..sizeFormat(size).." and contains "..#tagsizeList.."tags.")
 
 
