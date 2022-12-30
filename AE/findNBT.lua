@@ -34,7 +34,7 @@ local function getTagsizeList(itemList)
     totalTypes=#itemList
     for i=1,totalTypes,1 do 
         local item=itemList[i]
-        if item.hasTag=true then
+        if item.hasTag then
             itemTable={item.label,#item.tag}
             table.insert(tagsizeList,itemTable)
         end
