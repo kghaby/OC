@@ -53,7 +53,7 @@ table.sort(tagsizeList, function(lhs, rhs) return lhs[2] > rhs[2] end)
 --write list
 local tags_fh = io.open("tags.dat","w")
 for _, v in ipairs(tagsizeList) do 
-    tags_fh:write(v[1], v[2],'\n') 
+    tags_fh:write(v[1],'\t\t\t', v[2],'\n') 
 end
 tags_fh:close()
 
