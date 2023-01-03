@@ -407,7 +407,7 @@ local function drawEnergyScreen()
     percentColor=spectrumRedGreen(percentage,0,1)
     gpu.fill((halfW)-6, 2, 12, 1, " ") -- reset % space to white 
     gpu.setForeground(percentColor)
-    percentEU=string.format("%." .. (1) .. "f", percentage*100)..'%'
+    percentEU=string.format("%." .. (6) .. "f", percentage*100)..'%'
     gpu.set((halfW)-(#percentEU/2),2,percentEU)
     
     --2nd bot row
