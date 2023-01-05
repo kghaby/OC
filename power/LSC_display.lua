@@ -6,7 +6,7 @@ local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
 
-local V={131072,"ZPM"}
+local V={8388608,"A UEV"}
 
 local component = require("component")
 local computer = require("computer")
@@ -23,12 +23,12 @@ local glasses_l={glasses_G,glasses_Z,glasses_K}
 
 local lsc = component.proxy("95bf178e-b353-4a92-86ba-87483840453f")
 local inputHatchList = {
-    component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f"), --wired
-    component.proxy("b30eafff-339f-45dc-8311-04eaafeff7ba")
+    --component.proxy("b5c1d2d9-0254-4b47-9582-eab46c49778f"), --wired
+    --component.proxy("b30eafff-339f-45dc-8311-04eaafeff7ba")
 } 
 local outputHatchList = {
-    component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f"), --wired
-    component.proxy("5bda861a-cce3-411c-bbc9-c30ddb1f014c")
+    --component.proxy("37293af0-80a7-4160-9bdc-91f66348a62f"), --wired
+    --component.proxy("5bda861a-cce3-411c-bbc9-c30ddb1f014c")
 }
 
 local redstone = component.proxy("de72557c-8939-43b4-bf5d-215ad845c170")
@@ -96,8 +96,8 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
-local function tierAmps(n,V) 
-    local amp_string=string.format("%." .. (1) .. "f", n/V[1])..'A '..V[2]
+local function formatEU(n,V) 
+    local amp_string=string.format("%." .. (1) .. "f", n/V[1])..V[2]
     return amp_string
 end
 
@@ -412,16 +412,16 @@ local function drawEnergyScreen()
     
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
-    EUout=tierAmps(energyData.output,V)
+    EUout=formatEU(energyData.output,V)
     gpu.fill(1, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(1,h-1,EUout)
     gpu.setForeground(xcolors.darkGreen)
-    EUinp=tierAmps(energyData.input,V)
+    EUinp=formatEU(energyData.input,V)
     gpu.fill(w-12, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(w-#(EUinp),h-1,EUinp)
     rateColor=spectrumRedGreen2(energyData.energyPerTick,energyData.output,energyData.input)
     gpu.setForeground(rateColor)
-    EUrate=tierAmps(energyData.energyPerTick,V)
+    EUrate=formatEU(energyData.energyPerTick,V)
     if energyData.energyPerTick>0 then
         EUrate='+'..EUrate
     end
