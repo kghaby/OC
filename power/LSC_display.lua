@@ -6,7 +6,7 @@ local RES_K={1920/scale,1080/scale}
 
 local RES_l={RES_G,RES_Z,RES_K}
 
-local V={8388608,"A UEV"}
+local EU_mod={8388608,"A UEV"}
 
 local component = require("component")
 local computer = require("computer")
@@ -96,8 +96,8 @@ local function sciNot(n)
     return string.format("%." .. (2) .. "E", n)
 end
 
-local function formatEU(n,V) 
-    local amp_string=string.format("%." .. (1) .. "f", n/V[1])..V[2]
+local function formatEU(n,EU_mod) 
+    local amp_string=string.format("%." .. (1) .. "f", n/EU_mod[1])..EU_mod[2]
     return amp_string
 end
 
@@ -412,16 +412,16 @@ local function drawEnergyScreen()
     
     --2nd bot row
     gpu.setForeground(xcolors.maroon)
-    EUout=formatEU(energyData.output,V)
+    EUout=formatEU(energyData.output,EU_mod)
     gpu.fill(1, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(1,h-1,EUout)
     gpu.setForeground(xcolors.darkGreen)
-    EUinp=formatEU(energyData.input,V)
+    EUinp=formatEU(energyData.input,EU_mod)
     gpu.fill(w-12, h-1, 12, 1, " ") -- reset rate space to white 
     gpu.set(w-#(EUinp),h-1,EUinp)
     rateColor=spectrumRedGreen2(energyData.energyPerTick,energyData.output,energyData.input)
     gpu.setForeground(rateColor)
-    EUrate=formatEU(energyData.energyPerTick,V)
+    EUrate=formatEU(energyData.energyPerTick,EU_mod)
     if energyData.energyPerTick>0 then
         EUrate='+'..EUrate
     end
