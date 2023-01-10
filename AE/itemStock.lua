@@ -26,7 +26,7 @@
         {label="Mars Stone Dust",checkLvl=100,craftAmt=1000},
         --{label="Enceladus Stone Dust",checkLvl=65,craftAmt=640},
         {label="Agar",checkLvl=10000,craftAmt=10000},
-        {label="Biocells",checkLvl=10-00,craftAmt=10000},
+        {label="Biocells",checkLvl=10000,craftAmt=10000},
         {label="Mince Meat",checkLvl=100000,craftAmt=100000},
         {label="T Ceti E Seaweed",damage=0,checkLvl=128000,craftAmt=64000},
         --{label="Naquadah Dust",checkLvl=501,craftAmt=500},
