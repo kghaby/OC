@@ -5,9 +5,11 @@ local gpu = component.gpu
 
 local cableList = {
     {label="64A LuV",cable=component.proxy("d2462d54-0473-4adb-b315-3f1926a4b473")},
-    {label="64A ZPM",cable=component.proxy("7ccd36dc-b662-45bc-b988-1d6ff6109666")},
-    {label="64A UV",cable=component.proxy("b3c4421b-8cd1-434e-9168-a54bbbcb41f5")},
-    {label="64A UV",cable=component.proxy("0d656629-be5b-4ea1-a498-128322415537")}
+    {label="128A ZPM",cable=component.proxy("7ccd36dc-b662-45bc-b988-1d6ff6109666")},
+    {label="128A UV",cable=component.proxy("b3c4421b-8cd1-434e-9168-a54bbbcb41f5")},
+    {label="192A UHV",cable=component.proxy("0d656629-be5b-4ea1-a498-128322415537")},
+    {label="64A UEV",cable=component.proxy("c237e6ce-18c0-4a89-bf9f-29d978835de6")}
+    
 } 
 
 function split(string, sep)
@@ -41,7 +43,7 @@ end
 --initialize screen
 w,h=gpu.getResolution()
 gpu.fill(1, 1, w, h, " ")
-gpu.setResolution(14,2+#cableList)
+gpu.setResolution(18,2+#cableList)
 --gpu.setResolution(160,50) --debugging
 gpu.set(1,1, "CABLE CAPACITY")
 for i=1,#cableList,1 do
@@ -55,7 +57,7 @@ while true do
         ampInfo=getEnergyInfo(cableList[i].cable)
         if highestTable[cableList[i].label] <= tonumber(ampInfo[1]) then
             highestTable[cableList[i].label]=tonumber(ampInfo[1])
-            gpu.set(1,2+i,cableList[i].label..": "..ampInfo[1].."/"..ampInfo[2])
+            gpu.set(1,2+i,cableList[i].label..": "..ampInfo[1]) --.."/"..ampInfo[2])
         end
     end
     os.sleep()
