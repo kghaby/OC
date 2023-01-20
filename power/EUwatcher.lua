@@ -45,7 +45,7 @@ w,h=gpu.getResolution()
 gpu.fill(1, 1, w, h, " ")
 gpu.setResolution(18,2+#cableList)
 --gpu.setResolution(160,50) --debugging
-gpu.set(1,1, "CABLE CAPACITY")
+gpu.set(1,1, "CABLE HISTORIC MAX")
 for i=1,#cableList,1 do
     gpu.set(1,2+i,cableList[i].label..": 00")--/00")
 end
