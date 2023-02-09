@@ -1,3 +1,5 @@
+--99% written by chatgpt. uses 10 ms/t and doesnt do anything visibly lol
+
 local component = require("component")
 local gpu = component.gpu
 local me_network = component.me_interface
@@ -5,6 +7,8 @@ local computer = require("computer")
 local os = require("os")
 local Serial = require("serialization")
 local math = require("math")
+local colors = require("colors")
+
 
 -- set display resolution
 gpu.setResolution(160, 50)
