@@ -51,9 +51,9 @@ end
 
 -- plot the data on the display
 local function plotData(xValues, yValues)
-  gpu.setBackground(0x000000)
+  gpu.setBackground(black)
   gpu.fill(1, 1, 160, 50, " ")
-  gpu.setForeground(0xFFFFFF)
+  gpu.setForeground(white)
 
   local maxX = 0
   local maxY = 0
