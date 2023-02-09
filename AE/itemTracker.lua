@@ -1,57 +1,74 @@
 local component = require("component")
+local gpu = component.gpu
+local me_network = component.me_network
 local computer = require("computer")
 local os = require("os")
+local Serial = require("serialization")
 local math = require("math")
-local gpu = component.gpu
-local ME = component.me_interface
 
-local itemToTrack = "diamond"
-local maxPoints = 50
-local sampleInterval = 5 -- seconds
+-- set display resolution
+gpu.setResolution(160, 50)
 
--- initialize the plot data with zeros
-local plotData = {}
-for i = 1, maxPoints do
-  plotData[i] = 0
+-- get current time
+local function getTime()
+  return os.time()
 end
 
-local function getCurrentCount()
-  local itemCount = 0
-  local itemList = ME.getItemsInNetwork()
-  for i = 1, #itemList do
-    local item = itemList[i]
-    if item.name == itemToTrack then
-      itemCount = itemCount + item.size
+-- get the current amount of the specified item in the ME network
+local function getItemAmount(itemID)
+  local items = me_network.getItemsInNetwork()
+  for i = 1, #items do
+    if items[i].label == itemID then
+      return items[i].size
     end
   end
-  return itemCount
+  return 0
 end
 
--- update the plot data with the current item count
-local function updatePlotData(currentCount)
-  for i = 2, maxPoints do
-    plotData[i - 1] = plotData[i]
+-- plot the data on the display
+local function plotData(xValues, yValues)
+  gpu.setBackground(0x000000)
+  gpu.fill(1, 1, 160, 50, " ")
+  gpu.setForeground(0xFFFFFF)
+
+  local maxX = 0
+  local maxY = 0
+  for i = 1, #xValues do
+    if xValues[i] > maxX then
+      maxX = xValues[i]
+    end
+    if yValues[i] > maxY then
+      maxY = yValues[i]
+    end
   end
-  plotData[maxPoints] = currentCount
+
+  local xScale = 140 / maxX
+  local yScale = 40 / maxY
+
+  for i = 2, #xValues do
+    gpu.set(10 + math.floor(xValues[i - 1] * xScale), 50 - math.floor(yValues[i - 1] * yScale), ".")
+    gpu.set(10 + math.floor(xValues[i] * xScale), 50 - math.floor(yValues[i] * yScale), ".")
+    gpu.drawLine(10 + math.floor(xValues[i - 1] * xScale), 50 - math.floor(yValues[i - 1] * yScale), 10 + math.floor(xValues[i] * xScale), 50 - math.floor(yValues[i] * yScale))
+  end
 end
 
--- plot the data on the screen
-local function plotDataOnScreen()
-  local maxCount = 0
-  for i = 1, maxPoints do
-    maxCount = math.max(maxCount, plotData[i])
-  end
-  gpu.setResolution(maxPoints, maxCount)
-  local w, h = gpu.getResolution()
-  gpu.fill(1, 1, w, h, " ")
-  for i = 1, maxPoints do
-    gpu.set(i, h - plotData[i] + 1, "*")
-  end
-end
+local itemID = "diamond"
+local maxDataPoints = 150
+local xValues = {}
+local yValues = {}
 
 while true do
-  local currentCount = getCurrentCount()
-  updatePlotData(currentCount)
-  plotDataOnScreen()
-  os.sleep(sampleInterval)
+  local time = getTime()
+  local amount = getItemAmount(itemID)
+
+  table.insert(xValues, time)
+  table.insert(yValues, amount)
+
+  if #xValues > maxDataPoints then
+    table.remove(xValues, 1)
+    table.remove(yValues, 1)
+  end
+
+  plotData(xValues, yValues)
+  os.sleep(1)
 end
