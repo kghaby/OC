@@ -53,6 +53,7 @@ end
 local function plotData(xValues, yValues)
   gpu.setBackground(black)
   gpu.fill(1, 1, 160, 50, " ")
+  gpu.setBackground(blue)
   gpu.setForeground(white)
 
   local maxX = 0
