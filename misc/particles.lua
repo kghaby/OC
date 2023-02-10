@@ -21,13 +21,13 @@ local function colorParticles(particles)
         local r = math.random(255)
         local g = math.random(255)
         local b = math.random(255)
-        particles[i].color=tonumber(string.format("0x%02x%02x%02x", r, g, b))
+        particle.color=tonumber(string.format("0x%02x%02x%02x", r, g, b))
     end
 end
 
 local function displayParticles(particles)
     for i, particle in ipairs(particles) do
-        gpu.setForeground(particle[i].color)
+        gpu.setForeground(particle.color)
         gpu.set(particle.x, particle.y, "o")
     end
 end
