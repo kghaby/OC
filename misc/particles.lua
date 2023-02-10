@@ -8,7 +8,7 @@ local os = require("os")
 
 local particles = {}
 local numParticles = 10 -- change this to the desired number of particles
-local force = 10 -- change this to the desired repulsion force
+local force = 5 -- change this to the desired repulsion force
 
 
 local width, height = gpu.getResolution()
