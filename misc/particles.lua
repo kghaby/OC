@@ -7,7 +7,7 @@ local os = require("os")
 local particles = {}
 local numParticles = 3 -- change this to the desired number of particles
 local force = 1 -- change this to the desired repulsion force
-local boundaryForce=2
+
 
 
 local width, height = gpu.getResolution()
@@ -49,21 +49,20 @@ local function updateParticles()
                 local fx = (dx / distance) * force
                 local fy = (dy / distance) * force
 
-                local Bdx = particles[i].x-0
-                local Bdy = particles[i].y-0
-                local Bdistance = math.sqrt(Bdx * Bdx + Bdy * Bdy)
-                local Bfx = (Bdx / Bdistance) * boundaryForce
-                local Bfy = (Bdy / Bdistance) * boundaryForce
 
-                local Tdx = particles[i].x-width
-                local Tdy = particles[i].y-height
-                local Tdistance = math.sqrt(Tdx * Tdx + Tdy * Tdy)
-                local Tfx = (Tdx / Tdistance) * boundaryForce
-                local Tfy = (Tdy / Tdistance) * boundaryForce
+                particles[i].x = particles[i].x + math.random(-1, 1) + fx 
+                particles[i].y = particles[i].y + math.random(-1, 1) + fy 
 
-                particles[i].x = particles[i].x + math.random(-1, 1) + fx + Bfx + Tfx
-                particles[i].y = particles[i].y + math.random(-1, 1) + fy + Bfy + Tfy
-
+                -- Add periodic boundary conditions
+                if particles[i].x > width then
+                    particles[i].x = 1
+                elseif particles[i].x < 1 then
+                    particles[i].x = width
+                end
+                if particles[i].y > height then
+                    particles[i].y = 1
+                elseif particles[i].y < 1 then
+                    particles[i].y = height
             end
         end
     end
