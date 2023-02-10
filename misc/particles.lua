@@ -63,6 +63,7 @@ local function updateParticles()
                     particles[i].y = 1
                 elseif particles[i].y < 1 then
                     particles[i].y = height
+                end
             end
         end
     end
