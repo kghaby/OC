@@ -13,15 +13,21 @@ local force = 1 -- change this to the desired repulsion force
 
 local width, height = gpu.getResolution()
 for i=1,numParticles,1 do
-particles[i] = {x = math.random(width), y = math.random(height), r = math.random(1,10)} -- change the values of x, y, and r to the desired values
+particles[i] = {x = math.random(width), y = math.random(height)} -- change the values of x, y to the desired values
 end
 
-local function displayParticles(particles)
+local function colorParticles(particles)
     for i, particle in ipairs(particles) do
         local r = math.random(255)
         local g = math.random(255)
         local b = math.random(255)
-        gpu.setForeground(tonumber(string.format("0x%02x%02x%02x", r, g, b)))
+        particle[i].color=tonumber(string.format("0x%02x%02x%02x", r, g, b))
+    end
+end
+
+local function displayParticles(particles)
+    for i, particle in ipairs(particles) do
+        gpu.setForeground(particle[i].color)
         gpu.set(particle.x, particle.y, "o")
     end
 end
@@ -42,14 +48,15 @@ local function updateParticles()
                 if particles[i].y < 0 or particles[i].y > height then
                     fy=-fy
                 end
-                particles[i].x = particles[i].x + fx
-                particles[i].y = particles[i].y + fy
+                particles[i].x = particles[i].x + math.random(-1, 1) + fx
+                particles[i].y = particles[i].y + math.random(-1, 1) + fy
 
             end
         end
     end
 end 
 
+colorParticles(particles)
 while true do
   updateParticles()
   gpu.fill(1, 1, width, height, " ")
