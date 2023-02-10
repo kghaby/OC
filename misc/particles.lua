@@ -21,7 +21,7 @@ local function displayParticles(particles)
         local r = math.random(255)
         local g = math.random(255)
         local b = math.random(255)
-        gpu.setForeground(string.format("0x%02x%02x%02x", r, g, b))
+        gpu.setForeground(tonumber(string.format("0x%02x%02x%02x", r, g, b)))
         gpu.set(particle.x, particle.y, ".")
     end
 end
