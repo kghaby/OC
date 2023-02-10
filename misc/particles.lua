@@ -36,10 +36,10 @@ local function updateParticles()
 
                 local fx = (dx / distance) * force
                 local fy = (dy / distance) * force
-                if particles[i].x < 0 or particles[i].x > w then
+                if particles[i].x < 0 or particles[i].x > width then
                     fx=-fx
                 end
-                if particles[i].y < 0 or particles[i].y > h then
+                if particles[i].y < 0 or particles[i].y > height then
                     fy=-fy
                 end
                 particles[i].x = particles[i].x + fx
