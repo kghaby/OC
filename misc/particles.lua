@@ -21,7 +21,7 @@ local function colorParticles(particles)
         local r = math.random(255)
         local g = math.random(255)
         local b = math.random(255)
-        particle[i].color=tonumber(string.format("0x%02x%02x%02x", r, g, b))
+        particles[i].color=tonumber(string.format("0x%02x%02x%02x", r, g, b))
     end
 end
 
