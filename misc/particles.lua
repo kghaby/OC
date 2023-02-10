@@ -18,10 +18,10 @@ end
 
 local function displayParticles(particles)
     for i, particle in ipairs(particles) do
-        local red = math.random(255)
-        local green = math.random(255)
-        local blue = math.random(255)
-        gpu.setForeground(red, green, blue)
+        local r = math.random(255)
+        local g = math.random(255)
+        local b = math.random(255)
+        gpu.setForeground(string.format("%02x%02x%02x", r, g, b))
         gpu.set(particle.x, particle.y, ".")
     end
 end
