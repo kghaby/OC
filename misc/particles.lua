@@ -1,8 +1,10 @@
 --written by chatgpt
 
 local computer = require("computer")
-local gpu = computer.getGPU()
+local component = require("component")
+local gpu = component.gpu
 local math = require("math")
+local os = require("os")
 
 local width, height = gpu.getResolution()
 
@@ -37,17 +39,19 @@ while true do
   gpu.fill(1, 1, width, height, " ")
   gpu.set(math.floor(particle1.x), math.floor(particle1.y), "O")
   gpu.set(math.floor(particle2.x), math.floor(particle2.y), "O")
-  gpu.set(1, 1, "X")
-  gpu.set(width, 1, "X")
-  gpu.set(1, height, "X")
-  gpu.set(width, height, "X")
-  for i = 2, width - 1 do
-    gpu.set(i, 1, "-")
-    gpu.set(i, height, "-")
-  end
-  for i = 2, height - 1 do
-    gpu.set(1, i, "|")
-    gpu.set(width, i, "|")
-  end
+  --gpu.set(1, 1, "X")
+  --gpu.set(width, 1, "X")
+  --gpu.set(1, height, "X")
+  --gpu.set(width, height, "X")
+  --for i = 2, width - 1 do
+  --  gpu.set(i, 1, "-")
+  --  gpu.set(i, height, "-")
+  --end
+  --for i = 2, height - 1 do
+  --  gpu.set(1, i, "|")
+  --  gpu.set(width, i, "|")
+  --end
+
   --computer.pushSignal("display") --needed?
+  os.sleep(0.05)
 end
