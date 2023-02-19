@@ -61,7 +61,7 @@ end
 local function extractCoords(infoMsg)
     local startIndex, endIndex = string.find(infoMsg, "%b{}")
     local coords = string.sub(infoMsg, startIndex, endIndex)
-    return coords
+    return Serial.unserialize(coords)
 end
     
 local function extractDimension(infoMsg)
@@ -69,7 +69,34 @@ local function extractDimension(infoMsg)
     local dim = string.sub(infoMsg, endIndex + 2)
     return tonumber(dim)
 end
-    
+   
+local function dragonRow(w)
+    gpu.setBackground(0xFF0000) -- set background color to red
+    gpu.fill(1, 1, w, 1, " ") -- fill the first row with red background
+
+    local message = "SNEAK+RMB FOR NEW CHAOS ISLAND"
+    local x = math.floor(w / 2 - string.len(message) / 2 + 1) -- center the message
+    gpu.set(x, 1, message) -- set the message in the first row
+    gpu.setBackground(0x000000)
+end
+
+local function getNewIsland()
+    local newCoords={10000,100,0} --starting coords
+    local logFile = io.open("teleport_log.txt", "r")
+    if logFile then
+        logFile:close()
+        for line in logFile:lines() do
+            local coords=extractCoords(infoMsg)
+            if newCoords==coords do
+                while newCoords[1]==coords[1] do
+                    newCoords[1]=newCoords[1]+10000
+                end
+            end
+        end
+    end
+    return newCoords
+end
+
 local touchThread=thread.create(function()
     while true do 
         local _, _, x, y = event.pull("touch")
@@ -79,10 +106,15 @@ local touchThread=thread.create(function()
             local rowText = getRowText(y,w)
             if string.find(rowText,"TP to") then
                 highlightRow(0x3C5B72,y,rowText)
-                local coords = Serial.unserialize(extractCoords(rowText))
+                local coords = extractCoords(rowText)
                 local dim = extractDimension(rowText)
                 tp.setCoords(coords[1],coords[2],coords[3])
                 tp.setDimension(dim)
+            elseif string.find(rowText,"CHAOS") then
+                local coords=getNewIsland()
+                highlightRow(0x3C5B72,y,rowText)
+                tp.setCoords(coords[1],coords[2],coords[3])
+                tp.setDimension(1) --end dim
             end
         end 
         os.sleep()
@@ -98,6 +130,7 @@ while true do
         local dim = tostring(tp.getDimension())
         local infoMsg = os.date()..": TP to "..coords.." in Dim "..dim
         print(infoMsg)
+        dragonRow(w)
         logTeleport(infoMsg.."\n")
     end
     os.sleep()
