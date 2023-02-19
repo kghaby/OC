@@ -20,9 +20,7 @@ local function logTeleport(infoMsg)
 end
 
 local function displayTeleportLog()
-    gpu.setBackground(0x000000)
-    gpu.setForeground(0xFFFFFF)
-    gpu.fill(1, 1, w, h, " ") -- clears the screen
+
     local logFile = io.open("teleport_log.txt", "r")
     if logFile == nil then
         return
@@ -84,7 +82,6 @@ local function getNewIsland()
     local newCoords={10000,100,0} --starting coords
     local logFile = io.open("teleport_log.txt", "r")
     if logFile then
-        logFile:close()
         for line in logFile:lines() do
             local coords=extractCoords(infoMsg)
             if newCoords==coords then
@@ -93,6 +90,7 @@ local function getNewIsland()
                 end
             end
         end
+        logFile:close()
     end
     return newCoords
 end
@@ -106,6 +104,7 @@ local touchThread=thread.create(function()
             local rowText = getRowText(y,w)
             if string.find(rowText,"TP to") then
                 highlightRow(0x3C5B72,y,rowText)
+                dragonRow(w)
                 local coords = extractCoords(rowText)
                 local dim = extractDimension(rowText)
                 tp.setCoords(coords[1],coords[2],coords[3])
@@ -115,13 +114,19 @@ local touchThread=thread.create(function()
                 highlightRow(0x3C5B72,y,rowText)
                 tp.setCoords(coords[1],coords[2],coords[3])
                 tp.setDimension(1) --end dim
+            else
+                dragonRow(w)
             end
         end 
         os.sleep()
     end
 end)
 
-
+gpu.setBackground(0x000000)
+gpu.setForeground(0xFFFFFF)
+gpu.fill(1, 1, w, h, " ") -- clears the screen
+dragonRow(w)
+term.setCursor(1, 2)
 displayTeleportLog()
 while true do
     if tp.getProgress() > 0 then
