@@ -87,7 +87,7 @@ local function getNewIsland()
         logFile:close()
         for line in logFile:lines() do
             local coords=extractCoords(infoMsg)
-            if newCoords==coords do
+            if newCoords==coords then
                 while newCoords[1]==coords[1] do
                     newCoords[1]=newCoords[1]+10000
                 end
