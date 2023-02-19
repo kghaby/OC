@@ -83,7 +83,7 @@ local function getNewIsland()
     local logFile = io.open("teleport_log.txt", "r")
     if logFile then
         for line in logFile:lines() do
-            local coords=extractCoords(infoMsg)
+            local coords=extractCoords(line)
             if newCoords==coords then
                 while newCoords[1]==coords[1] do
                     newCoords[1]=newCoords[1]+10000
