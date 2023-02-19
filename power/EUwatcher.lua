@@ -9,7 +9,8 @@ local cableList = {
     {label="256A UV",cable=component.proxy("b3c4421b-8cd1-434e-9168-a54bbbcb41f5")},
     {label="192A UHV",cable=component.proxy("0d656629-be5b-4ea1-a498-128322415537")},
     {label="128A UEV",cable=component.proxy("c237e6ce-18c0-4a89-bf9f-29d978835de6")},
-    {label="64A UIV",cable=component.proxy("a24f0130-52ce-4a5c-a53e-e76e739cb617")}
+    {label="64A UIV",cable=component.proxy("a24f0130-52ce-4a5c-a53e-e76e739cb617")},
+    {label="64A UMV",cable=component.proxy("b3195156-39e8-4369-a4ae-2ec0c2abef8b")}
 } 
 
 function split(string, sep)
