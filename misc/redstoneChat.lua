@@ -29,7 +29,7 @@ local function isWithinMinutes(datetime,threshold)
     local hour = tonumber(string.sub(datetime, 12, 13))
     local minute = tonumber(string.sub(datetime, 15, 16))
     for i = 1, #targetHours do
-        if hour == targetHours[i] and (minute >= (60-threshold) or minute <= threshold) then
+        if hour == targetHours[i] and (minute >= (60-threshold)) then
             return true
         end
     end
