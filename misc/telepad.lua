@@ -138,8 +138,10 @@ gpu.fill(1, 1, w, h, " ") -- clears the screen
 dragonRow(w)
 term.setCursor(1, 2)
 displayTeleportLog()
+local recentTele=false
 while true do
-    if tp.getProgress() == 1 then
+    if tp.getProgress() > 0.99 and not recentTele then
+        recentTele=true
         changeBackground(0x000000,w,h)
         local coords = Serial.serialize({tp.getCoords()})
         local dim = tostring(tp.getDimension())
@@ -147,6 +149,9 @@ while true do
         print(infoMsg)
         dragonRow(w)
         logTeleport(infoMsg.."\n")
+    end
+    if tp.getProgress == 0 and recentTele then
+        recentTele=false
     end
     os.sleep()
 end
