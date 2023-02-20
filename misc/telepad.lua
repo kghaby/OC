@@ -140,7 +140,7 @@ term.setCursor(1, 2)
 displayTeleportLog()
 local recentTele=false
 while true do
-    if tp.getProgress() > 0.99 and not recentTele then
+    if tp.getProgress() > 0 and not recentTele then
         recentTele=true
         changeBackground(0x000000,w,h)
         local coords = Serial.serialize({tp.getCoords()})
