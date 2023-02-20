@@ -75,13 +75,14 @@ end
 
 print("Waiting...")
 redstone.setOutput(sides.right, 15)
+local currentTime=""
 
 local networkCheck=thread.create(function()  
     while true do
         if not isNetworkOn() then
             local msg="ME network down. Sleeping redstone for 10 seconds"
             chatbox.say(msg)
-            print(os.date().." "..msg)
+            print(getCurrentTime()..": "..msg)
             redstone.setOutput(sides.right, 0)
             os.sleep(10)
             redstone.setOutput(sides.right, 15)
@@ -94,11 +95,12 @@ end)
     -- then sleeps for 3.5 hrs
 local reboot=false
 while true do
-    local currentTime = getCurrentTime()
+    currentTime = getCurrentTime()
     if isWithinMinutes(currentTime,2) then
+        os.sleep(300)
         local msg="Scheduled reboot predicted. Sleeping redstone for 180 seconds"
         chatbox.say(msg)
-        print(os.date().." "..msg)
+        print(getCurrentTime()..": "..msg)
         reboot=true
         redstone.setOutput(sides.right, 0)
         os.sleep(180)
@@ -107,7 +109,8 @@ while true do
         os.sleep(90)
     end
     if reboot then
-        print("Reboot successful. Sleeping for ~3.5 hrs")
+
+        print(getCurrentTime()..": ".."Reboot successful. Sleeping for ~3.5 hrs")
         local beforeGame=computer.uptime()
         local beforeReal = getCurrentTime()
         os.sleep(12600)
@@ -115,9 +118,9 @@ while true do
         local afterReal = getCurrentTime()
         
         gameDiff=(afterGame-beforeGame)/3600
-        print("Slept for "..gameDiff.." game hours")
+        print(getCurrentTime()..": ".."Slept for "..gameDiff.." game hours")
         realDiff=(time2seconds(afterReal)-time2seconds(beforeReal))/3600
-        print("Slept for "..realDiff.." real hours")
+        print(getCurrentTime()..": ".."Slept for "..realDiff.." real hours")
         reboot=false
     end
 end
