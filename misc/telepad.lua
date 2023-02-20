@@ -8,9 +8,19 @@ local io = require("io")
 local Serial = require("serialization")
 local term=require("term")
 local thread = require("thread")
+local internet = require("internet")
 
 gpu.setResolution(56,30)
 w,h=gpu.getResolution()
+
+-- Function to parse the response and get the current time
+local function getCurrentTime()
+    local response = internet.request("http://worldtimeapi.org/api/timezone/America/Chicago")
+    local response=response()
+    local startIndex, endIndex = string.find(response, "datetime")
+    local datetime = string.sub(response, startIndex + 11, endIndex +22)
+    return datetime
+end
 
 local function logTeleport(infoMsg)
     local logFile = io.open("teleport_log.txt", "a")
@@ -133,7 +143,7 @@ while true do
         changeBackground(0x000000,w,h)
         local coords = Serial.serialize({tp.getCoords()})
         local dim = tostring(tp.getDimension())
-        local infoMsg = os.date()..": TP to "..coords.." in Dim "..dim
+        local infoMsg = getCurrentTime()..": TP to "..coords.." in Dim "..dim
         print(infoMsg)
         dragonRow(w)
         logTeleport(infoMsg.."\n")
