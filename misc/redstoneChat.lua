@@ -36,9 +36,9 @@ print("Waiting...")
 redstone.setOutput(sides.right, 15)
 while true do
     if not isNetworkOn() then
-        chatbox.say("Network down. Sleeping redstone for 5 seconds")
+        chatbox.say("Network down. Sleeping redstone for 10 seconds")
         redstone.setOutput(sides.right, 0)
-        os.sleep(5)
+        os.sleep(10)
         redstone.setOutput(sides.right, 15)
     end
     os.sleep()
