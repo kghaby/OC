@@ -17,8 +17,9 @@ redstone.setWakeThreshold(15)
 -- Function to parse the response and get the current time
 local function getCurrentTime()
     local response = internet.request("http://worldtimeapi.org/api/timezone/America/Chicago")
-    local startIndex, endIndex = string.find(response(), "datetime")
-    local datetime = string.sub(response, startIndex + 12, endIndex - 3)
+    local response=response()
+    local startIndex, endIndex = string.find(response, "datetime")
+    local datetime = string.sub(response, startIndex + 11, endIndex +22)
     return datetime
 end
 
@@ -37,9 +38,12 @@ end
 
 local function time2seconds(time)
     local hour = tonumber(string.sub(time, 12, 13))
+    if hour == 1 then
+        hour=hour+24
+    end
     local minute = tonumber(string.sub(time, 15, 16))
     local seconds = tonumber(string.sub(time, 18, 19))
-    return timeInSeconds = time.hour * 3600 + time.minute * 60 + time.second
+    return timeInSeconds = hour * 3600 + minute * 60 + second
 end
 
 --[[
