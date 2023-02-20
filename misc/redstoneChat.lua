@@ -71,7 +71,7 @@ local isRebooting=thread.create(function()
     while true do
         local currentTime = getCurrentTime()
         if isWithinMinutes(currentTime,2) then
-            local msg="Scheduled reboot detected. Sleeping redstone for 180 seconds"
+            local msg="Scheduled reboot predicted. Sleeping redstone for 180 seconds"
             chatbox.say(msg)
             print(os.date().." "..msg)
             reboot=true
