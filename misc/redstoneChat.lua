@@ -6,8 +6,7 @@ local redstone = component.redstone
 local sides = require("sides")
 local chatbox=component.chat_box
 local thread=require("thread")
-local serialization = require("serialization")
-local internet = component.internet
+local internet = require("internet")
 
 
 --autoreboot with reboot IC gate
