@@ -64,39 +64,8 @@ local isRebooting=thread.create(function()
 end)
 ]]
 
---downloads every 90 seconds until reboot is 2 mins away, then sleeps for 3 mins,
-    -- then sleeps for 3.5 hrs
-local reboot=false
-local isRebooting=thread.create(function()  
-    while true do
-        local currentTime = getCurrentTime()
-        if isWithinMinutes(currentTime,2) then
-            local msg="Scheduled reboot predicted. Sleeping redstone for 180 seconds"
-            chatbox.say(msg)
-            print(os.date().." "..msg)
-            reboot=true
-            redstone.setOutput(sides.right, 0)
-            os.sleep(180)
-            redstone.setOutput(sides.right, 15)
-        else
-            os.sleep(90)
-        end
-        if reboot then
-            print("Reboot successful. Sleeping for ~3.5 hrs")
-            local beforeGame=computer.uptime()
-            local beforeReal = getCurrentTime()
-            os.sleep(12600)
-            local afterGame=computer.uptime()
-            local afterReal = getCurrentTime()
-            
-            gameDiff=(afterGame-beforeGame)/3600
-            print("Slept for "..gameDiff.." game hours")
-            realDiff=(time2seconds(afterReal)-time2seconds(beforeReal))/3600
-            print("Slept for "..realDiff.." real hours")
-            reboot=false
-        end
-    end
-end)
+
+
 
 
 local function isNetworkOn()
@@ -107,14 +76,49 @@ end
 
 print("Waiting...")
 redstone.setOutput(sides.right, 15)
+
+local networkCheck=thread.create(function()  
+    while true do
+        if not isNetworkOn() then
+            local msg="ME network down. Sleeping redstone for 10 seconds"
+            chatbox.say(msg)
+            print(os.date().." "..msg)
+            redstone.setOutput(sides.right, 0)
+            os.sleep(10)
+            redstone.setOutput(sides.right, 15)
+        end
+        os.sleep()
+    end
+end)
+
+--downloads every 90 seconds until reboot is 2 mins away, then sleeps for 3 mins,
+    -- then sleeps for 3.5 hrs
+local reboot=false
 while true do
-    if not isNetworkOn() then
-        local msg="ME network down. Sleeping redstone for 10 seconds"
+    local currentTime = getCurrentTime()
+    if isWithinMinutes(currentTime,2) then
+        local msg="Scheduled reboot predicted. Sleeping redstone for 180 seconds"
         chatbox.say(msg)
         print(os.date().." "..msg)
+        reboot=true
         redstone.setOutput(sides.right, 0)
-        os.sleep(10)
+        os.sleep(180)
         redstone.setOutput(sides.right, 15)
+    else
+        os.sleep(90)
     end
-    os.sleep()
+    if reboot then
+        print("Reboot successful. Sleeping for ~3.5 hrs")
+        local beforeGame=computer.uptime()
+        local beforeReal = getCurrentTime()
+        os.sleep(12600)
+        local afterGame=computer.uptime()
+        local afterReal = getCurrentTime()
+        
+        gameDiff=(afterGame-beforeGame)/3600
+        print("Slept for "..gameDiff.." game hours")
+        realDiff=(time2seconds(afterReal)-time2seconds(beforeReal))/3600
+        print("Slept for "..realDiff.." real hours")
+        reboot=false
+    end
 end
