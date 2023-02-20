@@ -16,10 +16,10 @@ redstone.setWakeThreshold(15)
 local isRebooting=thread.create(function()
     while true do
         local _, _, _, message = event.pull("chat_message")
-        if message and string.find(message, "rebooting") then
-            chatbox.say("Scheduled reboot detected. Sleeping redstone for 30 seconds")
+        if message and string.find(message, "reboot in 1 minute") then
+            chatbox.say("Scheduled reboot detected. Sleeping redstone for 120 seconds")
             redstone.setOutput(sides.right, 0)
-            os.sleep(30)
+            os.sleep(120)
             redstone.setOutput(sides.right, 15)
         end
     end
