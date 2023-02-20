@@ -43,7 +43,8 @@ local function time2seconds(time)
     end
     local minute = tonumber(string.sub(time, 15, 16))
     local seconds = tonumber(string.sub(time, 18, 19))
-    return timeInSeconds = hour * 3600 + minute * 60 + second
+    timeInSeconds = hour * 3600 + minute * 60 + second
+    return timeInSeconds
 end
 
 --[[
