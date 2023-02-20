@@ -14,17 +14,10 @@ local internet = component.internet
 redstone.setOutput(sides.back,15)
 redstone.setWakeThreshold(15)
 
--- Function to make an HTTP GET request
-local function httpGet(url)
-    local handle = internet.request(url)
-    local response = handle.finish()
-    return response
-end
-
 -- Function to parse the response and get the current time
 local function getCurrentTime()
-    local response = httpGet("http://worldtimeapi.org/api/timezone/America/Chicago")
-    local startIndex, endIndex = string.find(response, "datetime")
+    local response = internet.request("http://worldtimeapi.org/api/timezone/America/Chicago")
+    local startIndex, endIndex = string.find(response(), "datetime")
     local datetime = string.sub(response, startIndex + 12, endIndex - 3)
     return datetime
 end
