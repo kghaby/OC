@@ -153,7 +153,7 @@ while true do
     if tp.getProgress() == 0 and recentTele then
         recentTele=false
     end
-    os.sleep()
+    os.sleep(0.05)
 end
 
 
