@@ -139,8 +139,9 @@ dragonRow(w)
 term.setCursor(1, 2)
 displayTeleportLog()
 local recentTele=false
+local prevEnergy=0
 while true do
-    if tp.getProgress() > 0 and not recentTele then
+    if ((tp.getProgress() > 0) or (tp.getEnergyStored()<prevEnergy)) and not recentTele then
         recentTele=true
         changeBackground(0x000000,w,h)
         local coords = Serial.serialize({tp.getCoords()})
@@ -153,6 +154,7 @@ while true do
     if tp.getProgress() == 0 and recentTele then
         recentTele=false
     end
+    prevEnergy=tp.getEnergyStored()
     os.sleep(0.05)
 end
 
