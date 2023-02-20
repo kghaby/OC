@@ -139,7 +139,7 @@ dragonRow(w)
 term.setCursor(1, 2)
 displayTeleportLog()
 while true do
-    if tp.getProgress() > 0 then
+    if tp.getProgress() == 1 then
         changeBackground(0x000000,w,h)
         local coords = Serial.serialize({tp.getCoords()})
         local dim = tostring(tp.getDimension())
