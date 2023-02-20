@@ -150,7 +150,7 @@ while true do
         dragonRow(w)
         logTeleport(infoMsg.."\n")
     end
-    if tp.getProgress == 0 and recentTele then
+    if tp.getProgress() == 0 and recentTele then
         recentTele=false
     end
     os.sleep()
