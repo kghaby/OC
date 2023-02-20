@@ -81,7 +81,7 @@ local isRebooting=thread.create(function()
         else
             os.sleep(90)
         end
-        if reboot=true then
+        if reboot then
             print("Reboot successful. Sleeping for ~3.5 hrs")
             local beforeGame=computer.uptime()
             local beforeReal = getCurrentTime()
