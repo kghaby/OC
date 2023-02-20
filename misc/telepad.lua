@@ -89,7 +89,7 @@ local function dragonRow(w)
 end
 
 local function getNewIsland()
-    local newCoords={10000,300,0} --starting coords
+    local newCoords={10000,250,0} --starting coords
     local logFile = io.open("teleport_log.txt", "r")
     if logFile then
         for line in logFile:lines() do
