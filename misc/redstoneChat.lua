@@ -17,7 +17,9 @@ local isRebooting=thread.create(function()
     while true do
         local _, _, _, message = event.pull("chat_message")
         if message and string.find(message, "reboot in 1 minute") then
-            chatbox.say("Scheduled reboot detected. Sleeping redstone for 120 seconds")
+            local msg="Scheduled reboot detected. Sleeping redstone for 120 seconds"
+            chatbox.say(msg)
+            print(os.date().." "..msg)
             redstone.setOutput(sides.right, 0)
             os.sleep(120)
             redstone.setOutput(sides.right, 15)
@@ -36,7 +38,9 @@ print("Waiting...")
 redstone.setOutput(sides.right, 15)
 while true do
     if not isNetworkOn() then
-        chatbox.say("Network down. Sleeping redstone for 10 seconds")
+        local msg="ME network down. Sleeping redstone for 10 seconds"
+        chatbox.say(msg)
+        print(os.date().." "..msg)
         redstone.setOutput(sides.right, 0)
         os.sleep(10)
         redstone.setOutput(sides.right, 15)
