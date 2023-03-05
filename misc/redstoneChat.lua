@@ -91,19 +91,20 @@ local networkCheck=thread.create(function()
     end
 end)
 
---downloads every 90 seconds until reboot is 5 mins away, then sleeps for 6 mins,
+--downloads every 90 seconds until reboot is 7 mins away, then sleeps for 8 mins,
     -- then sleeps for 3.5 hrs
 local reboot=false
 while true do
     currentTime = getCurrentTime()
-    if isWithinMinutes(currentTime,5) then
+    if isWithinMinutes(currentTime,7) then
         os.sleep(300) --bc reboot is actually 5 mins after the hour
-        local msg="Scheduled reboot predicted. Sleeping redstone for 360 seconds"
+        local sleepTime=480 --s
+        local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime.." seconds"
         chatbox.say(msg)
         print(getCurrentTime()..": "..msg)
         reboot=true
         redstone.setOutput(sides.right, 0)
-        os.sleep(360)
+        os.sleep(sleepTime)
         redstone.setOutput(sides.right, 15)
     else
         os.sleep(90)
