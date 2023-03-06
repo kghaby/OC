@@ -139,7 +139,7 @@ dragonRow(w)
 term.setCursor(1, 2)
 displayTeleportLog()
 local recentTele=false
-local prevEnergy=0
+local prevEnergy=tp.getEnergyStored()
 while true do
     if ((tp.getProgress() > 0) or (tp.getEnergyStored()<prevEnergy)) and not recentTele then
         recentTele=true
