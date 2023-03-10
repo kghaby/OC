@@ -15,11 +15,23 @@ redstone.setWakeThreshold(15)
 
 -- Function to parse the response and get the current time
 local function getCurrentTime()
-    local response = internet.request("http://worldtimeapi.org/api/timezone/America/Chicago")
-    local response=response()
-    local startIndex, endIndex = string.find(response, "datetime")
-    local datetime = string.sub(response, startIndex + 11, endIndex +22)
-    return datetime
+    local ok1, response = pcall(internet.request, "http://worldtimeapi.org/api/timezone/America/Chicago")
+    if ok1 then
+        local ok2, response = pcall(response)
+        if ok2 then
+            local startIndex, endIndex = string.find(response, "datetime")
+            local datetime = string.sub(response, startIndex + 11, endIndex +22)
+            return datetime
+        else
+            print("Response was not ok2")
+            return "0000-00-00T01:55:00" --phony datetime to trigger redstone off
+        end
+    else
+        print("Response was not ok1")
+        return "0000-00-00T01:55:00" --phony datetime to trigger redstone off
+    end
+  
+   
 end
 
 -- Function to check if the current time is within 2 minutes of the target hours
