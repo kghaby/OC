@@ -34,7 +34,7 @@ local function getCurrentTime()
    
 end
 
--- Function to check if the current time is within 2 minutes of the target hours
+-- Function to check if the current time is within x minutes of the target hours
 local function isWithinMinutes(datetime,threshold)
     local targetHours = {2, 4, 6, 10, 14, 18, 22}
     local hour = tonumber(string.sub(datetime, 12, 13))
@@ -108,9 +108,10 @@ end)
 local reboot=false
 while true do
     currentTime = getCurrentTime()
-    if isWithinMinutes(currentTime,7) then
+    local minutes=60
+    if isWithinMinutes(currentTime,minutes) then
         os.sleep(300) --bc reboot is actually 5 mins after the hour
-        local sleepTime=480 --s
+        local sleepTime=minutes*60 --s
         local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime.." seconds"
         chatbox.say(msg)
         print(getCurrentTime()..": "..msg)
