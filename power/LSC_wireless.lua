@@ -10,7 +10,7 @@ local gpu = component.gpu
 
 local lsc = component.proxy("b1bab203-04ed-4be0-842b-239f0a181c1b")
 
-local redstone = component.proxy("6b7f615c-6f5b-4419-903c-74318403c647")
+local redstone = component.proxy("2cfe1520-9d54-4601-a7c7-73dcb0d7d768")
 --autoreboot with comparator next to comp >not gate>signal back into comp
 RScard=component.proxy("13648e2b-d641-4030-a84a-8a138018474b")
 RScard.setWakeThreshold(10)
