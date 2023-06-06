@@ -103,15 +103,15 @@ local networkCheck=thread.create(function()
     end
 end)
 
---downloads every 90 seconds until reboot is 7 mins away, then sleeps for 8 mins,
-    -- then sleeps for 3.5 hrs
+--downloads every 90 seconds until reboot is $minutes mins away, then sleeps for $minutes+4 mins,
+    -- then sleeps for 3 hrs
 local reboot=false
 while true do
     currentTime = getCurrentTime()
-    local minutes=60
+    local minutes=20
     if isWithinMinutes(currentTime,minutes) then
         os.sleep(300) --bc reboot is actually 5 mins after the hour
-        local sleepTime=minutes*60 --s
+        local sleepTime=(minutes+4)*60 --s
         local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime.." seconds"
         chatbox.say(msg)
         print(getCurrentTime()..": "..msg)
@@ -124,10 +124,10 @@ while true do
     end
     if reboot then
 
-        print(getCurrentTime()..": ".."Reboot successful. Sleeping for ~3.5 hrs")
+        print(getCurrentTime()..": ".."Reboot successful. Sleeping for ~3 hrs")
         local beforeGame=computer.uptime()
         local beforeReal = getCurrentTime()
-        os.sleep(12600)
+        os.sleep(10800)
         local afterGame=computer.uptime()
         local afterReal = getCurrentTime()
         
