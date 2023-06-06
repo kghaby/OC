@@ -36,7 +36,7 @@ end
 
 -- Function to check if the current time is within x minutes of the target hours
 local function isWithinMinutes(datetime,threshold)
-    local targetHours = {2, 4, 6, 10, 14, 18, 22}
+    local targetHours = {2, 6, 10, 14, 18, 22}
     local hour = tonumber(string.sub(datetime, 12, 13))
     local minute = tonumber(string.sub(datetime, 15, 16))
     for i = 1, #targetHours do
