@@ -58,26 +58,6 @@ local function time2seconds(time)
     return timeInSeconds
 end
 
---[[
---uses chatbox. cant see /say so this doesnt work
-local isRebooting=thread.create(function()  
-    while true do
-        local _, _, _, message = event.pull("chat_message")
-        if message and string.find(message, "reboot in 1 minute") then
-            local msg="Scheduled reboot detected. Sleeping redstone for 120 seconds"
-            chatbox.say(msg)
-            print(os.date().." "..msg)
-            redstone.setOutput(sides.right, 0)
-            os.sleep(120)
-            redstone.setOutput(sides.right, 15)
-        end
-    end
-end)
-]]
-
-
-
-
 
 local function isNetworkOn()
     if redstone.getInput(sides.left) > 0 then
@@ -108,11 +88,10 @@ end)
 local reboot=false
 while true do
     currentTime = getCurrentTime()
-    local minutes=20
+    local minutes=18
     if isWithinMinutes(currentTime,minutes) then
-        os.sleep(300) --bc reboot is actually 5 mins after the hour
-        local sleepTime=(minutes+4)*60 --s
-        local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime.." seconds"
+        local sleepTime=(minutes+4+5)*60 --s, add 5 bc reboot is actually 5 mins after the hour
+        local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime/60.." minutes"
         chatbox.say(msg)
         print(getCurrentTime()..": "..msg)
         reboot=true
@@ -123,11 +102,12 @@ while true do
         os.sleep(90)
     end
     if reboot then
-
-        print(getCurrentTime()..": ".."Reboot successful. Sleeping for ~3 hrs")
+        local hibernation=3 --hours to sleep after reboot
+        print(getCurrentTime()..": ".."Reboot successful. Sleeping for "..hibernation.." hrs")
+--[[
         local beforeGame=computer.uptime()
         local beforeReal = getCurrentTime()
-        os.sleep(10800)
+        os.sleep(hibernation*3600)
         local afterGame=computer.uptime()
         local afterReal = getCurrentTime()
         
@@ -135,6 +115,7 @@ while true do
         print(getCurrentTime()..": ".."Slept for "..gameDiff.." game hours")
         realDiff=(time2seconds(afterReal)-time2seconds(beforeReal))/3600
         print(getCurrentTime()..": ".."Slept for "..realDiff.." real hours")
+    ]]
         reboot=false
     end
 end
