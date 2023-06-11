@@ -107,7 +107,7 @@ while true do
         os.sleep(90)
     end
     if reboot then
-        local hibernation=3 --hours to sleep after reboot
+        local hibernation=0 --hours to sleep after reboot
         print(getCurrentTime()..": ".."Reboot successful. Sleeping for "..hibernation.." hrs")
 --[[
         local beforeGame=computer.uptime()
