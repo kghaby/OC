@@ -80,8 +80,8 @@ local networkCheck=thread.create(function()
                 os.sleep(10)
                 redstone.setOutput(sides.right, 15)
             else
-            print(getCurrentTime()..": "..'\tRedstone already sleeping.')
-            os.sleep(10)
+                print(getCurrentTime()..": "..'\tRedstone already sleeping.')
+                os.sleep(10)
             end
         end
         os.sleep()
