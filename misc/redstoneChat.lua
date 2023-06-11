@@ -88,7 +88,7 @@ local networkCheck=thread.create(function()
 end)
 
 --downloads every 90 seconds until reboot is $minutes mins away, then sleeps for $minutes+4 mins,
-    -- then sleeps for 3 hrs
+    -- then sleeps for $hibernation hrs
 local reboot=false
 while true do
     currentTime = getCurrentTime()
