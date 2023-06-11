@@ -75,9 +75,13 @@ local networkCheck=thread.create(function()
             local msg="ME network down. Sleeping redstone for 10 seconds"
             chatbox.say(msg)
             print(getCurrentTime()..": "..msg)
-            redstone.setOutput(sides.right, 0)
-            os.sleep(10)
-            redstone.setOutput(sides.right, 15)
+            if redstone.getOutput(sides.right) > 0 then
+                redstone.setOutput(sides.right, 0)
+                os.sleep(10)
+                redstone.setOutput(sides.right, 15)
+            else
+            print(getCurrentTime()..": "..'\tRedstone already sleeping.')
+            end
         end
         os.sleep()
     end
