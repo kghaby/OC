@@ -92,8 +92,8 @@ while true do
     if isWithinMinutes(currentTime,minutes) then
         local sleepTime=(minutes+4+5)*60 --s, add 5 bc reboot is actually 5 mins after the hour
         local msg="Scheduled reboot predicted. Sleeping redstone for "..sleepTime/60 .." minutes"
-        chatbox.s        print(getCurrentTime()..": "..msay(msg)
-g)
+        chatbox.say(msg)
+        print(getCurrentTime()..": "..msg)
         reboot=true
         redstone.setOutput(sides.right, 0)
         os.sleep(sleepTime)
