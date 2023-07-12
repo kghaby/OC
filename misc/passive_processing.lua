@@ -1,7 +1,7 @@
 local component = require("component")
 local event = require("event")
 local gpu = component.gpu
-
+local sides=require("sides")
 
 -- Set screen resolution
 local w,h=37,9
