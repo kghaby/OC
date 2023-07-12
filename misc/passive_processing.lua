@@ -125,7 +125,7 @@ function onTouch(_, _, x, y, _, _)
       if button.state then
         engage(button.rs)
       else
-        disengage(button.rs))
+        disengage(button.rs)
       end
       -- Redraw the button.
       drawButton(button, coords)
