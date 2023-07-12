@@ -90,45 +90,48 @@ end
 
 --redstone control
 local function disengage(rs)
-    rs.setOutput({0, 0, 0, 0, 0, 0})
+    rs.setOutput({[0]=0, 0, 0, 0, 0, 0})
 end
 local function engage(rs)
-    rs.setOutput({15, 15, 15, 15, 15, 15})
+    rs.setOutput(sides.south,15)
+    rs.setOutput(sides.top,15)
+    rs.setOutput(sides.bottom,15)
 end
 
 local lastTouchTime = 0
-local touchCooldown = 0.5  -- Time in seconds to ignore touch events after a touch.
+local touchCooldown = 0.1  -- Time in seconds to ignore touch events after a touch.
 
 function onTouch(_, _, x, y, _, _)
-  local currentTime = os.time()
-  if currentTime - lastTouchTime < touchCooldown then
-    -- Ignore this touch event, since it occurred too soon after the last one.
-    return
-  end
-  lastTouchTime = currentTime
-  -- Determine which button was clicked.
-    for index, coords in ipairs(buttonCoords) do
-        if y >= coords.y1 and y <= coords.y2 and x >= coords.x1 and x <= coords.x2 then
-            local button = buttons[index]
-            -- Toggle the state of the button.
-            button.state = not button.state
-            print(button.state)
-            -- Update the redstone output.
-            if button.state then
-                engage(button.rs)
-            else
-                disengage(button.rs)
-            end
-            -- Redraw the button.
-            drawButton(button, coords)
-            os.sleep(0.1)
-            break
-        end
+    local currentTime = os.time()
+    if currentTime - lastTouchTime < touchCooldown then
+      -- Ignore this touch event, since it occurred too soon after the last one.
+      return
     end
+    lastTouchTime = currentTime
+    -- Determine which button was clicked.
+      for index, coords in ipairs(buttonCoords) do
+          if y >= coords.y1 and y <= coords.y2 and x >= coords.x1 and x <= coords.x2 then
+              local button = buttons[index]
+              -- Toggle the state of the button.
+              button.state = not button.state
+              -- Update the redstone output.
+              if button.state then
+                  engage(button.rs)
+              else
+                  disengage(button.rs)
+              end
+              -- Redraw the button.
+              drawButton(button, coords)
+              os.sleep(0.1)
+              break
+          end
+      end
 end
+
 
 -- Register the touch event handler.
 event.listen("touch", onTouch)
+
 
 -- Clear the screen before drawing.
 gpu.setBackground(0x000000)
@@ -146,5 +149,5 @@ end
 
 -- Wait for user input.
 while true do
-  event.pull("touch")
+    event.pull("touch")
 end
