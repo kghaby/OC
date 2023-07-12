@@ -34,7 +34,7 @@ local buttonCoords = {
 function centerText(w, text)
     -- Center text
     local padding = (w - #text + 1) // 2
-    local centered = string.rep(" ", padding) .. text .. string.rep(" ", w - #text - padding + 1)
+    local centered = string.rep(" ", padding) .. text .. string.rep(" ", w - #text - padding)
     return centered
 end
 
