@@ -96,26 +96,35 @@ local function engage(rs)
     rs.setOutput({15, 15, 15, 15, 15, 15})
 end
 
--- Define a function to handle touch events.
+local lastTouchTime = 0
+local touchCooldown = 0.5  -- Time in seconds to ignore touch events after a touch.
+
 function onTouch(_, _, x, y, _, _)
-  -- Determine which button was clicked.
-  for index, coords in ipairs(buttonCoords) do
-    if y >= coords.y1 and y <= coords.y2 and x >= coords.x1 and x <= coords.x2 then
-      local button = buttons[index]
-      -- Toggle the state of the button.
-      button.state = not button.state
-      -- Update the redstone output.
-      if button.state then
-        engage(button.rs)
-      else
-        disengage(button.rs)
-      end
-      -- Redraw the button.
-      drawButton(button, coords)
-      os.sleep(0.1)
-      break
-    end
+  local currentTime = os.time()
+  if currentTime - lastTouchTime < touchCooldown then
+    -- Ignore this touch event, since it occurred too soon after the last one.
+    return
   end
+  lastTouchTime = currentTime
+  -- Determine which button was clicked.
+    for index, coords in ipairs(buttonCoords) do
+        if y >= coords.y1 and y <= coords.y2 and x >= coords.x1 and x <= coords.x2 then
+            local button = buttons[index]
+            -- Toggle the state of the button.
+            button.state = not button.state
+            print(button.state)
+            -- Update the redstone output.
+            if button.state then
+                engage(button.rs)
+            else
+                disengage(button.rs)
+            end
+            -- Redraw the button.
+            drawButton(button, coords)
+            os.sleep(0.1)
+            break
+        end
+    end
 end
 
 -- Register the touch event handler.
@@ -138,5 +147,4 @@ end
 -- Wait for user input.
 while true do
   event.pull("touch")
-  os.sleep()
 end
