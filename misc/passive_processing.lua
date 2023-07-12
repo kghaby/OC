@@ -15,7 +15,7 @@ local buttons = {
   { name = "UUM PROD", state = false, rs = component.proxy("1fc0ce2e-36eb-4bf8-a0e8-90fd6c584b7e") },
   { name = "EECs", state = false, rs = component.proxy("8bfbbb9c-1208-4201-a7ba-e99bcddfb939") },
   { name = "SEAWEED EXTRACT", state = false, rs = component.proxy("42229db7-8663-41f6-a899-061110ed3416") },
-  { name = "n/a", state = false, rs = component.proxy("fa233804-aae9-4aae-b8de-c63ca8503f67") },
+  { name = "CRYSTAL CHIPS", state = false, rs = component.proxy("fa233804-aae9-4aae-b8de-c63ca8503f67") },
   { name = "n/a", state = false, rs = component.proxy("5cc70e7b-f9b1-4eca-a2d9-3dff18f36dcc") }
 }
 
