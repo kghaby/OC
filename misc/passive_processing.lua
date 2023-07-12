@@ -25,20 +25,19 @@ local buttonCoords = {
   { x1 = 11, y1 = 4, x2 = 18, y2 = 6 },
   { x1 = 20, y1 = 4, x2 = 27, y2 = 6 },
   { x1 = 29, y1 = 4, x2 = 36, y2 = 6 },
-  { x1 = 2, y1 = 7, x2 = 9, y2 = 9 },
-  { x1 = 11, y1 = 7, x2 = 18, y2 = 9 },
-  { x1 = 20, y1 = 7, x2 = 27, y2 = 9 },
-  { x1 = 29, y1 = 7, x2 = 36, y2 = 9 }
+  { x1 = 2, y1 = 8, x2 = 9, y2 = 10 },
+  { x1 = 11, y1 = 8, x2 = 18, y2 = 10 },
+  { x1 = 20, y1 = 8, x2 = 27, y2 = 10 },
+  { x1 = 29, y1 = 8, x2 = 36, y2 = 10 }
 }
 
-function centerText(w,text)
+function centerText(w, text)
     -- Center text
-    local padding = (w - #text) // 2
-    centered= string.rep(" ", padding) .. text .. string.rep(" ", padding)
+    local padding = (w - #text + 1) // 2
+    local centered = string.rep(" ", padding) .. text .. string.rep(" ", w - #text - padding + 1)
     return centered
 end
 
--- Format button name to fit into 8x3 box and center the text.
 function formatButtonName(name)
     local lines = {}
     local parts = {}
@@ -46,24 +45,6 @@ function formatButtonName(name)
     -- Split the name into words by space, and include special characters as separate words
     for part in string.gmatch(name, "%S+") do
         table.insert(parts, part)
-    end
-
-    for i = 1, #parts do
-        local word = parts[i]
-        if #word > 1 and not word:match("^%a+$") then -- if word contains special character
-        for specialChar in word:gmatch("%p") do
-            local index = word:find(specialChar)
-            local first = word:sub(1, index-1)
-            local second = word:sub(index + 1, #word)
-            word = (first ~= "" and first or nil)
-            table.insert(parts, i+1, specialChar)
-            if second ~= "" then
-            table.insert(parts, i+2, second)
-            end
-            break
-        end
-        end
-        parts[i] = word
     end
 
     local i = 1
@@ -79,7 +60,7 @@ function formatButtonName(name)
 
     -- Center text in each line.
     for i, line in ipairs(lines) do
-        lines[i] = centerText(w,line)
+        lines[i] = centerText(8, line)
     end
 
     return lines
@@ -105,7 +86,7 @@ function drawButton(button, coords)
     end
     
     gpu.setBackground(0x000000) -- Reset the background color.
-  end
+end
 
 --redstone control
 local function disengage(rs)
