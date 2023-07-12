@@ -1,7 +1,7 @@
 local component = require("component")
 local event = require("event")
 local gpu = component.gpu
-local rs = component.list("redstone")() -- get list of all redstone I/O blocks
+
 
 -- Set screen resolution
 local w,h=37,10
@@ -9,14 +9,14 @@ gpu.setResolution(w, h)
 
 -- Define the buttons.
 local buttons = {
-  { name = "Button 1", state = false, rs= },
-  { name = "Button 2", state = false },
-  { name = "LOG PROD&PROC", state = false },
-  { name = "Button 4", state = false },
-  { name = "Button 5", state = false },
-  { name = "Button 6", state = false },
-  { name = "Button 7", state = false },
-  { name = "Button 8", state = false }
+  { name = "BEE PROD & PROC", state = false, rs = component.proxy("5a625137-0956-4bc8-96d0-873572bca924")},
+  { name = "LOG PROD & PROC", state = false, rs = component.proxy("6359483a-1898-455a-91a5-7f4c4ce9bd8c") },
+  { name = "PLASMA PROC", state = false, rs = component.proxy("dc664d31-3f05-44f9-9fb3-290fa6815d86") },
+  { name = "UUM PROD", state = false, rs = component.proxy("1fc0ce2e-36eb-4bf8-a0e8-90fd6c584b7e") },
+  { name = "EECs", state = false, rs = component.proxy("8bfbbb9c-1208-4201-a7ba-e99bcddfb939") },
+  { name = "n/a", state = false, rs = component.proxy("42229db7-8663-41f6-a899-061110ed3416") },
+  { name = "n/a", state = false, rs = component.proxy("fa233804-aae9-4aae-b8de-c63ca8503f67") },
+  { name = "n/a", state = false, rs = component.proxy("5cc70e7b-f9b1-4eca-a2d9-3dff18f36dcc") }
 }
 
 -- Define the coordinates of each button.
@@ -105,6 +105,14 @@ function drawButton(button, coords)
   gpu.setBackground(0x000000) -- Reset the background color.
 end
 
+--redstone control
+local function disengage(rs)
+    rs.setOutput({0, 0, 0, 0, 0, 0})
+end
+local function engage(rs)
+    rs.setOutput({15, 15, 15, 15, 15, 15})
+end
+
 -- Define a function to handle touch events.
 function onTouch(_, _, x, y, _, _)
   -- Determine which button was clicked.
@@ -115,9 +123,9 @@ function onTouch(_, _, x, y, _, _)
       button.state = not button.state
       -- Update the redstone output.
       if button.state then
-        component.invoke(rs, "setOutput", index - 1, 15)
+        engage(button.rs)
       else
-        component.invoke(rs, "setOutput", index - 1, 0)
+        disengage(button.rs))
       end
       -- Redraw the button.
       drawButton(button, coords)
