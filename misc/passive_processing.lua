@@ -88,22 +88,24 @@ end
 
 -- Define a function to draw a button.
 function drawButton(button, coords)
-  -- Set the color based on the state of the button.
-  if button.state then
-    gpu.setBackground(0x00FF00) -- Green for on.
-  else
-    gpu.setBackground(0xFF0000) -- Red for off.
-  end
-
-  -- Draw the button.
-  local lines = formatButtonName(button.name)
-  gpu.fill(coords.x1, coords.y1, coords.x2, coords.y2, ' ') -- Fill an area with the color.
-  for i, line in ipairs(lines) do
-    gpu.set(coords.x1, coords.y1 + i - 1, line)
-  end
+    -- Set the color based on the state of the button.
+    if button.state then
+      gpu.setBackground(0x00FF00) -- Green for on.
+    else
+      gpu.setBackground(0xFF0000) -- Red for off.
+    end
   
-  gpu.setBackground(0x000000) -- Reset the background color.
-end
+    -- Draw the button.
+    local lines = formatButtonName(button.name)
+    local buttonWidth = coords.x2 - coords.x1 + 1
+    local buttonHeight = coords.y2 - coords.y1 + 1
+    gpu.fill(coords.x1, coords.y1, buttonWidth, buttonHeight, ' ')  
+    for i, line in ipairs(lines) do
+      gpu.set(coords.x1, coords.y1 + i - 1, line)
+    end
+    
+    gpu.setBackground(0x000000) -- Reset the background color.
+  end
 
 --redstone control
 local function disengage(rs)
@@ -139,11 +141,11 @@ event.listen("touch", onTouch)
 
 -- Clear the screen before drawing.
 gpu.setBackground(0x000000)
-gpu.fill(1, 1, 37, 17, ' ')
+gpu.fill(1, 1, w, h, ' ')
 
 -- Draw the header
 gpu.set(1, 1, centerText(w,"PASSIVE PROCESSING"))
-gpu.fill(1, 2, w, 2, '_')
+gpu.fill(1, 2, w, 1, '_')
 
 -- Draw the initial state of the buttons.
 for index, button in ipairs(buttons) do
