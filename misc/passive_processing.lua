@@ -4,7 +4,7 @@ local gpu = component.gpu
 
 
 -- Set screen resolution
-local w,h=37,11
+local w,h=37,9
 gpu.setResolution(w, h)
 
 -- Define the buttons.
@@ -21,14 +21,14 @@ local buttons = {
 
 -- Define the coordinates of each button.
 local buttonCoords = {
-  { x1 = 2, y1 = 4, x2 = 9, y2 = 6 },
-  { x1 = 11, y1 = 4, x2 = 18, y2 = 6 },
-  { x1 = 20, y1 = 4, x2 = 27, y2 = 6 },
-  { x1 = 29, y1 = 4, x2 = 36, y2 = 6 },
-  { x1 = 2, y1 = 8, x2 = 9, y2 = 10 },
-  { x1 = 11, y1 = 8, x2 = 18, y2 = 10 },
-  { x1 = 20, y1 = 8, x2 = 27, y2 = 10 },
-  { x1 = 29, y1 = 8, x2 = 36, y2 = 10 }
+  { x1 = 2, y1 = 4, x2 = 9, y2 = 5 },
+  { x1 = 11, y1 = 4, x2 = 18, y2 = 5 },
+  { x1 = 20, y1 = 4, x2 = 27, y2 = 5 },
+  { x1 = 29, y1 = 4, x2 = 36, y2 = 5 },
+  { x1 = 2, y1 = 7, x2 = 9, y2 = 8 },
+  { x1 = 11, y1 = 7, x2 = 18, y2 = 8 },
+  { x1 = 20, y1 = 7, x2 = 27, y2 = 8 },
+  { x1 = 29, y1 = 7, x2 = 36, y2 = 8 }
 }
 
 function centerText(w, text)
@@ -112,6 +112,7 @@ function onTouch(_, _, x, y, _, _)
       end
       -- Redraw the button.
       drawButton(button, coords)
+      os.sleep(0.1)
       break
     end
   end
