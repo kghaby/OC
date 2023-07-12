@@ -4,7 +4,7 @@ local gpu = component.gpu
 
 
 -- Set screen resolution
-local w,h=37,10
+local w,h=37,11
 gpu.setResolution(w, h)
 
 -- Define the buttons.
@@ -131,6 +131,7 @@ gpu.fill(1, 2, w, 1, '_')
 -- Draw the initial state of the buttons.
 for index, button in ipairs(buttons) do
   drawButton(button, buttonCoords[index])
+  disengage(button.rs)
 end
 
 -- Wait for user input.
