@@ -1,4 +1,5 @@
 -- Components
+local thread = require("thread") 
 local component = require("component")
 local event = require("event")
 local serialization = require("serialization")
@@ -9,7 +10,7 @@ local sg = component.getPrimary("stargate")
 local modem = component.modem
 
 -- Set screen resolution
-local w,h=50,16
+local w,h=80,16
 gpu.setResolution(w, h)
 
 -- Global Variables
@@ -78,31 +79,50 @@ function tableContains(tbl, val)
   end
   return false
 end
--- Function to check and add new address if not present
-local function checkAndAddAddress()
-  local addresses = loadAddresses()
+local function listenAndUpdateAddresses()
+  -- Create a separate thread to receive addresses
+  thread.create(function()
+    while true do
+      modem.broadcast(123, serialization.serialize("request_addresses"))
+      local _, _, _, _, _, message = event.pull("modem_message")
+      if message then
+        local possibleAddresses = serialization.unserialize(message)
+        -- Check if it's a valid address list
+        if type(possibleAddresses) == "table" then
+          local valid = true
+          for _, entry in pairs(possibleAddresses) do
+            if type(entry) ~= "table" or #entry ~= 2 or type(entry[1]) ~= "string" or type(entry[2]) ~= "string" then
+              valid = false
+              break
+            end
+          end
+          -- If it's a valid address list, update the global addresses
+          if valid then
+            globalAddresses = possibleAddresses
+            saveAddresses(globalAddresses)
+          end
+        end
+      end
+      os.sleep(3) -- sleep for 3 seconds before trying again
+    end
+  end)
+end
+
+
+local function checkAndAddOwnAddress()
+  -- Add own address if not present
   local ownAddress = sg.localAddress()
-  if not tableContains(addresses, ownAddress) then
+  if not tableContains(globalAddresses, ownAddress) then
     print("Address not found. Enter a name for this Stargate: ") -- Debugging
     local gateName = io.read()
-    table.insert(addresses, {gateName, ownAddress})
-    saveAddresses(addresses)
+    table.insert(globalAddresses, {gateName, ownAddress})
+    saveAddresses(globalAddresses)
     modem.broadcast(123, serialization.serialize({action = "add_address", address = ownAddress, name = gateName}))
   end
 end
 
+
 addresses = {}
-checkAndAddAddress()
-modem.broadcast(123, serialization.serialize("request_addresses"))
-
-local _, _, _, _, _, message = event.pull(2,"modem_message")
-if message then
-  addresses = serialization.unserialize(message)
-  saveAddresses(addresses)
-else
-  print("No addresses received within 2 seconds")
-end
-
 
 
 -- Display Functions
@@ -147,12 +167,13 @@ end
 
 local function showMenu()
   setCursor(1, 1)
-  for i, na in pairs(addresses) do
+  print("Options:")
+  print("\nD Disconnect\nO Open Iris\nC Close Iris\nQ Quit\n")
+  for i, na in pairs(globalAddresses) do
     print(string.format("%d %s", i, na[1]))
   end
-  print("\nD Disconnect\nO Open Iris\nC Close Iris\nQ Quit\n")
-  write("Option? ")
 end
+
 
 -- Event Handlers
 local handlers = {}
@@ -181,6 +202,22 @@ handlers["sgChevronEngaged"] = function(e)
   showMessage(string.format("Chevron %s engaged! (%s)", chevron, symbol))
 end
 
+-- Function to continuously update the menu
+local function updateMenuContinuously()
+  thread.create(function()
+    while true do
+      -- Load the latest addresses and update the global variable
+      globalAddresses = loadAddresses()
+      -- Refresh the menu
+      term.clear()
+      showMenu()
+      -- Wait for some time before updating again
+      os.sleep(30) -- sleep for 3 seconds before refreshing again
+    end
+  end)
+end
+
+
 -- Main Loop
 local function eventLoop()
   while running do
@@ -192,17 +229,22 @@ local function eventLoop()
       showMessage("")
       try(handler, e)
     end
+    os.sleep()
   end
 end
 
--- Main Function
 local function main()
-  checkAndAddAddress()
   term.clear()
-  showMenu()
+  modem.open(123) -- Make sure to open the modem
+  globalAddresses = loadAddresses()
+  listenAndUpdateAddresses()
+  os.sleep(5) -- Give it some time to populate the addresses
+  checkAndAddOwnAddress()
+  updateMenuContinuously()
   eventLoop()
   term.clear()
   setCursor(1, 1)
 end
+
 
 main()
