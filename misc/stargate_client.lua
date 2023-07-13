@@ -1,20 +1,22 @@
--- Required Libraries
-local term = require("term")
-local event = require("event")
-local component = require("component")
-local serialization = require("serialization")
-local filesystem = require("filesystem")
-
 -- Components
+local component = require("component")
+local event = require("event")
+local serialization = require("serialization")
+local term = require("term")
+local filesystem = require("filesystem")
 local gpu = component.getPrimary("gpu")
 local sg = component.getPrimary("stargate")
 local modem = component.modem
-local dataFile = "/home/stargate_addresses.txt"
+
+-- Set screen resolution
+local w,h=50,16
+gpu.setResolution(w, h)
 
 -- Global Variables
 local running = true
 local screen_width, screen_height = gpu.getResolution()
 local key_event_name = "key_down"
+local dataFile = "/home/stargate_addresses.txt"
 
 -- Helper Functions
 local function try(func, ...)
@@ -76,22 +78,32 @@ function tableContains(tbl, val)
   end
   return false
 end
-
-local addresses = loadAddresses()
-
-local ownAddress = sg.localAddress()
-if not tableContains(addresses, ownAddress) then
-  table.insert(addresses, {sg.getName(), ownAddress})
-  saveAddresses(addresses)
-  modem.broadcast(123, serialization.serialize({action = "add_address", address = ownAddress}))
+-- Function to check and add new address if not present
+local function checkAndAddAddress()
+  local addresses = loadAddresses()
+  local ownAddress = sg.localAddress()
+  if not tableContains(addresses, ownAddress) then
+    print("Address not found. Enter a name for this Stargate: ") -- Debugging
+    local gateName = io.read()
+    table.insert(addresses, {gateName, ownAddress})
+    saveAddresses(addresses)
+    modem.broadcast(123, serialization.serialize({action = "add_address", address = ownAddress, name = gateName}))
+  end
 end
 
+addresses = {}
+checkAndAddAddress()
 modem.broadcast(123, serialization.serialize("request_addresses"))
 
-local _, _, _, _, _, message = event.pull("modem_message")
+local _, _, _, _, _, message = event.pull(2,"modem_message")
+if message then
+  addresses = serialization.unserialize(message)
+  saveAddresses(addresses)
+else
+  print("No addresses received within 2 seconds")
+end
 
-addresses = serialization.unserialize(message)
-saveAddresses(addresses)
+
 
 -- Display Functions
 local function showAt(x, y, s)
@@ -185,6 +197,7 @@ end
 
 -- Main Function
 local function main()
+  checkAndAddAddress()
   term.clear()
   showMenu()
   eventLoop()
