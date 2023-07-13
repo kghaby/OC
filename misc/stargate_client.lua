@@ -189,7 +189,7 @@ handlers[key_event_name] = function(e)
   elseif c == "q" then
     running = false
   elseif c >= "1" and c <= "9" then
-    local na = addresses[tonumber(c)]
+    local na = globalAddresses[tonumber(c)]
     if na then
       dial(na[1], na[2])
     end
